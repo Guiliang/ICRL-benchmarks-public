@@ -11,17 +11,19 @@ dependencies:
       - Polygon3==3.0.9.1
       - pybind11==2.9.0
       - setuptools==50.3.2
+      - wandb==0.12.17
       # learning dependencies
       - gym==0.21.0
       # CommonRoad packages
-      - commonroad-io==2021.1
+      - commonroad-io==2022.1
       - commonroad-vehicle-models
+      - commonroad-route-planner==2022.1
+      - commonroad-drivability-checker==2021.4.1
       # Evaluation dependencies
       - SALib==1.3.13
       # parser for setup.py
       - pyparsing==2.4.7
       # for inverse constraint RL
-      - wandb==0.10.12
       - torch==1.5.0
       - matplotlib==3.3.2
       - cloudpickle==1.2.2

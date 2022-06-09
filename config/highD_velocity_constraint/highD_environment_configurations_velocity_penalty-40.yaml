@@ -1,0 +1,116 @@
+cache_navigators: false
+ego_configs:
+  observe_v_ego: true
+  observe_a_ego: true
+  observe_relative_heading: true
+  observe_steering_angle: true
+  observe_global_turn_rate: true
+  observe_remaining_steps: true
+  observe_is_friction_violation: true
+flatten_observation: true
+goal_configs:
+  observe_distance_goal_long: true
+  observe_distance_goal_lat: true
+  observe_distance_goal_long_lane: false
+  observe_distance_goal_time: false
+  observe_distance_goal_orientation: false
+  observe_distance_goal_velocity: false
+  observe_euclidean_distance: false
+  observe_is_goal_reached: true
+  observe_is_time_out: true
+  relax_is_goal_reached: true
+lanelet_configs:
+  dynamic_extrapolation_samples:
+  - 0.1
+  - 0.25
+  - 0.5
+  - 1
+  - 2
+  non_strict_check_circle_radius: 0.5
+  observe_dynamic_extrapolated_positions: false
+  observe_is_off_road: true
+  observe_lat_offset: true
+  observe_left_marker_distance: true
+  observe_left_road_edge_distance: true
+  observe_right_marker_distance: true
+  observe_right_road_edge_distance: true
+  observe_static_extrapolated_positions: false
+  static_extrapolation_samples:
+  - 1
+  - 2
+  - 5
+  - 10
+  - 25
+  strict_off_road_check: true
+max_lane_merge_range: 5000.0
+meta_scenario_path: ../data/highD/pickles/meta_scenario
+render_configs:
+  render_combine_frames: false
+  render_dynamic_extrapolated_positions: false
+  render_ego_lanelet_center_vertices: false
+  render_global_ccosy: false
+  render_lidar_circle_surrounding_beams: false
+  render_lidar_circle_surrounding_obstacles: false
+  render_local_ccosy: false
+  render_road_boundaries: false
+  render_skip_timesteps: 1
+  render_static_extrapolated_positions: false
+  render_surrounding_area: false
+  render_surrounding_obstacles_lane_based: false
+#reward_configs_hybrid:  # we are not using the hybrid rewards
+#  reward_collision: 0.0
+#  reward_friction: 0.0
+#  reward_friction_violation: 0.0
+#  reward_get_close_coefficient: 0.5
+#  reward_goal_distance_coefficient: 0.2
+#  reward_goal_reached: 50.0
+#  reward_lateral_velocity: 0.0
+#  reward_obs_distance_coefficient: 0.1
+#  reward_off_road: -20.0
+#  reward_reverse_driving: 0.0
+#  reward_stay_in_road_center: 0.0
+#  reward_stop_sign_acc: 0.0
+#  reward_stop_sign_vel: 0.0
+#  reward_time_out: -10.0
+reward_type: sparse_reward
+reward_configs_sparse:
+  reward_goal_reached: 50.
+  reward_collision: -50.
+  reward_off_road: -20.
+  reward_time_out: -10.
+  reward_friction_violation: 0.
+external_reward:
+  reward_features: ['velocity']
+  feature_bounds: [['-inf', 40]]
+  feature_penalties: [-50]
+  feature_dims: [[6, 7]]
+  terminate: [True]
+surrounding_configs:
+  dummy_dist: 100.0
+  dummy_dist_rate: 0.0
+  dummy_rel_vel: 0.0
+  lane_circ_sensor_range_radius: 100.0
+  lane_rect_sensor_range_length: 100.0
+  lane_rect_sensor_range_width: 7.0
+  lidar_circle_num_beams: 20
+  lidar_sensor_radius: 100.0
+  observe_is_collision: true
+  observe_lane_circ_surrounding: true
+  observe_lane_rect_surrounding: false
+  observe_lidar_circle_surrounding: false
+termination_configs:
+  terminate_on_collision: true
+  terminate_on_friction_violation: false
+  terminate_on_goal_reached: true
+  terminate_on_off_road: true
+  terminate_on_time_out: true
+test_reset_config_path: ../data/highD/pickles/problem_test
+traffic_sign_configs:
+  observe_priority_sign: false
+  observe_right_of_way_sign: false
+  observe_stop_sign: false
+  observe_yield_sign: false
+train_reset_config_path: ../data/highD/pickles/problem_train
+vehicle_params:
+  vehicle_model: 0
+  vehicle_type: 2

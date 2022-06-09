@@ -1,0 +1,47 @@
+task: 'PPO-InvertedPendulumWall'
+group: 'PPO'
+device: 'cuda'
+verbose: 2
+env:
+  config_path: null
+  train_env_id : 'InvertedPendulumWall-v0'
+  eval_env_id: 'InvertedPendulumWall-v0'
+  save_dir: '../save_model'
+  cost_info_str: null
+  use_cost: False
+  reward_gamma: 0.99
+  cost_gamma: null  # no cost
+  dont_normalize_obs: False
+  dont_normalize_reward: False
+  dont_normalize_cost: False  # cost
+  record_info_names: ['x_position']
+
+running:
+  n_iters: 500
+  n_eval_episodes: 100
+  save_every: 100
+
+PPO:
+  policy_name: 'MlpPolicy'
+  learning_rate: 0.0001
+  n_steps: 2048
+  n_epochs: 20
+  reward_gamma: 0.99
+  reward_gae_lambda: 0.9
+  clip_range: 0.4
+  ent_coef: 0.0
+  reward_vf_coef: 0.5
+  max_grad_norm: 0.5
+  use_sde: False
+  sde_sample_freq: -1
+  target_kl: 0.02
+  shared_layers: null
+  policy_layers: [64, 64]
+  reward_vf_layers: [64, 64]
+  batch_size: 128
+  eval_every: 2048
+  use_curiosity_driven_exploration: False
+  warmup_timesteps: False
+  reset_policy: False
+  forward_timesteps: 20000
+  clip_range_reward_vf: null
