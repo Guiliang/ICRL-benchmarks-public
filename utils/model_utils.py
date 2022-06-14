@@ -193,7 +193,7 @@ def load_ppo_config(config, train_env, seed, log_file):
             "gae_lambda": config['PPO']['reward_gae_lambda'],
             "vf_coef": config['PPO']['reward_vf_coef'],
         })
-    elif config['group'] == "PPO-Lag" or config['group'] == "Binary" or config['group'] == "ICRL" or config['group'] == "VICRL":
+    elif config['group'] == "PPO-Lag" or config['group'] == "Binary" or config['group'] == "ICRL" or config['group'] == "VCIRL":
     # elif config['group'] == "PPO-Lag":
         ppo_parameters.update({
             "reward_gamma": config['PPO']['reward_gamma'],

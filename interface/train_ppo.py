@@ -65,14 +65,6 @@ def train(args):
         seed
     )
 
-    skip_running = check_if_duplicate_seed(seed=seed,
-                                           config=config,
-                                           current_time_date=current_time_date,
-                                           save_model_mother_dir=save_model_mother_dir,
-                                           log_file=log_file)
-    if skip_running:
-        return
-
     if not os.path.exists('{0}/{1}/'.format(config['env']['save_dir'], config['task'])):
         os.mkdir('{0}/{1}/'.format(config['env']['save_dir'], config['task']))
     if not os.path.exists(save_model_mother_dir):
@@ -228,14 +220,6 @@ def train(args):
                                save_name=os.path.join(path, "{0}".format(record_info_name)),
                                apply_scatter=True
                                )
-            # env_tmp = train_env
-            # while isinstance(env_tmp, VecEnvWrapper):
-            #     env_tmp = env_tmp.venv
-            #     if isinstance(env_tmp, VecCostWrapper) or isinstance(env_tmp, InternalVecCostWrapper):
-            #         env_tmp = env_tmp.venv
-            # for i in len(env_tmp.envs):
-            #     env_tmp.envs[i].info_saving_file = open(os.path.join(path, 'info_saving_{0}.txt'.format(i)), 'w')
-            #     env_tmp.envs[i].info_saving_items = ['ego_velocity', 'cost']
 
         # (2) best
         if mean_nc_reward > best_true_reward:

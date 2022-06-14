@@ -46,10 +46,6 @@ def train(args):
         config['running']['save_every'] = 2048
         config['running']['eval_every'] = 1024
         debug_msg = 'debug-'
-        partial_data = True
-        # debug_msg += 'part-'
-    if partial_data:
-        debug_msg += 'part-'
 
     if num_threads is not None:
         config['env']['num_threads'] = int(num_threads)
@@ -65,14 +61,6 @@ def train(args):
         debug_msg,
         seed
     )
-
-    skip_running = check_if_duplicate_seed(seed=seed,
-                                           config=config,
-                                           current_time_date=current_time_date,
-                                           save_model_mother_dir=save_model_mother_dir,
-                                           log_file=log_file)
-    if skip_running:
-        return
 
     if not os.path.exists('{0}/{1}/'.format(config['env']['save_dir'], config['task'])):
         os.mkdir('{0}/{1}/'.format(config['env']['save_dir'], config['task']))
@@ -98,7 +86,6 @@ def train(args):
                                             normalize_cost=False,
                                             reward_gamma=config['env']['reward_gamma'],
                                             multi_env=multi_env,
-                                            part_data=partial_data,
                                             log_file=log_file,
                                             )
     save_test_mother_dir = os.path.join(save_model_mother_dir, "test/")
@@ -130,12 +117,7 @@ def train(args):
 
     # Load expert data
     expert_path = config['running']['expert_path']
-    if debug_mode:
-        expert_path = expert_path.replace('expert_data/', 'expert_data/debug_')
-    if 'expert_rollouts' in config['running'].keys():
-        expert_rollouts = config['running']['expert_rollouts']
-    else:
-        expert_rollouts = None
+    expert_rollouts = config['running']['expert_rollouts']
     (expert_obs, expert_acs, expert_rs), expert_mean_reward = load_expert_data(
         expert_path=expert_path,
         # use_pickle5=is_mujoco(config['env']['train_env_id']),  # True for the Mujoco envs

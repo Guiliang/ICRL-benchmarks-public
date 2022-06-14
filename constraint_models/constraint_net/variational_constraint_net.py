@@ -27,7 +27,7 @@ class VariationalConstraintNet(ConstraintNet):
             expert_obs: np.ndarray,
             expert_acs: np.ndarray,
             is_discrete: bool,
-            task: str = 'VICRL',
+            task: str = 'VCIRL',
             regularizer_coeff: float = 0.,
             obs_select_dim: Optional[Tuple[int, ...]] = None,
             acs_select_dim: Optional[Tuple[int, ...]] = None,
@@ -49,7 +49,7 @@ class VariationalConstraintNet(ConstraintNet):
             mode: str = 'sample',
             log_file=None,
     ):
-        assert 'VICRL' in task
+        assert 'VCIRL' in task
         super().__init__(obs_dim=obs_dim,
                          acs_dim=acs_dim,
                          hidden_sizes=hidden_sizes,
@@ -80,7 +80,6 @@ class VariationalConstraintNet(ConstraintNet):
                          )
         self.dir_prior = di_prior
         self.mode = mode
-        assert 'VICRL' in self.task
         # self._build()
 
     def _build(self) -> None:

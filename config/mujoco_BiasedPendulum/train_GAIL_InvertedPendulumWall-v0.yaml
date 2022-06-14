@@ -1,0 +1,61 @@
+task: 'GAIL-InvertedPendulumWall'
+group: 'GAIL'
+device: 'cuda'
+verbose: 2
+env:
+  config_path: null
+  train_env_id : 'InvertedPendulumWall-v0'
+  eval_env_id: 'InvertedPendulumWall-v0'  # 'HCWithPosTest-v0'
+  save_dir: '../save_model'
+  cost_info_str: 'cost'
+  use_cost: False
+  reward_gamma: 0.99
+  dont_normalize_obs: False
+  dont_normalize_reward: False
+  record_info_names: ['x_position']
+  record_info_input_dims: [ 0 ] # the dim of record info in inputs=(obs, action)
+  visualize_info_ranges: [ [ -0.2, 0.2 ] ]
+
+running:
+  save_every: 2000000
+  eval_every: 1000000
+  expert_rollouts: 50
+  expert_path: '../data/expert_data/BiasedPendulumn/'
+
+PPO:
+  policy_name: 'MlpPolicy'
+  learning_rate: 0.00003
+  n_steps: 2048
+  n_epochs: 20
+  reward_gamma: 0.99
+  reward_gae_lambda: 0.9
+  clip_range: 0.4
+  ent_coef: 0.0
+  reward_vf_coef: 0.5
+  max_grad_norm: 0.5
+  use_sde: False
+  sde_sample_freq: -1
+  target_kl: null
+  shared_layers: null
+  policy_layers: [64, 64]
+  reward_vf_layers: [64, 64]
+  batch_size: 128
+#  eval_every: 2048
+  timesteps: 12000000
+
+DISC:
+  disc_batch_size: null
+  disc_eps: 1e-05
+  disc_layers: [40, 40]
+  disc_learning_rate: 0.00001
+  disc_normalize": false
+  disc_obs_select_dim: null
+  disc_acs_select_dim: null  # null means all
+  disc_plot_every: 1
+  clip_obs: 20
+  num_spurious_features: null
+  freeze_gail_weights: false
+  use_cost_net: false
+  learn_cost: true
+  gail_path: null
+  use_cost_shaping_callback: false

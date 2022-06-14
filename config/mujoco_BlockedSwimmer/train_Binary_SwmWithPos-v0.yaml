@@ -1,0 +1,88 @@
+task: 'Binary-Swm'
+group: 'Binary'
+device: 'cuda'
+verbose: 2
+env:
+  config_path: null
+  train_env_id : 'SwimmerWithPos-v0'
+  eval_env_id: 'SwimmerWithPos-v0'
+  save_dir: '../save_model'
+  cost_info_str: 'cost'
+  use_cost: True
+  reward_gamma: 0.99
+  cost_gamma: 0.99
+  dont_normalize_obs: False
+  dont_normalize_reward: False
+  dont_normalize_cost: False  # cost
+  record_info_names: ['x_position']
+  record_info_input_dims: [ 0 ] # the dim of record info in inputs=(obs, action)
+  visualize_info_ranges: [ [ -5, 5 ] ]
+
+running:
+  n_iters: 100
+  n_eval_episodes: 10
+  save_every: 10
+  expert_rollouts: 50
+  sample_rollouts: 50
+  store_sample_rollouts: null
+  expert_path: '../data/expert_data/BlockedSwimmer'
+  use_buffer: False
+  store_by_game: False
+
+PPO:
+  policy_name: 'TwoCriticsMlpPolicy'
+  learning_rate: 0.0003
+  n_steps: 2048
+  n_epochs: 20
+  reward_gamma: 0.99
+  reward_gae_lambda: 0.9
+  cost_gamma: 0.99
+  cost_gae_lambda: 0.95
+  clip_range: 0.4
+  ent_coef: 0.0
+  reward_vf_coef: 0.5
+  cost_vf_coef: 0.5
+  max_grad_norm: 0.5
+  use_sde: False
+  sde_sample_freq: -1
+  target_kl: 0.01
+  shared_layers: null
+  policy_layers: [64, 64]
+  reward_vf_layers: [64, 64]
+  cost_vf_layers: [64, 64]
+  batch_size: 128
+  eval_every: 2048
+  use_curiosity_driven_exploration: False
+  warmup_timesteps: False
+  reset_policy: False
+  forward_timesteps: 50000
+  clip_range_reward_vf: null
+  clip_range_cost_vf: null
+  penalty_initial_value: 1
+  penalty_learning_rate: 0.01
+  budget: 0
+  proportional_control_coeff: 10
+  integral_control_coeff: 0.0001
+  derivative_control_coeff: 0
+  pid_delay: 1
+  proportional_cost_ema_alpha: 0.5
+  derivative_cost_ema_alpha: 0.5
+
+CN:
+  cn_learning_rate: 0.001
+  cn_reg_coeff: 0.6
+  cn_layers: [20]
+  cn_batch_size: null
+  cn_obs_select_name: null  # null means all
+  cn_acs_select_name: null  # null means all
+  no_importance_sampling: False
+  per_step_importance_sampling: True
+  clip_obs: 20
+  cn_normalize: False
+  cn_target_kl_old_new: 10
+  cn_target_kl_new_old: 2.5
+  train_gail_lambda: True
+  cn_eps: 0.00001
+  backward_iters: 5
+  anneal_clr_by_factor: 0.9
+  mode: 'sample'

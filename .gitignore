@@ -156,7 +156,7 @@ commonroad_environment/setup.py
 commonroad_environment/environment.yml
 
 
-# for this project
+# constraint inference
 save_model/*
 evaluate_model/*
 data/expert_data/*

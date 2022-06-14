@@ -151,7 +151,7 @@ def load_model(model_path: str, iter_msg: str, log_file, device: str, group: str
     ppo_model = PPOLagrangian.load(ppo_model_path, device=device)
     if group == 'ICRL' or group == 'Binary':
         cns_model = ConstraintNet.load(cns_model_path, device=device)
-    elif group == 'VICRL':
+    elif group == 'VCIRL':
         cns_model = VariationalConstraintNet.load(cns_model_path, device=device)
     elif group == 'PPO' or group == 'PPO-Lag':
         cns_model = None

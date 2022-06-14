@@ -55,17 +55,12 @@ def make_env(env_id, env_configs, rank, log_dir, group, multi_env=False, seed=0)
 
 def make_train_env(env_id, config_path, save_dir, group='PPO', base_seed=0, num_threads=1,
                    use_cost=False, normalize_obs=True, normalize_reward=True, normalize_cost=True, multi_env=False,
-                   log_file=None, part_data=False,
-                   **kwargs):
+                   log_file=None, **kwargs):
     if config_path is not None:
         with open(config_path, "r") as config_file:
             env_configs = yaml.safe_load(config_file)
             if is_commonroad(env_id) and multi_env:
                 env_configs['train_reset_config_path'] += '_split'
-            if is_commonroad(env_id) and part_data:
-                env_configs['train_reset_config_path'] += '_debug'
-                env_configs['test_reset_config_path'] += '_debug'
-                env_configs['meta_scenario_path'] += '_debug'
     else:
         env_configs = {}
     env = [make_env(env_id=env_id,

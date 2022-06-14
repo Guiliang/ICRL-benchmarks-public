@@ -1,0 +1,62 @@
+task: 'GAIL-Swm'
+group: 'GAIL'
+device: 'cuda'
+verbose: 2
+env:
+  config_path: null
+  train_env_id : 'SwimmerWithPos-v0'
+  eval_env_id: 'SwimmerWithPos-v0'
+  save_dir: '../save_model'
+  cost_info_str: 'cost'
+  use_cost: False
+  reward_gamma: 0.99
+  cost_gamma: 0.99  # no cost
+  dont_normalize_obs: False
+  dont_normalize_reward: False
+  record_info_names: ['x_position']
+  record_info_input_dims: [ 0 ] # the dim of record info in inputs=(obs, action)
+  visualize_info_ranges: [ [ -5, 5 ] ]
+
+running:
+  save_every: 500000
+  eval_every: 200000
+  expert_rollouts: 10
+  expert_path: '../data/expert_data/BlockedSwimmer'
+
+PPO:
+  policy_name: 'MlpPolicy'
+  learning_rate: 0.0003
+  n_steps: 2048
+  n_epochs: 10
+  reward_gamma: 0.99
+  reward_gae_lambda: 0.95
+  clip_range: 0.2
+  ent_coef: 0.0
+  reward_vf_coef: 0.5
+  max_grad_norm: 0.5
+  use_sde: False
+  sde_sample_freq: -1
+  target_kl: 0.01
+  shared_layers: null
+  policy_layers: [64, 64]
+  reward_vf_layers: [64, 64]
+  batch_size: 64
+#  eval_every: 2048
+  timesteps: 8000000
+
+DISC:
+  disc_batch_size: null
+  disc_eps: 1e-05
+  disc_layers: [ 30 ]
+  disc_learning_rate: 0.003
+  disc_normalize": false
+  disc_obs_select_dim: null
+  disc_acs_select_dim: null  # null means all
+  disc_plot_every: 1
+  clip_obs: 20
+  num_spurious_features: null
+  freeze_gail_weights: false
+  use_cost_net: false
+  learn_cost: true
+  gail_path: null
+  use_cost_shaping_callback: false
