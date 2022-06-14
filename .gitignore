@@ -148,12 +148,17 @@ venv.bak/
 # *.xml
 #*.sh
 
+# commonroad_environment
+commonroad_environment/commonroad_rl.egg-info/*
+commonroad_environment/external/*
+commonroad_environment/README.md
+commonroad_environment/setup.py
+commonroad_environment/environment.yml
+
 
 # for this project
 save_model/*
 evaluate_model/*
-commonroad_environment/commonroad_rl.egg-info/*
-commonroad_environment/external/*
 data/expert_data/*
 data/highD/raw/*
 data/highD/xmls/*
