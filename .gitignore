@@ -151,7 +151,7 @@ venv.bak/
 .idea
 # *.xml
 #*.sh
-*.pickle
+
 
 # for this project
 save_model/*
