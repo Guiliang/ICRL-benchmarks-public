@@ -1466,7 +1466,7 @@ def generate_plots():
                     std_results_moving_average = std_results_moving_average[:max_episodes]
                     episode_plot = episode_plot[:max_episodes]
                 all_mean_dict[method_name].update({plot_key[idx]: mean_results_moving_average})
-                all_std_dict[method_name].update({plot_key[idx]: std_results_moving_average/2})
+                all_std_dict[method_name].update({plot_key[idx]: std_results_moving_average})
                 all_episodes_dict[method_name].update({plot_key[idx]: episode_plot})
                 plot_results(mean_results_moving_avg_dict={method_name: mean_results_moving_average},
                              std_results_moving_avg_dict={method_name: std_results_moving_average},
