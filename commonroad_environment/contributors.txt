@@ -1,0 +1,23 @@
+## Contributors (ranked by number of commits)
+* Xiao Wang
+* Niels Mündler
+* Peter Kocsis
+* Hsuan-cheng (Brian) Liao
+* Mingyang Wang
+* Armin Ettenhofer
+* Matthias Hamacher
+* Zhenyu Li
+* Christoph Pillmayer
+* Xi Chen
+* Michael Feil
+* Johannes Kaiser
+* Hanna Krasowski
+* Zygimantas Marcinkus
+* Daniel Tar
+* Xun Wang
+* Yingye Xin
+* Yang Zhang
+* Gabriel Wiedon
+* Luis Gressenbuch
+* Amir Esmailpour
+* Guyue Huang
