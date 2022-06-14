@@ -6,7 +6,6 @@
 # NOTE if data is needed for a special branch, it can be force-added
 ##############################################################################
 # dependencies
-install
 
 # configs
 #*.yaml
@@ -23,9 +22,6 @@ log
 *.mp4
 *.pkl
 *.gif
-
-# pickles
-pickles
 
 # test outputs
 commonroad_rl/tests/outputs/
@@ -158,14 +154,12 @@ save_model/*
 evaluate_model/*
 commonroad_environment/commonroad_rl.egg-info/*
 commonroad_environment/external/*
-bak-environment/*
-data/highD/*
-data/inD/*
 data/expert_data/*
-tmp*
+data/highD/raw/*
+data/highD/xmls/*
+data/highD/pickles/problem/*
 *.zip
 *.out
-slurm*
 
 
 

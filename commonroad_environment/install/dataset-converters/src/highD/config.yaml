@@ -1,0 +1,17 @@
+author: CPS
+affiliation: Technical University of Munich, Germany
+source: The HighWay Drone Dataset (highD)
+tags: [interstate, multi_lane, parallel_lanes, no_oncoming_traffic]
+
+locations:
+    1: LocationA
+    2: LocationB
+    3: LocationC
+    4: LocationD
+    5: LocationE
+    6: LocationF
+
+road_length: 420
+road_offset: 40 #length added on both sides: 20 meters added on each side -> real_length = road_length + 20 + 20
+
+

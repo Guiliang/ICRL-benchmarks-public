@@ -1,0 +1,137 @@
+author: Matthias Hamacher, Xiao Wang
+affiliation: Technical University of Munich, Germany
+source: The INTERACTION dataset
+#tags: [intersection, multi_lane, urban, oncoming_traffic, speed_limit]
+dt: 0.1
+
+locations:
+    1: CHN_Merging-1
+    2: CHN_Roundabout-1
+    3: DEU_Merging-1
+    4: DEU_Roundabout-1
+    5: USA_Intersection-1
+    6: USA_Intersection-2
+    7: USA_Intersection-3
+    8: USA_Intersection-4
+    9: USA_Roundabout-1
+    10: USA_Roundabout-2
+    11: USA_Roundabout-3
+    12: BGR_Interaction-1
+    
+maps:
+    CHN_Merging-1: CHN_Merging_ZS_repaired
+    CHN_Roundabout-1: CHN_Roundabout_LN_repaired
+    DEU_Merging-1: DEU_Merging_MT_repaired
+    DEU_Roundabout-1: DEU_Roundabout_OF_repaired
+    USA_Intersection-1: USA_Intersection_EP0_repaired
+    USA_Intersection-2: USA_Intersection_EP1_repaired
+    USA_Intersection-3: USA_Intersection_GL_repaired
+    USA_Intersection-4: USA_Intersection_MA_repaired
+    USA_Roundabout-1: USA_Roundabout_EP_repaired
+    USA_Roundabout-2: USA_Roundabout_FT_repaired
+    USA_Roundabout-3: USA_Roundabout_SR_repaired
+    BGR_Interaction-1: BGR_Intersection_VA_repaired
+    
+offsets:
+    CHN_Merging-1:
+        x_offset_lanelets: -504580
+        y_offset_lanelets: 965
+        x_offset_tracks: 1056
+        y_offset_tracks: 954.5
+    CHN_Roundabout-1:
+        x_offset_lanelets: -504580
+        y_offset_lanelets: 965
+        x_offset_tracks: 1056
+        y_offset_tracks: 954.5
+    DEU_Merging-1:
+        x_offset_lanelets: -504739.17
+        y_offset_lanelets: 1015.95
+        x_offset_tracks: 904
+        y_offset_tracks: 1004.5
+    DEU_Roundabout-1:
+        x_offset_lanelets: -504739.17
+        y_offset_lanelets: 1015.95
+        x_offset_tracks: 897
+        y_offset_tracks: 1004
+    USA_Intersection-1:
+        x_offset_lanelets: -504690
+        y_offset_lanelets: 1005
+        x_offset_tracks: 945
+        y_offset_tracks: 993.5
+    USA_Intersection-2:
+        x_offset_lanelets: -504690
+        y_offset_lanelets: 1005
+        x_offset_tracks: 945
+        y_offset_tracks: 993.5
+    USA_Intersection-3:
+        x_offset_lanelets: -504690
+        y_offset_lanelets: 1005
+        x_offset_tracks: 946
+        y_offset_tracks: 995
+    USA_Intersection-4:
+        x_offset_lanelets: -504690
+        y_offset_lanelets: 1005
+        x_offset_tracks: 945.5
+        y_offset_tracks: 993.5
+    USA_Roundabout-1:
+        x_offset_lanelets: -504690
+        y_offset_lanelets: 1005
+        x_offset_tracks: 945.5
+        y_offset_tracks: 993.5
+    USA_Roundabout-2:
+        x_offset_lanelets: -504690
+        y_offset_lanelets: 1005
+        x_offset_tracks: 945.5
+        y_offset_tracks: 993.5
+    USA_Roundabout-3:
+        x_offset_lanelets: -504690
+        y_offset_lanelets: 1005
+        x_offset_tracks: 945.5
+        y_offset_tracks: 993.5
+    BGR_Interaction-1:
+        x_offset_lanelets: -504690
+        y_offset_lanelets: 965
+        x_offset_tracks: 945
+        y_offset_tracks: 954
+
+tags:
+    CHN_Merging-1: highway multi_lane parallel_lanes merging_lanes
+    CHN_Roundabout-1: urban roundabout multi_lane comfort
+    DEU_Merging-1: highway merging_lanes comfort no_oncoming_traffic
+    DEU_Roundabout-1: urban roundabout two_lane comfort
+    USA_Intersection-1: urban multi_lane intersection comfort
+    USA_Intersection-2: urban multi_lane intersection comfort
+    USA_Intersection-3: urban multi_lane intersection comfort
+    USA_Intersection-4: urban multi_lane intersection comfort
+    USA_Roundabout-1: urban roundabout multi_lane comfort
+    USA_Roundabout-2: urban roundabout multi_lane comfort
+    USA_Roundabout-3: urban roundabout multi_lane comfort
+    BGR_Interaction-1: urban multi_lane intersection comfort
+
+directory_data:
+    CHN_Merging-1: INTERACTION-Dataset-DR-v1_0/recorded_trackfiles/DR_CHN_Merging_ZS/
+    CHN_Roundabout-1: INTERACTION-Dataset-DR-v1_0/recorded_trackfiles/DR_CHN_Roundabout_LN/
+    DEU_Merging-1: INTERACTION-Dataset-DR-v1_0/recorded_trackfiles/DR_DEU_Merging_MT/
+    DEU_Roundabout-1: INTERACTION-Dataset-DR-v1_0/recorded_trackfiles/DR_DEU_Roundabout_OF/
+    USA_Intersection-1: INTERACTION-Dataset-DR-v1_0/recorded_trackfiles/DR_USA_Intersection_EP0/
+    USA_Intersection-2: INTERACTION-Dataset-DR-v1_0/recorded_trackfiles/DR_USA_Intersection_EP1/
+    USA_Intersection-3: INTERACTION-Dataset-DR-v1_0/recorded_trackfiles/DR_USA_Intersection_GL/
+    USA_Intersection-4: INTERACTION-Dataset-DR-v1_0/recorded_trackfiles/DR_USA_Intersection_MA/
+    USA_Roundabout-1: INTERACTION-Dataset-DR-v1_0/recorded_trackfiles/DR_USA_Roundabout_EP/
+    USA_Roundabout-2: INTERACTION-Dataset-DR-v1_0/recorded_trackfiles/DR_USA_Roundabout_FT/
+    USA_Roundabout-3: INTERACTION-Dataset-DR-v1_0/recorded_trackfiles/DR_USA_Roundabout_SR/
+    BGR_Interaction-1: INTERACTION-Dataset-TC-v1_0/recorded_trackfiles/TC_BGR_Intersection_VA/
+
+flag_same_direction_problems:
+    CHN_Merging-1: True
+    CHN_Roundabout-1: True
+    DEU_Merging-1: True
+    DEU_Roundabout-1: True
+    USA_Intersection-1: True
+    USA_Intersection-2: True
+    USA_Intersection-3: True
+    USA_Intersection-4: True
+    USA_Roundabout-1: True
+    USA_Roundabout-2: True
+    USA_Roundabout-3: True
+    BGR_Interaction-1: True

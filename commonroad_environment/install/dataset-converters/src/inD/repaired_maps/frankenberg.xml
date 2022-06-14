@@ -1,0 +1,2048 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<commonRoad timeStepSize="0.1" commonRoadVersion="2020a" author="Julian Bock, Robert Krajewski, Lennart Vater, Lutz Eckstein, Niels Mündler" affiliation="RWTH Aachen University, Germany" source="https://www.ind-dataset.com/" benchmarkID="none" date="2020-10-23">
+  <location>
+    <geoNameId>-999</geoNameId>
+    <gpsLatitude>999.0</gpsLatitude>
+    <gpsLongitude>999.0</gpsLongitude>
+  </location>
+  <scenarioTags>
+    <urban/>
+    <speed_limit/>
+    <multi_lane/>
+    <intersection/>
+  </scenarioTags>
+  <lanelet id="100">
+    <leftBound>
+      <point>
+        <x>-2.4975000</x>
+        <y>-41.742580</y>
+      </point>
+      <point>
+        <x>12.852500</x>
+        <y>-37.542580</y>
+      </point>
+    </leftBound>
+    <rightBound>
+      <point>
+        <x>-1.5875000</x>
+        <y>-45.242580</y>
+      </point>
+      <point>
+        <x>13.552500</x>
+        <y>-41.142580</y>
+      </point>
+    </rightBound>
+    <predecessor ref="101"/>
+    <successor ref="102"/>
+    <adjacentLeft ref="103" drivingDir="opposite"/>
+    <laneletType>urban</laneletType>
+    <userOneWay>motorcycle</userOneWay>
+    <userOneWay>bicycle</userOneWay>
+    <userOneWay>car</userOneWay>
+    <userBidirectional>priorityVehicle</userBidirectional>
+  </lanelet>
+  <lanelet id="103">
+    <leftBound>
+      <point>
+        <x>12.852500</x>
+        <y>-37.542580</y>
+      </point>
+      <point>
+        <x>-2.4975000</x>
+        <y>-41.742580</y>
+      </point>
+    </leftBound>
+    <rightBound>
+      <point>
+        <x>12.112500</x>
+        <y>-33.842580</y>
+      </point>
+      <point>
+        <x>-3.5375000</x>
+        <y>-38.142580</y>
+      </point>
+    </rightBound>
+    <predecessor ref="104"/>
+    <successor ref="105"/>
+    <adjacentLeft ref="100" drivingDir="opposite"/>
+    <laneletType>urban</laneletType>
+    <userOneWay>motorcycle</userOneWay>
+    <userOneWay>bicycle</userOneWay>
+    <userOneWay>car</userOneWay>
+    <userBidirectional>priorityVehicle</userBidirectional>
+  </lanelet>
+  <lanelet id="106">
+    <leftBound>
+      <point>
+        <x>26.262500</x>
+        <y>-33.842580</y>
+      </point>
+      <point>
+        <x>33.202500</x>
+        <y>-32.742580</y>
+      </point>
+      <point>
+        <x>36.112500</x>
+        <y>-32.242580</y>
+      </point>
+      <point>
+        <x>38.712500</x>
+        <y>-31.742580</y>
+      </point>
+    </leftBound>
+    <rightBound>
+      <point>
+        <x>27.3125</x>
+        <y>-37.242580</y>
+      </point>
+      <point>
+        <x>33.652500</x>
+        <y>-35.542580</y>
+      </point>
+      <point>
+        <x>36.822500</x>
+        <y>-34.742580</y>
+      </point>
+      <point>
+        <x>39.182500</x>
+        <y>-34.242580</y>
+      </point>
+    </rightBound>
+    <predecessor ref="107"/>
+    <successor ref="108"/>
+    <successor ref="109"/>
+    <successor ref="110"/>
+    <adjacentLeft ref="111" drivingDir="opposite"/>
+    <laneletType>urban</laneletType>
+    <userOneWay>motorcycle</userOneWay>
+    <userOneWay>bicycle</userOneWay>
+    <userOneWay>car</userOneWay>
+    <userBidirectional>priorityVehicle</userBidirectional>
+    <trafficSignRef ref="151"/>
+  </lanelet>
+  <lanelet id="112">
+    <leftBound>
+      <point>
+        <x>45.952500</x>
+        <y>-20.242580</y>
+      </point>
+      <point>
+        <x>46.452500</x>
+        <y>-21.942580</y>
+      </point>
+      <point>
+        <x>46.112500</x>
+        <y>-23.842580</y>
+      </point>
+      <point>
+        <x>45.922500</x>
+        <y>-25.342580</y>
+      </point>
+      <point>
+        <x>45.432500</x>
+        <y>-26.842580</y>
+      </point>
+      <point>
+        <x>43.752500</x>
+        <y>-29.142580</y>
+      </point>
+      <point>
+        <x>41.662500</x>
+        <y>-30.642580</y>
+      </point>
+      <point>
+        <x>38.712500</x>
+        <y>-31.742580</y>
+      </point>
+    </leftBound>
+    <rightBound>
+      <point>
+        <x>41.302500</x>
+        <y>-21.242580</y>
+      </point>
+      <point>
+        <x>41.262500</x>
+        <y>-22.642580</y>
+      </point>
+      <point>
+        <x>41.152500</x>
+        <y>-23.742580</y>
+      </point>
+      <point>
+        <x>40.882500</x>
+        <y>-24.942580</y>
+      </point>
+      <point>
+        <x>40.782500</x>
+        <y>-25.342580</y>
+      </point>
+      <point>
+        <x>40.242500</x>
+        <y>-26.342580</y>
+      </point>
+      <point>
+        <x>39.412500</x>
+        <y>-27.542580</y>
+      </point>
+      <point>
+        <x>37.622500</x>
+        <y>-29.042580</y>
+      </point>
+    </rightBound>
+    <predecessor ref="113"/>
+    <successor ref="111"/>
+    <adjacentLeft ref="109" drivingDir="opposite"/>
+    <laneletType>urban</laneletType>
+    <userOneWay>motorcycle</userOneWay>
+    <userOneWay>bicycle</userOneWay>
+    <userOneWay>car</userOneWay>
+    <userBidirectional>priorityVehicle</userBidirectional>
+  </lanelet>
+  <lanelet id="114">
+    <leftBound>
+      <point>
+        <x>57.982500</x>
+        <y>-28.442580</y>
+      </point>
+      <point>
+        <x>38.712500</x>
+        <y>-31.742580</y>
+      </point>
+    </leftBound>
+    <rightBound>
+      <point>
+        <x>57.952500</x>
+        <y>-25.642580</y>
+      </point>
+      <point>
+        <x>37.622500</x>
+        <y>-29.042580</y>
+      </point>
+    </rightBound>
+    <predecessor ref="115"/>
+    <successor ref="111"/>
+    <adjacentLeft ref="108" drivingDir="opposite"/>
+    <laneletType>urban</laneletType>
+    <userOneWay>motorcycle</userOneWay>
+    <userOneWay>bicycle</userOneWay>
+    <userOneWay>car</userOneWay>
+    <userBidirectional>priorityVehicle</userBidirectional>
+  </lanelet>
+  <lanelet id="108">
+    <leftBound>
+      <point>
+        <x>38.712500</x>
+        <y>-31.742580</y>
+      </point>
+      <point>
+        <x>57.982500</x>
+        <y>-28.442580</y>
+      </point>
+    </leftBound>
+    <rightBound>
+      <point>
+        <x>39.182500</x>
+        <y>-34.242580</y>
+      </point>
+      <point>
+        <x>58.942500</x>
+        <y>-31.542580</y>
+      </point>
+    </rightBound>
+    <predecessor ref="106"/>
+    <successor ref="116"/>
+    <adjacentLeft ref="114" drivingDir="opposite"/>
+    <laneletType>urban</laneletType>
+    <userOneWay>motorcycle</userOneWay>
+    <userOneWay>bicycle</userOneWay>
+    <userOneWay>car</userOneWay>
+    <userBidirectional>priorityVehicle</userBidirectional>
+  </lanelet>
+  <lanelet id="109">
+    <leftBound>
+      <point>
+        <x>38.712500</x>
+        <y>-31.742580</y>
+      </point>
+      <point>
+        <x>41.662500</x>
+        <y>-30.642580</y>
+      </point>
+      <point>
+        <x>43.752500</x>
+        <y>-29.142580</y>
+      </point>
+      <point>
+        <x>45.432500</x>
+        <y>-26.842580</y>
+      </point>
+      <point>
+        <x>45.922500</x>
+        <y>-25.342580</y>
+      </point>
+      <point>
+        <x>46.112500</x>
+        <y>-23.842580</y>
+      </point>
+      <point>
+        <x>46.452500</x>
+        <y>-21.942580</y>
+      </point>
+      <point>
+        <x>45.952500</x>
+        <y>-20.242580</y>
+      </point>
+    </leftBound>
+    <rightBound>
+      <point>
+        <x>39.182500</x>
+        <y>-34.242580</y>
+      </point>
+      <point>
+        <x>42.112500</x>
+        <y>-33.542580</y>
+      </point>
+      <point>
+        <x>44.532500</x>
+        <y>-32.642580</y>
+      </point>
+      <point>
+        <x>46.542500</x>
+        <y>-31.642580</y>
+      </point>
+      <point>
+        <x>49.182500</x>
+        <y>-28.442580</y>
+      </point>
+      <point>
+        <x>50.512500</x>
+        <y>-25.842580</y>
+      </point>
+      <point>
+        <x>50.432500</x>
+        <y>-23.142580</y>
+      </point>
+      <point>
+        <x>48.842500</x>
+        <y>-17.842580</y>
+      </point>
+    </rightBound>
+    <predecessor ref="106"/>
+    <successor ref="117"/>
+    <adjacentLeft ref="112" drivingDir="opposite"/>
+    <stopLine>
+      <point>
+        <x>39.042500</x>
+        <y>-32.042580</y>
+      </point>
+      <point>
+        <x>39.622500</x>
+        <y>-34.142580</y>
+      </point>
+      <lineMarking>broad_dashed</lineMarking>
+    </stopLine>
+    <laneletType>urban</laneletType>
+    <userOneWay>motorcycle</userOneWay>
+    <userOneWay>bicycle</userOneWay>
+    <userOneWay>car</userOneWay>
+    <userBidirectional>priorityVehicle</userBidirectional>
+  </lanelet>
+  <lanelet id="118">
+    <leftBound>
+      <point>
+        <x>47.582500</x>
+        <y>-36.942580</y>
+      </point>
+      <point>
+        <x>47.232500</x>
+        <y>-23.842580</y>
+      </point>
+      <point>
+        <x>46.692500</x>
+        <y>-21.842580</y>
+      </point>
+      <point>
+        <x>45.952500</x>
+        <y>-20.242580</y>
+      </point>
+    </leftBound>
+    <rightBound>
+      <point>
+        <x>50.842500</x>
+        <y>-36.642580</y>
+      </point>
+      <point>
+        <x>51.0625</x>
+        <y>-22.442580</y>
+      </point>
+      <point>
+        <x>50.322500</x>
+        <y>-19.942580</y>
+      </point>
+      <point>
+        <x>48.842500</x>
+        <y>-17.842580</y>
+      </point>
+    </rightBound>
+    <predecessor ref="119"/>
+    <successor ref="117"/>
+    <adjacentLeft ref="120" drivingDir="opposite"/>
+    <laneletType>urban</laneletType>
+    <userOneWay>motorcycle</userOneWay>
+    <userOneWay>bicycle</userOneWay>
+    <userOneWay>car</userOneWay>
+    <userBidirectional>priorityVehicle</userBidirectional>
+  </lanelet>
+  <lanelet id="116">
+    <leftBound>
+      <point>
+        <x>57.982500</x>
+        <y>-28.442580</y>
+      </point>
+      <point>
+        <x>60.972500</x>
+        <y>-27.842580</y>
+      </point>
+      <point>
+        <x>65.042500</x>
+        <y>-27.242580</y>
+      </point>
+    </leftBound>
+    <rightBound>
+      <point>
+        <x>58.942500</x>
+        <y>-31.542580</y>
+      </point>
+      <point>
+        <x>62.182500</x>
+        <y>-30.842580</y>
+      </point>
+      <point>
+        <x>65.662500</x>
+        <y>-30.142580</y>
+      </point>
+    </rightBound>
+    <predecessor ref="108"/>
+    <predecessor ref="121"/>
+    <predecessor ref="122"/>
+    <successor ref="123"/>
+    <adjacentLeft ref="115" drivingDir="opposite"/>
+    <laneletType>urban</laneletType>
+    <userOneWay>motorcycle</userOneWay>
+    <userOneWay>bicycle</userOneWay>
+    <userOneWay>car</userOneWay>
+    <userBidirectional>priorityVehicle</userBidirectional>
+  </lanelet>
+  <lanelet id="115">
+    <leftBound>
+      <point>
+        <x>65.042500</x>
+        <y>-27.242580</y>
+      </point>
+      <point>
+        <x>60.972500</x>
+        <y>-27.842580</y>
+      </point>
+      <point>
+        <x>57.982500</x>
+        <y>-28.442580</y>
+      </point>
+    </leftBound>
+    <rightBound>
+      <point>
+        <x>64.472500</x>
+        <y>-24.842580</y>
+      </point>
+      <point>
+        <x>60.752500</x>
+        <y>-25.642580</y>
+      </point>
+      <point>
+        <x>57.952500</x>
+        <y>-25.642580</y>
+      </point>
+    </rightBound>
+    <predecessor ref="124"/>
+    <successor ref="114"/>
+    <successor ref="125"/>
+    <successor ref="126"/>
+    <adjacentLeft ref="116" drivingDir="opposite"/>
+    <laneletType>urban</laneletType>
+    <userOneWay>motorcycle</userOneWay>
+    <userOneWay>bicycle</userOneWay>
+    <userOneWay>car</userOneWay>
+    <userBidirectional>priorityVehicle</userBidirectional>
+    <trafficSignRef ref="149"/>
+  </lanelet>
+  <lanelet id="124">
+    <leftBound>
+      <point>
+        <x>70.692500</x>
+        <y>-26.342580</y>
+      </point>
+      <point>
+        <x>68.112500</x>
+        <y>-26.742580</y>
+      </point>
+      <point>
+        <x>65.042500</x>
+        <y>-27.242580</y>
+      </point>
+    </leftBound>
+    <rightBound>
+      <point>
+        <x>70.092500</x>
+        <y>-23.142580</y>
+      </point>
+      <point>
+        <x>67.482500</x>
+        <y>-24.242580</y>
+      </point>
+      <point>
+        <x>64.472500</x>
+        <y>-24.842580</y>
+      </point>
+    </rightBound>
+    <predecessor ref="127"/>
+    <successor ref="115"/>
+    <adjacentLeft ref="123" drivingDir="opposite"/>
+    <laneletType>unknown</laneletType>
+    <userBidirectional>priorityVehicle</userBidirectional>
+  </lanelet>
+  <lanelet id="123">
+    <leftBound>
+      <point>
+        <x>65.042500</x>
+        <y>-27.242580</y>
+      </point>
+      <point>
+        <x>68.112500</x>
+        <y>-26.742580</y>
+      </point>
+      <point>
+        <x>70.692500</x>
+        <y>-26.342580</y>
+      </point>
+    </leftBound>
+    <rightBound>
+      <point>
+        <x>65.662500</x>
+        <y>-30.142580</y>
+      </point>
+      <point>
+        <x>68.8125</x>
+        <y>-29.542580</y>
+      </point>
+      <point>
+        <x>71.252500</x>
+        <y>-28.942580</y>
+      </point>
+    </rightBound>
+    <predecessor ref="116"/>
+    <successor ref="128"/>
+    <adjacentLeft ref="124" drivingDir="opposite"/>
+    <laneletType>urban</laneletType>
+    <userOneWay>motorcycle</userOneWay>
+    <userOneWay>bicycle</userOneWay>
+    <userOneWay>car</userOneWay>
+    <userBidirectional>priorityVehicle</userBidirectional>
+  </lanelet>
+  <lanelet id="129">
+    <leftBound>
+      <point>
+        <x>154.83250</x>
+        <y>-12.342580</y>
+      </point>
+      <point>
+        <x>76.152500</x>
+        <y>-25.242580</y>
+      </point>
+    </leftBound>
+    <rightBound>
+      <point>
+        <x>154.09250</x>
+        <y>-7.8425800</y>
+      </point>
+      <point>
+        <x>75.352500</x>
+        <y>-20.842580</y>
+      </point>
+    </rightBound>
+    <predecessor ref="130"/>
+    <successor ref="127"/>
+    <adjacentLeft ref="131" drivingDir="opposite"/>
+    <laneletType>urban</laneletType>
+    <userOneWay>motorcycle</userOneWay>
+    <userOneWay>bicycle</userOneWay>
+    <userOneWay>car</userOneWay>
+    <userBidirectional>priorityVehicle</userBidirectional>
+  </lanelet>
+  <lanelet id="132">
+    <leftBound>
+      <point>
+        <x>2.0625</x>
+        <y>23.257420</y>
+      </point>
+      <point>
+        <x>36.462500</x>
+        <y>-9.8425800</y>
+      </point>
+    </leftBound>
+    <rightBound>
+      <point>
+        <x>-0.077500000</x>
+        <y>21.757420</y>
+      </point>
+      <point>
+        <x>34.652500</x>
+        <y>-11.142580</y>
+      </point>
+    </rightBound>
+    <predecessor ref="133"/>
+    <successor ref="134"/>
+    <adjacentLeft ref="135" drivingDir="opposite"/>
+    <laneletType>urban</laneletType>
+    <userOneWay>motorcycle</userOneWay>
+    <userOneWay>bicycle</userOneWay>
+    <userOneWay>car</userOneWay>
+    <userBidirectional>priorityVehicle</userBidirectional>
+  </lanelet>
+  <lanelet id="135">
+    <leftBound>
+      <point>
+        <x>36.462500</x>
+        <y>-9.8425800</y>
+      </point>
+      <point>
+        <x>2.0625</x>
+        <y>23.257420</y>
+      </point>
+    </leftBound>
+    <rightBound>
+      <point>
+        <x>38.582500</x>
+        <y>-8.1425800</y>
+      </point>
+      <point>
+        <x>4.5125000</x>
+        <y>25.357420</y>
+      </point>
+    </rightBound>
+    <predecessor ref="136"/>
+    <successor ref="137"/>
+    <adjacentLeft ref="132" drivingDir="opposite"/>
+    <laneletType>urban</laneletType>
+    <userOneWay>motorcycle</userOneWay>
+    <userOneWay>bicycle</userOneWay>
+    <userOneWay>car</userOneWay>
+    <userBidirectional>priorityVehicle</userBidirectional>
+  </lanelet>
+  <lanelet id="138">
+    <leftBound>
+      <point>
+        <x>38.772500</x>
+        <y>-12.342580</y>
+      </point>
+      <point>
+        <x>41.612500</x>
+        <y>-14.842580</y>
+      </point>
+    </leftBound>
+    <rightBound>
+      <point>
+        <x>37.192500</x>
+        <y>-14.042580</y>
+      </point>
+      <point>
+        <x>39.352500</x>
+        <y>-16.542580</y>
+      </point>
+    </rightBound>
+    <predecessor ref="134"/>
+    <successor ref="113"/>
+    <adjacentLeft ref="139" drivingDir="opposite"/>
+    <laneletType>urban</laneletType>
+    <userOneWay>motorcycle</userOneWay>
+    <userOneWay>bicycle</userOneWay>
+    <userOneWay>car</userOneWay>
+    <userBidirectional>priorityVehicle</userBidirectional>
+  </lanelet>
+  <lanelet id="139">
+    <leftBound>
+      <point>
+        <x>41.612500</x>
+        <y>-14.842580</y>
+      </point>
+      <point>
+        <x>38.772500</x>
+        <y>-12.342580</y>
+      </point>
+    </leftBound>
+    <rightBound>
+      <point>
+        <x>43.802500</x>
+        <y>-13.042580</y>
+      </point>
+      <point>
+        <x>40.752500</x>
+        <y>-10.242580</y>
+      </point>
+    </rightBound>
+    <predecessor ref="117"/>
+    <successor ref="136"/>
+    <adjacentLeft ref="138" drivingDir="opposite"/>
+    <laneletType>urban</laneletType>
+    <userOneWay>motorcycle</userOneWay>
+    <userOneWay>bicycle</userOneWay>
+    <userOneWay>car</userOneWay>
+    <userBidirectional>priorityVehicle</userBidirectional>
+  </lanelet>
+  <lanelet id="125">
+    <leftBound>
+      <point>
+        <x>57.982500</x>
+        <y>-28.442580</y>
+      </point>
+      <point>
+        <x>54.822500</x>
+        <y>-28.142580</y>
+      </point>
+      <point>
+        <x>52.042500</x>
+        <y>-26.842580</y>
+      </point>
+      <point>
+        <x>49.572500</x>
+        <y>-25.042580</y>
+      </point>
+      <point>
+        <x>46.792500</x>
+        <y>-21.642580</y>
+      </point>
+      <point>
+        <x>45.952500</x>
+        <y>-20.242580</y>
+      </point>
+    </leftBound>
+    <rightBound>
+      <point>
+        <x>57.952500</x>
+        <y>-25.642580</y>
+      </point>
+      <point>
+        <x>56.412500</x>
+        <y>-25.042580</y>
+      </point>
+      <point>
+        <x>54.662500</x>
+        <y>-23.842580</y>
+      </point>
+      <point>
+        <x>53.102500</x>
+        <y>-22.042580</y>
+      </point>
+      <point>
+        <x>50.892500</x>
+        <y>-19.842580</y>
+      </point>
+      <point>
+        <x>48.842500</x>
+        <y>-17.842580</y>
+      </point>
+    </rightBound>
+    <predecessor ref="115"/>
+    <successor ref="117"/>
+    <adjacentLeft ref="121" drivingDir="opposite"/>
+    <laneletType>urban</laneletType>
+    <userOneWay>motorcycle</userOneWay>
+    <userOneWay>bicycle</userOneWay>
+    <userOneWay>car</userOneWay>
+    <userBidirectional>priorityVehicle</userBidirectional>
+  </lanelet>
+  <lanelet id="121">
+    <leftBound>
+      <point>
+        <x>45.952500</x>
+        <y>-20.242580</y>
+      </point>
+      <point>
+        <x>46.792500</x>
+        <y>-21.642580</y>
+      </point>
+      <point>
+        <x>49.572500</x>
+        <y>-25.042580</y>
+      </point>
+      <point>
+        <x>52.042500</x>
+        <y>-26.842580</y>
+      </point>
+      <point>
+        <x>54.822500</x>
+        <y>-28.142580</y>
+      </point>
+      <point>
+        <x>57.982500</x>
+        <y>-28.442580</y>
+      </point>
+    </leftBound>
+    <rightBound>
+      <point>
+        <x>41.302500</x>
+        <y>-21.242580</y>
+      </point>
+      <point>
+        <x>42.332500</x>
+        <y>-23.142580</y>
+      </point>
+      <point>
+        <x>46.882500</x>
+        <y>-27.942580</y>
+      </point>
+      <point>
+        <x>50.382500</x>
+        <y>-30.342580</y>
+      </point>
+      <point>
+        <x>54.5625</x>
+        <y>-31.342580</y>
+      </point>
+      <point>
+        <x>58.942500</x>
+        <y>-31.542580</y>
+      </point>
+    </rightBound>
+    <predecessor ref="113"/>
+    <successor ref="116"/>
+    <adjacentLeft ref="125" drivingDir="opposite"/>
+    <stopLine>
+      <point>
+        <x>44.3125</x>
+        <y>-24.842580</y>
+      </point>
+      <point>
+        <x>46.942500</x>
+        <y>-23.942580</y>
+      </point>
+      <lineMarking>broad_dashed</lineMarking>
+    </stopLine>
+    <laneletType>urban</laneletType>
+    <userOneWay>motorcycle</userOneWay>
+    <userOneWay>bicycle</userOneWay>
+    <userOneWay>car</userOneWay>
+    <userBidirectional>priorityVehicle</userBidirectional>
+  </lanelet>
+  <lanelet id="140">
+    <leftBound>
+      <point>
+        <x>51.232500</x>
+        <y>-46.442580</y>
+      </point>
+      <point>
+        <x>64.372500</x>
+        <y>-77.142580</y>
+      </point>
+    </leftBound>
+    <rightBound>
+      <point>
+        <x>48.132500</x>
+        <y>-47.542580</y>
+      </point>
+      <point>
+        <x>61.322500</x>
+        <y>-78.442580</y>
+      </point>
+    </rightBound>
+    <predecessor ref="141"/>
+    <successor ref="142"/>
+    <adjacentLeft ref="143" drivingDir="opposite"/>
+    <laneletType>urban</laneletType>
+    <userOneWay>motorcycle</userOneWay>
+    <userOneWay>bicycle</userOneWay>
+    <userOneWay>car</userOneWay>
+    <userBidirectional>priorityVehicle</userBidirectional>
+  </lanelet>
+  <lanelet id="143">
+    <leftBound>
+      <point>
+        <x>64.372500</x>
+        <y>-77.142580</y>
+      </point>
+      <point>
+        <x>51.232500</x>
+        <y>-46.442580</y>
+      </point>
+    </leftBound>
+    <rightBound>
+      <point>
+        <x>66.792500</x>
+        <y>-76.142580</y>
+      </point>
+      <point>
+        <x>53.662500</x>
+        <y>-45.442580</y>
+      </point>
+    </rightBound>
+    <predecessor ref="144"/>
+    <successor ref="119"/>
+    <adjacentLeft ref="140" drivingDir="opposite"/>
+    <laneletType>urban</laneletType>
+    <userOneWay>motorcycle</userOneWay>
+    <userOneWay>bicycle</userOneWay>
+    <userOneWay>car</userOneWay>
+    <userBidirectional>priorityVehicle</userBidirectional>
+  </lanelet>
+  <lanelet id="145">
+    <leftBound>
+      <point>
+        <x>26.262500</x>
+        <y>-33.842580</y>
+      </point>
+      <point>
+        <x>19.082500</x>
+        <y>-35.842580</y>
+      </point>
+    </leftBound>
+    <rightBound>
+      <point>
+        <x>24.932500</x>
+        <y>-30.442580</y>
+      </point>
+      <point>
+        <x>17.742500</x>
+        <y>-32.342580</y>
+      </point>
+    </rightBound>
+    <predecessor ref="111"/>
+    <successor ref="104"/>
+    <adjacentLeft ref="107" drivingDir="opposite"/>
+    <laneletType>urban</laneletType>
+    <userOneWay>motorcycle</userOneWay>
+    <userOneWay>bicycle</userOneWay>
+    <userOneWay>car</userOneWay>
+    <userBidirectional>priorityVehicle</userBidirectional>
+  </lanelet>
+  <lanelet id="107">
+    <leftBound>
+      <point>
+        <x>19.082500</x>
+        <y>-35.842580</y>
+      </point>
+      <point>
+        <x>26.262500</x>
+        <y>-33.842580</y>
+      </point>
+    </leftBound>
+    <rightBound>
+      <point>
+        <x>20.512500</x>
+        <y>-39.242580</y>
+      </point>
+      <point>
+        <x>27.3125</x>
+        <y>-37.242580</y>
+      </point>
+    </rightBound>
+    <predecessor ref="102"/>
+    <successor ref="106"/>
+    <adjacentLeft ref="145" drivingDir="opposite"/>
+    <laneletType>urban</laneletType>
+    <userOneWay>motorcycle</userOneWay>
+    <userOneWay>bicycle</userOneWay>
+    <userOneWay>car</userOneWay>
+    <userBidirectional>priorityVehicle</userBidirectional>
+  </lanelet>
+  <lanelet id="102">
+    <leftBound>
+      <point>
+        <x>12.852500</x>
+        <y>-37.542580</y>
+      </point>
+      <point>
+        <x>19.082500</x>
+        <y>-35.842580</y>
+      </point>
+    </leftBound>
+    <rightBound>
+      <point>
+        <x>13.552500</x>
+        <y>-41.142580</y>
+      </point>
+      <point>
+        <x>20.512500</x>
+        <y>-39.242580</y>
+      </point>
+    </rightBound>
+    <predecessor ref="100"/>
+    <successor ref="107"/>
+    <adjacentLeft ref="104" drivingDir="opposite"/>
+    <laneletType>urban</laneletType>
+    <userOneWay>motorcycle</userOneWay>
+    <userOneWay>bicycle</userOneWay>
+    <userOneWay>car</userOneWay>
+    <userBidirectional>priorityVehicle</userBidirectional>
+  </lanelet>
+  <lanelet id="104">
+    <leftBound>
+      <point>
+        <x>19.082500</x>
+        <y>-35.842580</y>
+      </point>
+      <point>
+        <x>12.852500</x>
+        <y>-37.542580</y>
+      </point>
+    </leftBound>
+    <rightBound>
+      <point>
+        <x>17.742500</x>
+        <y>-32.342580</y>
+      </point>
+      <point>
+        <x>12.112500</x>
+        <y>-33.842580</y>
+      </point>
+    </rightBound>
+    <predecessor ref="145"/>
+    <successor ref="103"/>
+    <adjacentLeft ref="102" drivingDir="opposite"/>
+    <laneletType>urban</laneletType>
+    <userOneWay>motorcycle</userOneWay>
+    <userOneWay>bicycle</userOneWay>
+    <userOneWay>car</userOneWay>
+    <userBidirectional>priorityVehicle</userBidirectional>
+  </lanelet>
+  <lanelet id="120">
+    <leftBound>
+      <point>
+        <x>45.952500</x>
+        <y>-20.242580</y>
+      </point>
+      <point>
+        <x>46.692500</x>
+        <y>-21.842580</y>
+      </point>
+      <point>
+        <x>47.232500</x>
+        <y>-23.842580</y>
+      </point>
+      <point>
+        <x>47.582500</x>
+        <y>-36.942580</y>
+      </point>
+    </leftBound>
+    <rightBound>
+      <point>
+        <x>41.302500</x>
+        <y>-21.242580</y>
+      </point>
+      <point>
+        <x>41.512500</x>
+        <y>-23.542580</y>
+      </point>
+      <point>
+        <x>41.682500</x>
+        <y>-25.242580</y>
+      </point>
+      <point>
+        <x>44.212500</x>
+        <y>-37.642580</y>
+      </point>
+    </rightBound>
+    <predecessor ref="113"/>
+    <successor ref="141"/>
+    <adjacentLeft ref="118" drivingDir="opposite"/>
+    <laneletType>urban</laneletType>
+    <userOneWay>motorcycle</userOneWay>
+    <userOneWay>bicycle</userOneWay>
+    <userOneWay>car</userOneWay>
+    <userBidirectional>priorityVehicle</userBidirectional>
+  </lanelet>
+  <lanelet id="113">
+    <leftBound>
+      <point>
+        <x>41.612500</x>
+        <y>-14.842580</y>
+      </point>
+      <point>
+        <x>42.982500</x>
+        <y>-16.342580</y>
+      </point>
+      <point>
+        <x>44.262500</x>
+        <y>-17.942580</y>
+      </point>
+      <point>
+        <x>45.952500</x>
+        <y>-20.242580</y>
+      </point>
+    </leftBound>
+    <rightBound>
+      <point>
+        <x>39.352500</x>
+        <y>-16.542580</y>
+      </point>
+      <point>
+        <x>40.622500</x>
+        <y>-18.342580</y>
+      </point>
+      <point>
+        <x>41.092500</x>
+        <y>-19.742580</y>
+      </point>
+      <point>
+        <x>41.302500</x>
+        <y>-21.242580</y>
+      </point>
+    </rightBound>
+    <predecessor ref="138"/>
+    <successor ref="112"/>
+    <successor ref="121"/>
+    <successor ref="120"/>
+    <adjacentLeft ref="117" drivingDir="opposite"/>
+    <laneletType>urban</laneletType>
+    <userOneWay>motorcycle</userOneWay>
+    <userOneWay>bicycle</userOneWay>
+    <userOneWay>car</userOneWay>
+    <userBidirectional>priorityVehicle</userBidirectional>
+    <trafficSignRef ref="150"/>
+  </lanelet>
+  <lanelet id="117">
+    <leftBound>
+      <point>
+        <x>45.952500</x>
+        <y>-20.242580</y>
+      </point>
+      <point>
+        <x>44.262500</x>
+        <y>-17.942580</y>
+      </point>
+      <point>
+        <x>42.982500</x>
+        <y>-16.342580</y>
+      </point>
+      <point>
+        <x>41.612500</x>
+        <y>-14.842580</y>
+      </point>
+    </leftBound>
+    <rightBound>
+      <point>
+        <x>48.842500</x>
+        <y>-17.842580</y>
+      </point>
+      <point>
+        <x>47.742500</x>
+        <y>-16.742580</y>
+      </point>
+      <point>
+        <x>45.372500</x>
+        <y>-14.542580</y>
+      </point>
+      <point>
+        <x>43.802500</x>
+        <y>-13.042580</y>
+      </point>
+    </rightBound>
+    <predecessor ref="109"/>
+    <predecessor ref="125"/>
+    <predecessor ref="118"/>
+    <successor ref="139"/>
+    <adjacentLeft ref="113" drivingDir="opposite"/>
+    <laneletType>urban</laneletType>
+    <userOneWay>motorcycle</userOneWay>
+    <userOneWay>bicycle</userOneWay>
+    <userOneWay>car</userOneWay>
+    <userBidirectional>priorityVehicle</userBidirectional>
+  </lanelet>
+  <lanelet id="111">
+    <leftBound>
+      <point>
+        <x>38.712500</x>
+        <y>-31.742580</y>
+      </point>
+      <point>
+        <x>36.112500</x>
+        <y>-32.242580</y>
+      </point>
+      <point>
+        <x>33.202500</x>
+        <y>-32.742580</y>
+      </point>
+      <point>
+        <x>26.262500</x>
+        <y>-33.842580</y>
+      </point>
+    </leftBound>
+    <rightBound>
+      <point>
+        <x>37.622500</x>
+        <y>-29.042580</y>
+      </point>
+      <point>
+        <x>35.382500</x>
+        <y>-30.142580</y>
+      </point>
+      <point>
+        <x>32.832500</x>
+        <y>-30.542580</y>
+      </point>
+      <point>
+        <x>24.932500</x>
+        <y>-30.442580</y>
+      </point>
+    </rightBound>
+    <predecessor ref="114"/>
+    <predecessor ref="112"/>
+    <predecessor ref="146"/>
+    <successor ref="145"/>
+    <adjacentLeft ref="106" drivingDir="opposite"/>
+    <laneletType>urban</laneletType>
+    <userOneWay>motorcycle</userOneWay>
+    <userOneWay>bicycle</userOneWay>
+    <userOneWay>car</userOneWay>
+    <userBidirectional>priorityVehicle</userBidirectional>
+  </lanelet>
+  <lanelet id="141">
+    <leftBound>
+      <point>
+        <x>47.582500</x>
+        <y>-36.942580</y>
+      </point>
+      <point>
+        <x>47.742500</x>
+        <y>-37.942580</y>
+      </point>
+      <point>
+        <x>51.232500</x>
+        <y>-46.442580</y>
+      </point>
+    </leftBound>
+    <rightBound>
+      <point>
+        <x>44.212500</x>
+        <y>-37.642580</y>
+      </point>
+      <point>
+        <x>44.5625</x>
+        <y>-38.542580</y>
+      </point>
+      <point>
+        <x>48.132500</x>
+        <y>-47.542580</y>
+      </point>
+    </rightBound>
+    <predecessor ref="120"/>
+    <predecessor ref="126"/>
+    <predecessor ref="110"/>
+    <successor ref="140"/>
+    <adjacentLeft ref="119" drivingDir="opposite"/>
+    <laneletType>urban</laneletType>
+    <userOneWay>motorcycle</userOneWay>
+    <userOneWay>bicycle</userOneWay>
+    <userOneWay>car</userOneWay>
+    <userBidirectional>priorityVehicle</userBidirectional>
+  </lanelet>
+  <lanelet id="119">
+    <leftBound>
+      <point>
+        <x>51.232500</x>
+        <y>-46.442580</y>
+      </point>
+      <point>
+        <x>47.742500</x>
+        <y>-37.942580</y>
+      </point>
+      <point>
+        <x>47.582500</x>
+        <y>-36.942580</y>
+      </point>
+    </leftBound>
+    <rightBound>
+      <point>
+        <x>53.662500</x>
+        <y>-45.442580</y>
+      </point>
+      <point>
+        <x>50.822500</x>
+        <y>-37.942580</y>
+      </point>
+      <point>
+        <x>50.842500</x>
+        <y>-36.642580</y>
+      </point>
+    </rightBound>
+    <predecessor ref="143"/>
+    <successor ref="118"/>
+    <successor ref="122"/>
+    <successor ref="146"/>
+    <adjacentLeft ref="141" drivingDir="opposite"/>
+    <laneletType>urban</laneletType>
+    <userOneWay>motorcycle</userOneWay>
+    <userOneWay>bicycle</userOneWay>
+    <userOneWay>car</userOneWay>
+    <userBidirectional>priorityVehicle</userBidirectional>
+    <trafficSignRef ref="148"/>
+  </lanelet>
+  <lanelet id="122">
+    <leftBound>
+      <point>
+        <x>47.582500</x>
+        <y>-36.942580</y>
+      </point>
+      <point>
+        <x>47.792500</x>
+        <y>-34.142580</y>
+      </point>
+      <point>
+        <x>48.172500</x>
+        <y>-32.042580</y>
+      </point>
+      <point>
+        <x>48.652500</x>
+        <y>-31.042580</y>
+      </point>
+      <point>
+        <x>49.912500</x>
+        <y>-30.242580</y>
+      </point>
+      <point>
+        <x>51.262500</x>
+        <y>-29.742580</y>
+      </point>
+      <point>
+        <x>57.982500</x>
+        <y>-28.442580</y>
+      </point>
+    </leftBound>
+    <rightBound>
+      <point>
+        <x>50.842500</x>
+        <y>-36.642580</y>
+      </point>
+      <point>
+        <x>51.222500</x>
+        <y>-35.442580</y>
+      </point>
+      <point>
+        <x>51.582500</x>
+        <y>-34.542580</y>
+      </point>
+      <point>
+        <x>51.992500</x>
+        <y>-33.942580</y>
+      </point>
+      <point>
+        <x>52.522500</x>
+        <y>-33.442580</y>
+      </point>
+      <point>
+        <x>53.632500</x>
+        <y>-32.842580</y>
+      </point>
+      <point>
+        <x>58.942500</x>
+        <y>-31.542580</y>
+      </point>
+    </rightBound>
+    <predecessor ref="119"/>
+    <successor ref="116"/>
+    <adjacentLeft ref="126" drivingDir="opposite"/>
+    <laneletType>urban</laneletType>
+    <userOneWay>motorcycle</userOneWay>
+    <userOneWay>bicycle</userOneWay>
+    <userOneWay>car</userOneWay>
+    <userBidirectional>priorityVehicle</userBidirectional>
+  </lanelet>
+  <lanelet id="126">
+    <leftBound>
+      <point>
+        <x>57.982500</x>
+        <y>-28.442580</y>
+      </point>
+      <point>
+        <x>51.262500</x>
+        <y>-29.742580</y>
+      </point>
+      <point>
+        <x>49.912500</x>
+        <y>-30.242580</y>
+      </point>
+      <point>
+        <x>48.652500</x>
+        <y>-31.042580</y>
+      </point>
+      <point>
+        <x>48.172500</x>
+        <y>-32.042580</y>
+      </point>
+      <point>
+        <x>47.792500</x>
+        <y>-34.142580</y>
+      </point>
+      <point>
+        <x>47.582500</x>
+        <y>-36.942580</y>
+      </point>
+    </leftBound>
+    <rightBound>
+      <point>
+        <x>57.952500</x>
+        <y>-25.642580</y>
+      </point>
+      <point>
+        <x>49.112500</x>
+        <y>-27.742580</y>
+      </point>
+      <point>
+        <x>47.622500</x>
+        <y>-28.242580</y>
+      </point>
+      <point>
+        <x>46.162500</x>
+        <y>-29.342580</y>
+      </point>
+      <point>
+        <x>44.762500</x>
+        <y>-31.342580</y>
+      </point>
+      <point>
+        <x>44.222500</x>
+        <y>-34.142580</y>
+      </point>
+      <point>
+        <x>44.212500</x>
+        <y>-37.642580</y>
+      </point>
+    </rightBound>
+    <predecessor ref="115"/>
+    <successor ref="141"/>
+    <adjacentLeft ref="122" drivingDir="opposite"/>
+    <stopLine>
+      <point>
+        <x>51.752500</x>
+        <y>-29.242580</y>
+      </point>
+      <point>
+        <x>51.152500</x>
+        <y>-27.642580</y>
+      </point>
+      <lineMarking>broad_dashed</lineMarking>
+    </stopLine>
+    <laneletType>urban</laneletType>
+    <userOneWay>motorcycle</userOneWay>
+    <userOneWay>bicycle</userOneWay>
+    <userOneWay>car</userOneWay>
+    <userBidirectional>priorityVehicle</userBidirectional>
+  </lanelet>
+  <lanelet id="146">
+    <leftBound>
+      <point>
+        <x>47.582500</x>
+        <y>-36.942580</y>
+      </point>
+      <point>
+        <x>46.952500</x>
+        <y>-34.542580</y>
+      </point>
+      <point>
+        <x>46.642500</x>
+        <y>-33.342580</y>
+      </point>
+      <point>
+        <x>45.692500</x>
+        <y>-32.342580</y>
+      </point>
+      <point>
+        <x>44.122500</x>
+        <y>-31.942580</y>
+      </point>
+      <point>
+        <x>43.0625</x>
+        <y>-31.742580</y>
+      </point>
+      <point>
+        <x>41.262500</x>
+        <y>-31.442580</y>
+      </point>
+      <point>
+        <x>38.712500</x>
+        <y>-31.742580</y>
+      </point>
+    </leftBound>
+    <rightBound>
+      <point>
+        <x>50.842500</x>
+        <y>-36.642580</y>
+      </point>
+      <point>
+        <x>50.292500</x>
+        <y>-33.442580</y>
+      </point>
+      <point>
+        <x>49.412500</x>
+        <y>-31.142580</y>
+      </point>
+      <point>
+        <x>48.662500</x>
+        <y>-29.842580</y>
+      </point>
+      <point>
+        <x>46.132500</x>
+        <y>-28.342580</y>
+      </point>
+      <point>
+        <x>44.772500</x>
+        <y>-28.042580</y>
+      </point>
+      <point>
+        <x>40.652500</x>
+        <y>-28.542580</y>
+      </point>
+      <point>
+        <x>37.622500</x>
+        <y>-29.042580</y>
+      </point>
+    </rightBound>
+    <predecessor ref="119"/>
+    <successor ref="111"/>
+    <adjacentLeft ref="110" drivingDir="opposite"/>
+    <stopLine>
+      <point>
+        <x>50.512500</x>
+        <y>-33.042580</y>
+      </point>
+      <point>
+        <x>47.662500</x>
+        <y>-33.342580</y>
+      </point>
+      <lineMarking>broad_dashed</lineMarking>
+    </stopLine>
+    <laneletType>urban</laneletType>
+    <userOneWay>motorcycle</userOneWay>
+    <userOneWay>bicycle</userOneWay>
+    <userOneWay>car</userOneWay>
+    <userBidirectional>priorityVehicle</userBidirectional>
+  </lanelet>
+  <lanelet id="136">
+    <leftBound>
+      <point>
+        <x>38.772500</x>
+        <y>-12.342580</y>
+      </point>
+      <point>
+        <x>36.462500</x>
+        <y>-9.8425800</y>
+      </point>
+    </leftBound>
+    <rightBound>
+      <point>
+        <x>40.752500</x>
+        <y>-10.242580</y>
+      </point>
+      <point>
+        <x>38.582500</x>
+        <y>-8.1425800</y>
+      </point>
+    </rightBound>
+    <predecessor ref="139"/>
+    <successor ref="135"/>
+    <adjacentLeft ref="134" drivingDir="opposite"/>
+    <laneletType>urban</laneletType>
+    <userOneWay>motorcycle</userOneWay>
+    <userOneWay>bicycle</userOneWay>
+    <userOneWay>car</userOneWay>
+    <userBidirectional>priorityVehicle</userBidirectional>
+  </lanelet>
+  <lanelet id="134">
+    <leftBound>
+      <point>
+        <x>36.462500</x>
+        <y>-9.8425800</y>
+      </point>
+      <point>
+        <x>38.772500</x>
+        <y>-12.342580</y>
+      </point>
+    </leftBound>
+    <rightBound>
+      <point>
+        <x>34.652500</x>
+        <y>-11.142580</y>
+      </point>
+      <point>
+        <x>37.192500</x>
+        <y>-14.042580</y>
+      </point>
+    </rightBound>
+    <predecessor ref="132"/>
+    <successor ref="138"/>
+    <adjacentLeft ref="136" drivingDir="opposite"/>
+    <laneletType>urban</laneletType>
+    <userOneWay>motorcycle</userOneWay>
+    <userOneWay>bicycle</userOneWay>
+    <userOneWay>car</userOneWay>
+    <userBidirectional>priorityVehicle</userBidirectional>
+  </lanelet>
+  <lanelet id="110">
+    <leftBound>
+      <point>
+        <x>38.712500</x>
+        <y>-31.742580</y>
+      </point>
+      <point>
+        <x>41.262500</x>
+        <y>-31.442580</y>
+      </point>
+      <point>
+        <x>43.0625</x>
+        <y>-31.742580</y>
+      </point>
+      <point>
+        <x>44.122500</x>
+        <y>-31.942580</y>
+      </point>
+      <point>
+        <x>45.692500</x>
+        <y>-32.342580</y>
+      </point>
+      <point>
+        <x>46.642500</x>
+        <y>-33.342580</y>
+      </point>
+      <point>
+        <x>46.952500</x>
+        <y>-34.542580</y>
+      </point>
+      <point>
+        <x>47.582500</x>
+        <y>-36.942580</y>
+      </point>
+    </leftBound>
+    <rightBound>
+      <point>
+        <x>39.182500</x>
+        <y>-34.242580</y>
+      </point>
+      <point>
+        <x>40.802500</x>
+        <y>-34.642580</y>
+      </point>
+      <point>
+        <x>41.462500</x>
+        <y>-34.842580</y>
+      </point>
+      <point>
+        <x>41.852500</x>
+        <y>-35.042580</y>
+      </point>
+      <point>
+        <x>42.422500</x>
+        <y>-35.442580</y>
+      </point>
+      <point>
+        <x>42.762500</x>
+        <y>-35.842580</y>
+      </point>
+      <point>
+        <x>43.422500</x>
+        <y>-36.442580</y>
+      </point>
+      <point>
+        <x>44.212500</x>
+        <y>-37.642580</y>
+      </point>
+    </rightBound>
+    <predecessor ref="106"/>
+    <successor ref="141"/>
+    <adjacentLeft ref="146" drivingDir="opposite"/>
+    <laneletType>unknown</laneletType>
+    <userBidirectional>priorityVehicle</userBidirectional>
+  </lanelet>
+  <lanelet id="127">
+    <leftBound>
+      <point>
+        <x>76.152500</x>
+        <y>-25.242580</y>
+      </point>
+      <point>
+        <x>73.772500</x>
+        <y>-25.642580</y>
+      </point>
+      <point>
+        <x>70.692500</x>
+        <y>-26.342580</y>
+      </point>
+    </leftBound>
+    <rightBound>
+      <point>
+        <x>75.352500</x>
+        <y>-20.842580</y>
+      </point>
+      <point>
+        <x>72.792500</x>
+        <y>-21.642580</y>
+      </point>
+      <point>
+        <x>70.092500</x>
+        <y>-23.142580</y>
+      </point>
+    </rightBound>
+    <predecessor ref="129"/>
+    <successor ref="124"/>
+    <adjacentLeft ref="128" drivingDir="opposite"/>
+    <laneletType>urban</laneletType>
+    <userOneWay>motorcycle</userOneWay>
+    <userOneWay>bicycle</userOneWay>
+    <userOneWay>car</userOneWay>
+    <userBidirectional>priorityVehicle</userBidirectional>
+  </lanelet>
+  <lanelet id="128">
+    <leftBound>
+      <point>
+        <x>70.692500</x>
+        <y>-26.342580</y>
+      </point>
+      <point>
+        <x>73.772500</x>
+        <y>-25.642580</y>
+      </point>
+      <point>
+        <x>76.152500</x>
+        <y>-25.242580</y>
+      </point>
+    </leftBound>
+    <rightBound>
+      <point>
+        <x>71.252500</x>
+        <y>-28.942580</y>
+      </point>
+      <point>
+        <x>74.302500</x>
+        <y>-28.442580</y>
+      </point>
+      <point>
+        <x>76.682500</x>
+        <y>-28.242580</y>
+      </point>
+    </rightBound>
+    <predecessor ref="123"/>
+    <successor ref="131"/>
+    <adjacentLeft ref="127" drivingDir="opposite"/>
+    <laneletType>urban</laneletType>
+    <userOneWay>motorcycle</userOneWay>
+    <userOneWay>bicycle</userOneWay>
+    <userOneWay>car</userOneWay>
+    <userBidirectional>priorityVehicle</userBidirectional>
+  </lanelet>
+  <lanelet id="131">
+    <leftBound>
+      <point>
+        <x>76.152500</x>
+        <y>-25.242580</y>
+      </point>
+      <point>
+        <x>154.83250</x>
+        <y>-12.342580</y>
+      </point>
+    </leftBound>
+    <rightBound>
+      <point>
+        <x>76.682500</x>
+        <y>-28.242580</y>
+      </point>
+      <point>
+        <x>155.32250</x>
+        <y>-15.242580</y>
+      </point>
+    </rightBound>
+    <predecessor ref="128"/>
+    <successor ref="147"/>
+    <adjacentLeft ref="129" drivingDir="opposite"/>
+    <laneletType>urban</laneletType>
+    <userOneWay>motorcycle</userOneWay>
+    <userOneWay>bicycle</userOneWay>
+    <userOneWay>car</userOneWay>
+    <userBidirectional>priorityVehicle</userBidirectional>
+  </lanelet>
+  <lanelet id="147">
+    <leftBound>
+      <point>
+        <x>154.83250</x>
+        <y>-12.342580</y>
+      </point>
+      <point>
+        <x>157.63250</x>
+        <y>-11.942580</y>
+      </point>
+    </leftBound>
+    <rightBound>
+      <point>
+        <x>155.32250</x>
+        <y>-15.242580</y>
+      </point>
+      <point>
+        <x>158.09250</x>
+        <y>-14.942580</y>
+      </point>
+    </rightBound>
+    <predecessor ref="131"/>
+    <adjacentLeft ref="130" drivingDir="opposite"/>
+    <laneletType>urban</laneletType>
+    <userOneWay>motorcycle</userOneWay>
+    <userOneWay>bicycle</userOneWay>
+    <userOneWay>car</userOneWay>
+    <userBidirectional>priorityVehicle</userBidirectional>
+  </lanelet>
+  <lanelet id="137">
+    <leftBound>
+      <point>
+        <x>2.0625</x>
+        <y>23.257420</y>
+      </point>
+      <point>
+        <x>0.74250000</x>
+        <y>24.557420</y>
+      </point>
+    </leftBound>
+    <rightBound>
+      <point>
+        <x>4.5125000</x>
+        <y>25.357420</y>
+      </point>
+      <point>
+        <x>3.1425000</x>
+        <y>26.657420</y>
+      </point>
+    </rightBound>
+    <predecessor ref="135"/>
+    <adjacentLeft ref="133" drivingDir="opposite"/>
+    <laneletType>urban</laneletType>
+    <userOneWay>motorcycle</userOneWay>
+    <userOneWay>bicycle</userOneWay>
+    <userOneWay>car</userOneWay>
+    <userBidirectional>priorityVehicle</userBidirectional>
+  </lanelet>
+  <lanelet id="105">
+    <leftBound>
+      <point>
+        <x>-2.4975000</x>
+        <y>-41.742580</y>
+      </point>
+      <point>
+        <x>-5.4175000</x>
+        <y>-42.442580</y>
+      </point>
+    </leftBound>
+    <rightBound>
+      <point>
+        <x>-3.5375000</x>
+        <y>-38.142580</y>
+      </point>
+      <point>
+        <x>-6.2475000</x>
+        <y>-38.942580</y>
+      </point>
+    </rightBound>
+    <predecessor ref="103"/>
+    <adjacentLeft ref="101" drivingDir="opposite"/>
+    <laneletType>urban</laneletType>
+    <userOneWay>motorcycle</userOneWay>
+    <userOneWay>bicycle</userOneWay>
+    <userOneWay>car</userOneWay>
+    <userBidirectional>priorityVehicle</userBidirectional>
+  </lanelet>
+  <lanelet id="142">
+    <leftBound>
+      <point>
+        <x>64.372500</x>
+        <y>-77.142580</y>
+      </point>
+      <point>
+        <x>65.082500</x>
+        <y>-78.642580</y>
+      </point>
+    </leftBound>
+    <rightBound>
+      <point>
+        <x>61.322500</x>
+        <y>-78.442580</y>
+      </point>
+      <point>
+        <x>62.0625</x>
+        <y>-80.042580</y>
+      </point>
+    </rightBound>
+    <predecessor ref="140"/>
+    <adjacentLeft ref="144" drivingDir="opposite"/>
+    <laneletType>urban</laneletType>
+    <userOneWay>motorcycle</userOneWay>
+    <userOneWay>bicycle</userOneWay>
+    <userOneWay>car</userOneWay>
+    <userBidirectional>priorityVehicle</userBidirectional>
+  </lanelet>
+  <lanelet id="101">
+    <leftBound>
+      <point>
+        <x>-5.4175000</x>
+        <y>-42.442580</y>
+      </point>
+      <point>
+        <x>-2.4975000</x>
+        <y>-41.742580</y>
+      </point>
+    </leftBound>
+    <rightBound>
+      <point>
+        <x>-4.4875000</x>
+        <y>-46.042580</y>
+      </point>
+      <point>
+        <x>-1.5875000</x>
+        <y>-45.242580</y>
+      </point>
+    </rightBound>
+    <successor ref="100"/>
+    <adjacentLeft ref="105" drivingDir="opposite"/>
+    <laneletType>urban</laneletType>
+    <userOneWay>motorcycle</userOneWay>
+    <userOneWay>bicycle</userOneWay>
+    <userOneWay>car</userOneWay>
+    <userBidirectional>priorityVehicle</userBidirectional>
+  </lanelet>
+  <lanelet id="144">
+    <leftBound>
+      <point>
+        <x>65.082500</x>
+        <y>-78.642580</y>
+      </point>
+      <point>
+        <x>64.372500</x>
+        <y>-77.142580</y>
+      </point>
+    </leftBound>
+    <rightBound>
+      <point>
+        <x>67.462500</x>
+        <y>-77.742580</y>
+      </point>
+      <point>
+        <x>66.792500</x>
+        <y>-76.142580</y>
+      </point>
+    </rightBound>
+    <successor ref="143"/>
+    <adjacentLeft ref="142" drivingDir="opposite"/>
+    <laneletType>urban</laneletType>
+    <userOneWay>motorcycle</userOneWay>
+    <userOneWay>bicycle</userOneWay>
+    <userOneWay>car</userOneWay>
+    <userBidirectional>priorityVehicle</userBidirectional>
+  </lanelet>
+  <lanelet id="130">
+    <leftBound>
+      <point>
+        <x>157.63250</x>
+        <y>-11.942580</y>
+      </point>
+      <point>
+        <x>154.83250</x>
+        <y>-12.342580</y>
+      </point>
+    </leftBound>
+    <rightBound>
+      <point>
+        <x>156.83250</x>
+        <y>-7.5425800</y>
+      </point>
+      <point>
+        <x>154.09250</x>
+        <y>-7.8425800</y>
+      </point>
+    </rightBound>
+    <successor ref="129"/>
+    <adjacentLeft ref="147" drivingDir="opposite"/>
+    <laneletType>urban</laneletType>
+    <userOneWay>motorcycle</userOneWay>
+    <userOneWay>bicycle</userOneWay>
+    <userOneWay>car</userOneWay>
+    <userBidirectional>priorityVehicle</userBidirectional>
+  </lanelet>
+  <lanelet id="133">
+    <leftBound>
+      <point>
+        <x>0.74250000</x>
+        <y>24.557420</y>
+      </point>
+      <point>
+        <x>2.0625</x>
+        <y>23.257420</y>
+      </point>
+    </leftBound>
+    <rightBound>
+      <point>
+        <x>-1.3575000</x>
+        <y>23.057420</y>
+      </point>
+      <point>
+        <x>-0.077500000</x>
+        <y>21.757420</y>
+      </point>
+    </rightBound>
+    <successor ref="132"/>
+    <adjacentLeft ref="137" drivingDir="opposite"/>
+    <laneletType>urban</laneletType>
+    <userOneWay>motorcycle</userOneWay>
+    <userOneWay>bicycle</userOneWay>
+    <userOneWay>car</userOneWay>
+    <userBidirectional>priorityVehicle</userBidirectional>
+  </lanelet>
+  <trafficSign id="149">
+    <trafficSignElement>
+      <trafficSignID>301</trafficSignID>
+    </trafficSignElement>
+    <position>
+      <point>
+        <x>58.3125</x>
+        <y>-23.742580</y>
+      </point>
+    </position>
+    <virtual>false</virtual>
+  </trafficSign>
+  <trafficSign id="148">
+    <trafficSignElement>
+      <trafficSignID>205</trafficSignID>
+    </trafficSignElement>
+    <position>
+      <point>
+        <x>53.292500</x>
+        <y>-34.742580</y>
+      </point>
+    </position>
+    <virtual>false</virtual>
+  </trafficSign>
+  <trafficSign id="151">
+    <trafficSignElement>
+      <trafficSignID>301</trafficSignID>
+    </trafficSignElement>
+    <position>
+      <point>
+        <x>39.822500</x>
+        <y>-35.342580</y>
+      </point>
+    </position>
+    <virtual>false</virtual>
+  </trafficSign>
+  <trafficSign id="150">
+    <trafficSignElement>
+      <trafficSignID>205</trafficSignID>
+    </trafficSignElement>
+    <position>
+      <point>
+        <x>40.572500</x>
+        <y>-20.942580</y>
+      </point>
+    </position>
+    <virtual>false</virtual>
+  </trafficSign>
+</commonRoad>

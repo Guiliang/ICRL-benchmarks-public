@@ -1,0 +1,28 @@
+author: Niels Mündler, Xiao Wang
+affiliation: Technical University of Munich, Germany
+source: The Intersection Drone Dataset (inD)
+tags: [intersection, multi_lane, urban, oncoming_traffic, speed_limit]
+
+locations:
+    1: Bendplatz
+    2: frankenberg
+    3: heckstrasse
+    4: aseag
+
+location_benchmark_id:
+    1: AAH1
+    2: AAH2
+    3: AAH3
+    4: AAH4
+
+class_to_obstacleType:
+    car: car
+    truck_bus: bus
+    pedestrian: pedestrian
+    bicycle: bicycle
+
+offsets:
+    1: [293487.1224, 5629711.58163]
+    2: [295620.9575, 5628102.04258]
+    3: [300127.0853, 5629091.0587]
+    4: [297631.31870, 5629917.34465] 

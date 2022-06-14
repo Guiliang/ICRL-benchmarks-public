@@ -33,17 +33,35 @@ model = mujoco_py.load_model_from_path(xml_path)
 sim = mujoco_py.MjSim(model)
 ```
 ### 3 Setup CommonRoad (for realistic environments)
-To build the virtual environment, we follow the [commonroad-rl](https://gitlab.lrz.de/tum-cps/commonroad-rl.git) environment:
-
-[**Run with the Full HighD Data**] Get the full dataset and Preprocess.  
+To run the virtual environment, you need to set up CommonRoad by following the instructions in [commonroad-rl](https://gitlab.lrz.de/tum-cps/commonroad-rl.git):
+1. Download the environment
+```
+git clone https://gitlab.lrz.de/tum-cps/commonroad-rl.git
+mv commonroad-rl/ commonroad_environment
+cd commonroad_environment/
+```
+2. Install build packages and submodules
+```
+sudo apt-get update
+sudo apt-get install build-essential make cmake
+git submodule init
+git submodule update --recursive || exit_with_error "Update submodules failed"
+```
+3. Install with sudo rights (Check [commonroad-rl](https://gitlab.lrz.de/tum-cps/commonroad-rl.git) about installing **without** sudo rights)
+```
+bash scripts/install.sh -e cn-py37
+```
+**Now the environment should be ready to try!** 
+4. [**Run with the Full HighD Data**] Get the full dataset and Preprocess.  
 - Our repository uses some data examples from [commonroad-rl tutorial](https://gitlab.lrz.de/tum-cps/commonroad-rl/-/tree/master/commonroad_rl/tutorials/data). To build the full environments, you need to apply for the HighD dataset from [here](https://www.highd-dataset.com/). **The dataset is free for not non-commercial use**.
 - After you received the data, do some preprocess according to [Tutorial 01 - Data Preprocessing](https://gitlab.lrz.de/tum-cps/commonroad-rl/-/blob/master/commonroad_rl/tutorials/Tutorial%2001%20-%20Data%20Preprocessing.ipynb). We show a brief version as follow:  
 
 Once you have downloaded the data, extract all the .csv (e.g., `03_recordingMeta.csv`, `03_tracks.csv`, `03_tracksMeta.csv`) files to the folder`CIRL-benchmarks-public/data/highD/raw/data/`, and then
 ```
-cd ./commonroad_environment/
+cd $YourProjectDir/CIRL-benchmarks-public/commonroad_environment/
 mkdir ./install
 cd ./install
+git clone https://gitlab.lrz.de/tum-cps/dataset-converters.git
 cd dataset-converters
 pip install -r requirements.txt
 
