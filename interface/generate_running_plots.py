@@ -60,15 +60,15 @@ def generate_plots():
     #     "VICRL_AntWall-v0_with-action_no_is_nit-50_p-9e-1-1e-1": "VICRL",
     #     # VICRL_AntWall-v0_with-action_no_is_nit-50_p-9-1, VICRL_AntWall-v0_with-action_no_is_nit-50_p-9e-1-1e-1, VICRL_AntWall-v0_with-action_no_is_nit-50_p-9e-2-1e-2
     # }
-    # env_id = 'highD_velocity_constraint'
-    # method_names_labels_dict = {
-    #     # "PPO_highD_no-velocity_bs--1_fs-5k_nee-10_lr-5e-4_vm-40": 'PPO',
-    #     # "PPO_lag_highD_velocity_penalty_bs--1_fs-5k_nee-10_lr-5e-4_vm-40": 'PPO_lag',
-    #     "GAIL_velocity_constraint_no_is_bs--1-5e2_fs-5k_nee-10_lr-5e-4_no-buffer_vm-40": 'GACL',
-    #     "Binary_highD_velocity_constraint_no_is_bs--1-5e2_fs-5k_nee-10_lr-5e-4_no-buffer_vm-40": 'BC2L',
-    #     "ICRL_highD_velocity_constraint_no_is_bs--1-5e2_fs-5k_nee-10_lr-5e-4_no-buffer_vm-40": 'MECL',
-    #     "VICRL_highD_velocity_constraint_p-9e-1-1e-1_no_is_bs--1-5e2_fs-5k_nee-10_lr-5e-4_no-buffer_vm-40": "VICRL",
-    # }
+    env_id = 'highD_velocity_constraint'
+    method_names_labels_dict = {
+        # "PPO_highD_no-velocity_bs--1_fs-5k_nee-10_lr-5e-4_vm-40": 'PPO',
+        # "PPO_lag_highD_velocity_penalty_bs--1_fs-5k_nee-10_lr-5e-4_vm-40": 'PPO_lag',
+        "GAIL_velocity_constraint_no_is_bs--1-5e2_fs-5k_nee-10_lr-5e-4_no-buffer_vm-40": 'GACL',
+        "Binary_highD_velocity_constraint_no_is_bs--1-5e2_fs-5k_nee-10_lr-5e-4_no-buffer_vm-40": 'BC2L',
+        "ICRL_highD_velocity_constraint_no_is_bs--1-5e2_fs-5k_nee-10_lr-5e-4_no-buffer_vm-40": 'MECL',
+        "VICRL_highD_velocity_constraint_p-9e-1-1e-1_no_is_bs--1-5e2_fs-5k_nee-10_lr-5e-4_no-buffer_vm-40": "VICRL",
+    }
     # env_id = 'highD_velocity_constraint_dim2'
     # method_names_labels_dict = {
     #     # "PPO_highD_no-velocity": 'PPO',
@@ -146,15 +146,15 @@ def generate_plots():
     #     # "VICRL_Walker-v0_p-9e-3-1e-3": 'VICRL',
     #     "VICRL_Walker-v0_p-9e-3-1e-3_cl-64-64": 'VICRL',
     # }
-    env_id = 'SwimmerWithPos-v0'
-    method_names_labels_dict = {
-        # "ppo_SwmWithPos-v0_update_b-5e-1": 'PPO',
-        # "ppo_lag_SwmWithPos-v0_update_b-5e-1": 'PPO_lag',
-        "GAIL_SwmWithPos-v0": 'GACL',
-        "Binary_SwmWithPos-v0_update_b-5e-1": 'BC2L',
-        "ICRL_SwmWithPos-v0_update_b-5e-1": 'MECL',
-        "VICRL_SwmWithPos-v0_update_b-5e-1_piv-5": 'VICRL',
-    }
+    # env_id = 'SwimmerWithPos-v0'
+    # method_names_labels_dict = {
+    #     # "ppo_SwmWithPos-v0_update_b-5e-1": 'PPO',
+    #     # "ppo_lag_SwmWithPos-v0_update_b-5e-1": 'PPO_lag',
+    #     "GAIL_SwmWithPos-v0": 'GACL',
+    #     "Binary_SwmWithPos-v0_update_b-5e-1": 'BC2L',
+    #     "ICRL_SwmWithPos-v0_update_b-5e-1": 'MECL',
+    #     "VICRL_SwmWithPos-v0_update_b-5e-1_piv-5": 'VICRL',
+    # }
     modes = ['train']
     plot_mode = 'all'
     img_size = None

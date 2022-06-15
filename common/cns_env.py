@@ -131,10 +131,6 @@ def make_eval_env(env_id, config_path, save_dir, group='PPO', num_threads=1,
             env_configs = yaml.safe_load(config_file)
             if is_commonroad(env_id) and multi_env:
                 env_configs['train_reset_config_path'] += '_split'
-            if is_commonroad(env_id) and part_data:
-                env_configs['train_reset_config_path'] += '_debug'
-                env_configs['test_reset_config_path'] += '_debug'
-                env_configs['meta_scenario_path'] += '_debug'
         if is_commonroad(env_id) and mode == 'test':
             env_configs["test_env"] = True
     else:

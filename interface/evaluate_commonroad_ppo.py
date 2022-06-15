@@ -75,9 +75,6 @@ def create_environments(env_id: str, viz_path: str, test_path: str, model_path: 
                        # "play": True})
     if testing_env:
         env_kwargs["test_env"] = True
-    if debug_mode:
-        env_kwargs['train_reset_config_path'] += '_debug'
-        env_kwargs['test_reset_config_path'] += '_debug'
     # Create environment
     # note that CommonRoadVecEnv is inherited from DummyVecEnv
     env = CommonRoadVecEnv([make_env(env_id, env_kwargs,

@@ -198,7 +198,7 @@ class CommonRoadExternalSignalsWrapper(gym.Wrapper):
             reward_feature = reward_features[idx]
             if reward_feature == 'velocity':
                 ego_velocity_x_y = [observation[feature_dims[idx][0]], observation[feature_dims[idx][1]]]
-                assert np.sum(info["ego_velocity"] - ego_velocity_x_y) == 0  # TODO: remove this line if there is an error
+                # assert np.sum(info["ego_velocity"] - ego_velocity_x_y) == 0  # TODO: remove this line if there is an error
                 info["ego_velocity"] = ego_velocity_x_y
                 ego_velocity = np.sqrt(np.sum(np.square(ego_velocity_x_y)))
                 if ego_velocity < float(feature_bounds[idx][0]) or ego_velocity > float(feature_bounds[idx][1]):

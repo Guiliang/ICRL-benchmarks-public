@@ -1,5 +1,0 @@
-please try:
-
-remove the regularization
-add more sampling rollouts
-add per-step importance sampling

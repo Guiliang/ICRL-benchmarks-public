@@ -39,7 +39,7 @@ def train(args):
     debug_msg = ''
     if debug_mode:
         config['verbose'] = 2  # the verbosity level: 0 no output, 1 info, 2 debug
-        config['PPO']['forward_timesteps'] = 2000  # 2000
+        config['PPO']['forward_timesteps'] = 500  # 2000
         config['PPO']['n_steps'] = 200
         config['running']['n_eval_episodes'] = 10
         config['running']['save_every'] = 1

@@ -101,10 +101,6 @@ def create_environments(env_id: str, viz_path: str, test_path: str, model_path: 
         multi_env = True if num_threads > 1 else False
         if multi_env and is_commonroad(env_id=env_id):
             env_kwargs['train_reset_config_path'] += '_split'
-        if part_data and is_commonroad(env_id=env_id):
-            env_kwargs['train_reset_config_path'] += '_debug'
-            env_kwargs['test_reset_config_path'] += '_debug'
-            env_kwargs['meta_scenario_path'] += '_debug'
 
     # Create environment
     envs = [make_env(env_id=env_id,

@@ -1,0 +1,50 @@
+task: 'PPO-highD-velocity'
+group: 'PPO'
+device: 'cuda'
+verbose: 1
+env:
+  config_path: "../config/highD_velocity_constraint/highD_environment_configurations_no_velocity_penalty-40.yaml"
+  train_env_id : 'commonroad-v1'
+  eval_env_id: 'commonroad-v1'
+  save_dir: '../save_model'
+  expert_rollouts: 10
+  cost_info_str: ''
+  use_cost: False
+  reward_gamma: 0.99
+  cost_gamma: null  # no cost
+  dont_normalize_obs: False
+  dont_normalize_reward: False
+  dont_normalize_cost: True  # no cost
+  record_info_names: ["ego_velocity_x", "ego_velocity_y"]
+  record_info_input_dims: [ 6, 7 ] # the dim of record info in inputs=(obs, action)
+
+running:
+  n_iters: 2000
+  n_eval_episodes: 10
+  save_every: 100
+
+PPO:
+  policy_name: 'MlpPolicy'
+  learning_rate: 0.0005 # 0.0003
+  n_steps: 1024 #2048
+  n_epochs: 10
+  clip_obs: 20
+  reward_gamma: 0.99
+  reward_gae_lambda: 0.95
+  clip_range: 0.2
+  ent_coef: 0.0
+  reward_vf_coef: 0.5
+  max_grad_norm: 0.5
+  use_sde: False
+  sde_sample_freq: -1
+  target_kl: 0.01
+  shared_layers: null
+  policy_layers: [64, 64]
+  reward_vf_layers: [64, 64]
+  cost_vf_layers: False
+  batch_size: null
+  eval_every: 2048
+  use_curiosity_driven_exploration: False
+  warmup_timesteps: False
+  reset_policy: False
+  forward_timesteps: 5000
