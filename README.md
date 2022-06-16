@@ -12,6 +12,16 @@ conda env create -n cn-py37 python=3.7 -f python_environment.yml
 conda activate cn-py37
 ```
 
+## Download the Expert Data
+```
+cd ./data
+wget https://cs.uwaterloo.ca/~ppoupart/datasets/expert_data.zip
+unzip expert_data.zip
+rm expert_data.zip
+cd ../
+```
+
+
 ## Run Virtual Benchmark
 
 ###  Step 1: Setup MuJoCo (for virtual environments)
@@ -181,13 +191,16 @@ python train_cirl.py ../config/mujoco_BlockedSwimmer/train_VCIRL_SwmWithPos-v0.y
 [//]: # ()
 [//]: # (- Install build packages and submodules)
 
-[//]: # (```)
+```
+sudo apt-get update
+sudo apt-get install build-essential make cmake
 
-[//]: # (sudo apt-get update)
+# Install with sudo rights (cn-py37 is the name of conda environment).
+bash ./commonroad_environment/scripts/install.sh -e cn-py37
 
-[//]: # (sudo apt-get install build-essential make cmake)
-
-[//]: # (git submodule init)
+Install without sudo rights
+bash ./commonroad_environment/scripts/install.sh -e cn-py37 --no-root
+```
 
 [//]: # (git submodule update --recursive || exit_with_error "Update submodules failed")
 
@@ -208,9 +221,6 @@ python train_cirl.py ../config/mujoco_BlockedSwimmer/train_VCIRL_SwmWithPos-v0.y
 Once you have downloaded the data, extract all the .csv (e.g., `03_recordingMeta.csv`, `03_tracks.csv`, `03_tracksMeta.csv`) files to the folder`CIRL-benchmarks-public/data/highD/raw/data/`, and then
 ```
 cd ./commonroad_environment/install/
-
-# download the dataset-converters if you don't have it.
-git clone https://gitlab.lrz.de/tum-cps/dataset-converters.git
 
 # install python packages
 cd ./dataset-converters

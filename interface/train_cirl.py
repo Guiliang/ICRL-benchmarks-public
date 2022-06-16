@@ -96,6 +96,7 @@ def train(config):
 
     mem_prev = process_memory()
     time_prev = time.time()
+
     # Create the vectorized environments
     train_env, env_configs = make_train_env(env_id=config['env']['train_env_id'],
                                             config_path=config['env']['config_path'],
@@ -133,7 +134,6 @@ def train(config):
                                               multi_env=False,
                                               log_file=log_file)
 
-    # We don't need cost when during evaluation
     save_test_mother_dir = os.path.join(save_model_mother_dir, "test/")
     if not os.path.exists(save_test_mother_dir):
         os.mkdir(save_test_mother_dir)
