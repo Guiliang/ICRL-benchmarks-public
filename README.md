@@ -196,7 +196,8 @@ sudo apt-get update
 sudo apt-get install build-essential make cmake
 
 # Install with sudo rights (cn-py37 is the name of conda environment).
-bash ./commonroad_environment/scripts/install.sh -e cn-py37
+cd ./commonroad_environment
+bash ./scripts/install.sh -e cn-py37
 
 Install without sudo rights
 bash ./commonroad_environment/scripts/install.sh -e cn-py37 --no-root

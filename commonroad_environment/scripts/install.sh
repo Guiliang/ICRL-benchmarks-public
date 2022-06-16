@@ -143,18 +143,18 @@ require_sudo apt-get install -y libomp-dev libcgal-dev libgmp-dev libglu1-mesa-d
 print_info "Installing commonroad_rl with pip"
 pip install --quiet -e .\[utils_run,tests\]
 
-cd_to_installdir 
+#cd_to_installdir
 
-safe_cd commonroad-drivability-checker
-print_info "Building commonroad-drivability-checker"
-# rebuilding cannot be avoided since this also installs packages in global scope that cannot be cached
-if [ "${NO_ROOT}" == "TRUE" ]; then
-  bash build.sh -e "$CONDA_PREFIX" -v $PYTHON_VERSION --serializer --install --wheel --no-root -j $JOBS > /dev/null 2>&1
-else
-  bash build.sh -e "$CONDA_PREFIX" -v $PYTHON_VERSION --serializer --install --wheel -j $JOBS > /dev/null 2>&1
-fi
+#safe_cd commonroad-drivability-checker
+#print_info "Building commonroad-drivability-checker"
+## rebuilding cannot be avoided since this also installs packages in global scope that cannot be cached
+#if [ "${NO_ROOT}" == "TRUE" ]; then
+#  bash build.sh -e "$CONDA_PREFIX" -v $PYTHON_VERSION --serializer --install --wheel --no-root -j $JOBS > /dev/null 2>&1
+#else
+#  bash build.sh -e "$CONDA_PREFIX" -v $PYTHON_VERSION --serializer --install --wheel -j $JOBS > /dev/null 2>&1
+#fi
 
-cd_to_installdir
+#cd_to_installdir
 print_info "Installation script completed, please run the unit tests to verify."
 sleep 3
 exit 0
