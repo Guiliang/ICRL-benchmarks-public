@@ -24,11 +24,11 @@ cd ../
 
 ## Run Virtual Benchmark
 <p>
-<img title="a title" alt="Alt text" src="./images&others/half-cheetah.png" width="100">
-<img title="a title" alt="Alt text" src="./images&others/ant.png" width="100">
-<img title="a title" alt="Alt text" src="./images&others/pendulumn.png" width="100">
-<img title="a title" alt="Alt text" src="./images&others/walker.png" width="100">
-<img title="a title" alt="Alt text" src="./images&others/swimmer.png" width="100">
+<img title="a title" alt="Half-Cheetah" src="./images&others/half-cheetah.png" width="150">
+<img title="a title" alt="Ant" src="./images&others/ant.png" width="150">
+<img title="a title" alt="Pendulumn" src="./images&others/pendulumn.png" width="150">
+<img title="a title" alt="Walker" src="./images&others/walker.png" width="150">
+<img title="a title" alt="Simmer" src="./images&others/swimmer.png" width="150">
 </p>
 
 ###  Step 1: Setup MuJoCo (for virtual environments)
@@ -168,7 +168,7 @@ python train_cirl.py ../config/mujoco_BlockedSwimmer/train_VCIRL_SwmWithPos-v0.y
 
 ## Run Realistic Benchmark
 <p>
-<img title="HighD" alt="Alt text" src="./images&others/highdenv.png" width="600">
+<img title="HighD" alt="Alt text" src="./images&others/highdenv.png" width="800">
 </p>
 
 ### Step1: Setup CommonRoad (for realistic environments)
