@@ -249,7 +249,7 @@ python -m commonroad_rl.tools.pickle_scenario.copy_files -i ../../data/highD/pic
 
 ###  Step 3: Run the algorithms
 <p>
-<img title="a title" alt="Alt text" src="images&others/highdenv.png" width="500">
+<img title="a title" alt="Alt text" src="/images&others/highdenv.png" width="500">
 </p>
 
 1. The HighD Velocity Constraint 
