@@ -17,12 +17,6 @@ img
 # log
 log
 
-# visualization
-*.png
-*.mp4
-*.pkl
-*.gif
-
 # test outputs
 commonroad_rl/tests/outputs/
 cr_solution/

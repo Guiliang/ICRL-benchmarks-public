@@ -43,6 +43,12 @@ model = mujoco_py.load_model_from_path(xml_path)
 sim = mujoco_py.MjSim(model)
 ```
 ###  Step 2: Run the algorithms
+<img title="a title" alt="Alt text" src="./images&others/half-cheetah.png" width="100">
+<img title="a title" alt="Alt text" src="./images&others/ant.png" width="100">
+<img title="a title" alt="Alt text" src="./images&others/pendulumn.png" width="100">
+<img title="a title" alt="Alt text" src="./images&others/walker.png" width="100">
+<img title="a title" alt="Alt text" src="./images&others/swimmer.png" width="100">
+
 1. The Blocked Half-Cheetah Environment
 ```
 cd ./interface/
@@ -242,6 +248,7 @@ python -m commonroad_rl.tools.pickle_scenario.copy_files -i ../../data/highD/pic
 ```
 
 ###  Step 3: Run the algorithms
+<img title="a title" alt="Alt text" src="./images&others/highdenv.png" width="500">
 
 1. The HighD Velocity Constraint 
 ```
