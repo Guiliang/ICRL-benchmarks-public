@@ -206,11 +206,11 @@ python train_cirl.py ../config/mujoco_BlockedSwimmer/train_VCIRL_SwmWithPos-v0.y
 sudo apt-get update
 sudo apt-get install build-essential make cmake
 
-# Install with sudo rights (cn-py37 is the name of conda environment).
+# option 1: Install with sudo rights (cn-py37 is the name of conda environment).
 cd ./commonroad_environment
 bash ./scripts/install.sh -e cn-py37
 
-Install without sudo rights
+# Option 2: Install without sudo rights
 bash ./commonroad_environment/scripts/install.sh -e cn-py37 --no-root
 ```
 
