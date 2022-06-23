@@ -27,6 +27,7 @@ dependencies:
       - torch==1.5.0
       - matplotlib==3.3.2
       - cloudpickle==1.2.2
+      - mujoco-py
       - tqdm
       - pandas
       - pillow
