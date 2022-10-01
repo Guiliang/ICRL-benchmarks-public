@@ -31,7 +31,7 @@ running:
 
 PPO:
   policy_name: 'TwoCriticsMlpPolicy'
-  learning_rate: 0.0005 # 0.0003
+  learning_rate: 0.0001 # 0.0003
   n_steps: 1024 #2048
   n_epochs: 10
   clip_obs: 20
@@ -84,7 +84,7 @@ CN:
   train_gail_lambda: False
   cn_eps: 0.00001
   backward_iters: 10
-  anneal_clr_by_factor: 0.9
+  anneal_clr_by_factor: 0.5
   di_prior: [0.9, 0.1]
   mode: 'sample'
 

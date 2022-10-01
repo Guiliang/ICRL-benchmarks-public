@@ -71,7 +71,7 @@ PPO:
 
 
 CN:
-  cn_learning_rate: 0.0005 # 0.01
+  cn_learning_rate: 0.0001 # 0.01
   cn_reg_coeff: 0.5
   cn_layers: [20]
   cn_batch_size: 1000
