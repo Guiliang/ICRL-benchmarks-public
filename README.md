@@ -11,6 +11,7 @@ mkdir ./evaluate_model
 conda env create -n cn-py37 python=3.7 -f python_environment.yml
 conda activate cn-py37
 ```
+Install [Pytorch](https://pytorch.org/).
 
 ## Download the Expert Data
 ```
