@@ -1,6 +1,5 @@
 # ICRL-benchmarks-public
-This is the code for the paper "[Benchmarking Constraint Inference in Inverse Reinforcement Learning](https://openreview.net/forum?id=vINj_Hv9szL)" published in ICLR 2023.  
-Note that: 
+This is the code for the paper "[Benchmarking Constraint Inference in Inverse Reinforcement Learning](https://openreview.net/forum?id=vINj_Hv9szL)" published in ICLR 2023. Note that:
 1. The environments in our benchmark rely on [Mujoco](https://mujoco.org/) and [CommonRoad](https://commonroad.in.tum.de/commonroad-rl). These two environments are publicly available. 
 2. The implementation of the baselines are based on the code from [iclr](https://github.com/shehryar-malik/icrl), although we fix some typos in their settings.
 
