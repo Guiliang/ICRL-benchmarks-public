@@ -1,0 +1,75 @@
+PPO:
+  batch_size: 64
+  budget: 0
+  clip_range: 0.2
+  clip_range_cost_vf: null
+  clip_range_reward_vf: null
+  cost_gae_lambda: 0.95
+  cost_gamma: 0.99
+  cost_vf_coef: 0.5
+  cost_vf_layers:
+  - 64
+  - 64
+  derivative_control_coeff: 0
+  derivative_cost_ema_alpha: 0.5
+  ent_coef: 0.0
+  eval_every: 2048
+  forward_timesteps: 200000
+  integral_control_coeff: 0.0001
+  learning_rate: 0.0003
+  max_grad_norm: 0.5
+  n_epochs: 10
+  n_steps: 2048
+  penalty_initial_value: 1
+  penalty_learning_rate: 0.1
+  pid_delay: 1
+  policy_layers:
+  - 64
+  - 64
+  policy_name: TwoCriticsMlpPolicy
+  proportional_control_coeff: 10
+  proportional_cost_ema_alpha: 0.5
+  reset_policy: false
+  reward_gae_lambda: 0.95
+  reward_gamma: 0.99
+  reward_vf_coef: 0.5
+  reward_vf_layers:
+  - 64
+  - 64
+  sde_sample_freq: -1
+  shared_layers: null
+  target_kl: 0.01
+  use_curiosity_driven_exploration: false
+  use_sde: false
+  warmup_timesteps: false
+device: cuda
+env:
+  config_path: null
+  cost_gamma: 0.99
+  cost_info_str: cost
+  dont_normalize_cost: false
+  dont_normalize_obs: false
+  dont_normalize_reward: false
+  eval_env_id: HCWithPos-v0
+  num_threads: 5
+  record_info_names:
+  - xpos
+  reward_gamma: 0.99
+  save_dir: ../save_model
+  train_env_id: HCWithPos-v0
+  use_cost: true
+group: PPO-Lag
+multi_env: true
+running:
+  expert_path: ../data/expert_data/HCWithPos-New/
+  expert_rollouts: 10
+  n_eval_episodes: 10
+  n_iters: 30
+  sample_data_num: 10000
+  sample_rollouts: 10
+  save_every: 5
+  store_by_game: false
+  store_sample_num: 100000
+  use_buffer: false
+task: PPO-Lag-HC
+verbose: 2

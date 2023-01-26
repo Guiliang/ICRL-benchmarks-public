@@ -168,6 +168,27 @@ def torch_kron_prod(a, b):
     return res
 
 
+def load_policy_iteration_config(config, env_configs, train_env, seed, log_file):
+    pi_parameters = {
+        "env": train_env,
+        "seed": seed,
+        "stopping_threshold": config["iteration"]["stopping_threshold"],
+        "max_iter": config["iteration"]["max_iter"],
+        "gamma": config["iteration"]["gamma"],
+        "n_actions": env_configs['n_actions'],
+        "height": env_configs['map_height'],
+        "width": env_configs['map_width'],
+        "terminal_states": env_configs['terminal_states'],
+        "penalty_initial_value": config['iteration']['penalty_initial_value'],
+        "penalty_learning_rate": config['iteration']['penalty_learning_rate'],
+        "log_file": log_file,
+
+    }
+    pi_parameters.update({"penalty_min_value": config['iteration']['nu_min_clamp']})
+    pi_parameters.update({"penalty_max_value": config['iteration']['nu_max_clamp']})
+    return pi_parameters
+
+
 def load_ppo_config(config, train_env, seed, log_file):
     ppo_parameters = {
         "policy": config['PPO']['policy_name'],
@@ -193,14 +214,15 @@ def load_ppo_config(config, train_env, seed, log_file):
             "gae_lambda": config['PPO']['reward_gae_lambda'],
             "vf_coef": config['PPO']['reward_vf_coef'],
         })
-    elif config['group'] == "PPO-Lag" or config['group'] == "Binary" or config['group'] == "ICRL" or config['group'] == "VCIRL":
-    # elif config['group'] == "PPO-Lag":
+    elif config['group'] == "PPO-Lag" or config['group'] == "Binary" or config['group'] == "ICRL" or config[
+        'group'] == "VICRL":
+        # elif config['group'] == "PPO-Lag":
         ppo_parameters.update({
             "reward_gamma": config['PPO']['reward_gamma'],
             "reward_gae_lambda": config['PPO']['reward_gae_lambda'],
             "cost_gamma": config['PPO']['cost_gamma'],
             "cost_gae_lambda": config['PPO']['cost_gae_lambda'],
-            "clip_range_reward_vf":  config['PPO']['clip_range_reward_vf'],
+            "clip_range_reward_vf": config['PPO']['clip_range_reward_vf'],
             "clip_range_cost_vf": config['PPO']['clip_range_cost_vf'],
             "reward_vf_coef": config['PPO']['reward_vf_coef'],
             "cost_vf_coef": config['PPO']['cost_vf_coef'],

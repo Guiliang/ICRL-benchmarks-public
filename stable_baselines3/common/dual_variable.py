@@ -9,24 +9,28 @@ import torch.optim as optim
 class Nu(nn.Module):
     """
     Class for Lagrangian multiplier.
-
     :param penalty_init: The value with which to initialize the Lagrange multiplier with
-    :param clamp_at    : The minimum value to allow nu to drop to. If None, is set to penalty_init
+    :param min_clamp    : The minimum value to allow nu to drop to. If None, is set to penalty_init
+    :param max_clamp    : The maximum value to allow nu to drop to. If None, is set to inf
     """
-    def __init__(self, penalty_init=1., clamp_at=None):
+
+    def __init__(self, penalty_init=1., min_clamp=None, max_clamp=None):
         super(Nu, self).__init__()
         self.penalty_init = penalty_init
-        penalty_init = np.log(max(np.exp(penalty_init)-1, 1e-8))
-        self.log_nu = nn.Parameter(penalty_init*torch.ones(1))
-        self.clamp_at = penalty_init if clamp_at is None else clamp_at
+        penalty_init = np.log(max(np.exp(penalty_init) - 1, 1e-8))
+        self.log_nu = nn.Parameter(penalty_init * torch.ones(1))  # for the soft-plus function
+        self.min_clamp = penalty_init if min_clamp is None else min_clamp
+        self.max_clamp = float('inf') if max_clamp is None else max_clamp
 
     def forward(self):
-        #return self.log_nu.exp()
+        # return self.log_nu.exp()
         return F.softplus(self.log_nu)
 
     def clamp(self):
         self.log_nu.data.clamp_(
-                min=np.log(max(np.exp(self.clamp_at)-1, 1e-8)))
+            min=np.log(max(np.exp(self.min_clamp), 1e-8)),  # min=np.log(max(np.exp(self.clamp_at)-1, 1e-8)))
+            max=self.max_clamp
+        )
 
 
 class DualVariable:
@@ -37,17 +41,17 @@ class DualVariable:
     :param learning_rate: Learning rate for the Lagrange multiplier
     :param penalty_init: The value with which to initialize the Lagrange multiplier with
     """
-    def __init__(self, alpha=0, learning_rate=10, penalty_init=1, clamp_at=None):
-        self.nu = Nu(penalty_init, clamp_at)
+
+    def __init__(self, alpha=0, learning_rate=10, penalty_init=1, min_clamp=None, max_clamp=None):
+        self.nu = Nu(penalty_init, min_clamp=min_clamp, max_clamp=max_clamp)
         self.alpha = alpha
         self.loss = torch.tensor(0)
         self.optimizer = optim.Adam(
-                self.nu.parameters(), lr=learning_rate)
+            self.nu.parameters(), lr=learning_rate)
 
     def update_parameter(self, cost):
         # Compute loss.
-        self.loss = - self.nu() * (cost-self.alpha)
-
+        self.loss = - self.nu() * (cost - self.alpha)
         # Update.
         self.optimizer.zero_grad()
         self.loss.backward()
@@ -71,6 +75,7 @@ class PIDLagrangian:
     :param delta_d_ema_alpha: Exponential moving average dampening
                               factor for delta_d calculation.
     """
+
     def __init__(self, alpha=0, penalty_init=1,
                  Kp=0, Kd=0, Ki=1, pid_delay=10,
                  delta_d_ema_alpha=0.95,
@@ -96,22 +101,22 @@ class PIDLagrangian:
     def update_parameter(self, cost):
         # See https://github.com/astooke/rlpyt/blob/master/rlpyt/projects/safe/cppo_pid.py#L160
         cost = float(cost)
-        self.loss = torch.tensor(cost) # for compatibility with dual variable class
+        self.loss = torch.tensor(cost)  # for compatibility with dual variable class
         delta = cost - self.budget
         # integral control
-        self.pid_i = max(0, self.pid_i + self.Ki*delta)
+        self.pid_i = max(0, self.pid_i + self.Ki * delta)
 
         # proportional control
-        self._delta_p = (self.delta_p_ema_alpha*self._delta_p +
-                         (1-self.delta_p_ema_alpha)*delta)
+        self._delta_p = (self.delta_p_ema_alpha * self._delta_p +
+                         (1 - self.delta_p_ema_alpha) * delta)
         # derivative control
-        self._cost_delta = (self.delta_d_ema_alpha*self._cost_delta +
-                            (1 - self.delta_d_ema_alpha)*cost)
+        self._cost_delta = (self.delta_d_ema_alpha * self._cost_delta +
+                            (1 - self.delta_d_ema_alpha) * cost)
         pid_d = max(0, self._cost_delta - self.cost_deltas[0])
 
         # PID Control
-        pid_o = (self.Kp*self._delta_p +
-                 self.Kd*pid_d +
+        pid_o = (self.Kp * self._delta_p +
+                 self.Kd * pid_d +
                  self.pid_i)
         self.cost_penalty = max(0, pid_o)
 
@@ -120,4 +125,3 @@ class PIDLagrangian:
     def nu(self):
         # For consistency with DualVariable class.
         return torch.tensor(self.cost_penalty)
-

@@ -6,6 +6,7 @@ import gym
 import numpy
 import numpy as np
 import torch
+from matplotlib import pyplot as plt
 
 from stable_baselines3.common.callbacks import EventCallback, BaseCallback
 from stable_baselines3.common.evaluation import evaluate_policy
@@ -18,15 +19,19 @@ def evaluate_icrl_policy(
         record_info_names: list,
         n_eval_episodes: int = 10,
         deterministic: bool = True,
+        cost_info_str: str = 'cost',
         render: bool = False,
         callback: Optional[Callable] = None,
         reward_threshold: Optional[float] = None,
         return_episode_rewards: bool = False,
+        save_path=None,
 ):
     """
     Runs policy for ``n_eval_episodes`` episodes and returns average reward.
     This is made to work only with one env.
 
+    :param save_path:
+    :param cost_info_str: The key of cost in Info.
     :param model: The RL agent you want to evaluate.
     :param env: The gym environment. In the case of a ``VecEnv``
         this must contain only one environment.
@@ -61,6 +66,8 @@ def evaluate_icrl_policy(
         while not done:
             action, state = model.predict(obs, state=state, deterministic=deterministic)
             obs, reward, done, _info = env.step(action)
+            if 'admissible_actions' in _info[0].keys():
+                model.admissible_actions = _info[0]['admissible_actions']
             for i in range(env.num_envs):
                 if 'cost' in _info[i].keys():
                     costs.append(_info[i]['cost'])
@@ -86,6 +93,10 @@ def evaluate_icrl_policy(
             episode_length += 1
             if render:
                 env.render()
+        # mem_current = process_memory()
+        # print('1', mem_current)
+        if render and save_path is not None:
+            plt.savefig(os.path.join(save_path, "traj_visual_code.png".format()))
         episode_rewards.append(episode_reward)
         episode_nc_rewards.append(episode_nc_reward)
         episode_lengths.append(episode_length)
@@ -120,7 +131,8 @@ def evaluate_with_synthetic_data(env_id, cns_model, env_configs, model_name, ite
             shw = plt.imshow(pred_cost, cmap=cm.Greys_r)
             bar = plt.colorbar(shw)
             # plt.show()
-            plt.savefig('./plot_grid_world_constraints/constraint_{0}_action-{1}_iter_{2}.png'.format(model_name, act, iteration_msg))
+            plt.savefig('./plot_grid_world_constraints/constraint_{0}_action-{1}_iter_{2}.png'.format(model_name, act,
+                                                                                                      iteration_msg))
     pass
 
 

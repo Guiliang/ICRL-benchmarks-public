@@ -167,6 +167,17 @@ class VecNormalize(VecEnvWrapper):
             self._update_reward(self.ret)
         return self.normalize_obs(obs)
 
+    def reset_with_values(self, info_dicts):
+        """
+        Reset all environments
+        """
+        obs = self.venv.reset_with_values(info_dicts)
+        self.old_obs = obs
+        self.ret = np.zeros(self.num_envs)
+        if self.training:
+            self._update_reward(self.ret)
+        return self.normalize_obs(obs)
+
     @staticmethod
     def load(load_path: str, venv: VecEnv) -> "VecNormalize":
         """

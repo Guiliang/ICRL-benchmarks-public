@@ -23,5 +23,3 @@ dependencies:
       - tqdm
       - mpl-scatter-density
       - pickle5
-      - cloudpickle==1.2.2
-      - patchelf

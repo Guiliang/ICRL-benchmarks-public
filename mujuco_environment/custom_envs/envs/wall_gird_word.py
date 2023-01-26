@@ -5,111 +5,7 @@ import gym
 import random
 from gym.envs.mujoco import mujoco_env
 
-
-# class Environment(abc.ABC):
-#     """
-#     Abstract environment class. Any subclass must implement `state` (which
-#     gets current state), `reset` and `step`.
-#     """
-#
-#     @abc.abstractmethod
-#     def seed(self, s=None):
-#         """
-#         Seed this environment.
-#         """
-#         pass
-#
-#     @property
-#     @abc.abstractmethod
-#     def state(self):
-#         """
-#         Get the current state.
-#         """
-#         pass
-#
-#     @abc.abstractmethod
-#     def reset(self, **kwargs):
-#         """
-#         Resets the environment.
-#         """
-#         pass
-#
-#     @abc.abstractmethod
-#     def step(self, action=None):
-#         """
-#         Steps the environment with action (or None if no action).
-#         """
-#         pass
-#
-#     @abc.abstractmethod
-#     def render(self, **kwargs):
-#         """
-#         Renders the environment.
-#         """
-#         pass
-#
-#     def play_episode(self, policy, render=False, buf=None, info=False,
-#                      sleep=None, frames=False, cost=None, deterministic=False, novelty=None,
-#                      novelty_add=None):
-#         """
-#         Play an episode using the given policy.
-#         If buffer is given, add data to it.
-#         If info is True, return combined dict info of entire episode.
-#         If sleep is True, sleep by that amount at every step
-#         If frames is True, return rgb_array renderings
-#         Returns S, A, R, {Info}, {Frames}
-#         """
-#         S, A, R = [], [], []
-#         S.append(self.reset())
-#         done = False
-#         Info = {}
-#         Frames = []
-#         Costs = []
-#         Ret = []
-#         kwargs = {"deterministic": True} if deterministic else {}
-#         if render:
-#             if frames:
-#                 Frames += [self.render(mode="rgb_array")]
-#             else:
-#                 self.render()
-#             if sleep != None:
-#                 time.sleep(sleep)
-#         while not done:
-#             action = policy.act(S[-1], **kwargs)
-#             A.append(action)
-#             step_data = self.step(action)
-#             if render:
-#                 if frames:
-#                     Frames += [self.render(mode="rgb_array")]
-#                 else:
-#                     self.render()
-#                 if sleep != None:
-#                     time.sleep(sleep)
-#             if cost is not None:
-#                 Costs += [cost((S[-1], action))]
-#             if novelty_add is not None:
-#                 step_data["reward"] += novelty_add((S[-1], action))
-#             if novelty is not None:
-#                 step_data["reward"] = novelty((S[-1], action))
-#             S.append(step_data["next_state"])
-#             R.append(step_data["reward"])
-#             if "info" in step_data.keys():
-#                 Info = combine_dicts(Info, step_data["info"])
-#             done = step_data["done"]
-#             Info["max_cost_reached"] = 0.
-#             if cost is not None and \
-#                     rewards_to_returns(Costs, cost.discount_factor)[0] >= cost.beta:
-#                 done = True
-#                 Info["max_cost_reached"] = 1.
-#             if buf != None:
-#                 buf.add((S[-2], A[-1], R[-1], S[-1], done))
-#         if info:
-#             Ret += [Info]
-#         if frames:
-#             Ret += [Frames]
-#         if cost is not None:
-#             Ret += [Costs]
-#         return S, A, R, *Ret
+from utils.data_utils import softmax
 from utils.plot_utils import Plot2D
 
 
@@ -125,10 +21,9 @@ class WallGridworld(gym.Env):
     def reset_model(self):
         pass
 
-    def __init__(self, map_height, map_width, reward_states, terminal_states,
+    def __init__(self, map_height, map_width, reward_states, terminal_states, n_actions,
                  visualization_path='./',
                  transition_prob=1.,
-                 stay_action=True,
                  unsafe_states=[],
                  start_states=None):
         """
@@ -148,18 +43,26 @@ class WallGridworld(gym.Env):
         # self.h, self.w = len(self.reward_mat), len(self.reward_mat[0])
         self.n = self.h * self.w
         self.terminals = terminal_states
-        if stay_action:
-            self.neighbors = [(0, 1), (0, -1), (1, 0), (-1, 0), (1, 1), (-1, 1), (1, -1), (-1, -1), (0, 0)]
+        if n_actions == 9:
+            self.neighbors = [(0, 1), (0, -1), (1, 0), (-1, 0), (1, 1), (-1, 1), (1, -1), (-1, -1), (0, 0)]  # effect of each movement
             self.actions = [0, 1, 2, 3, 4, 5, 6, 7, 8]
             self.n_actions = len(self.actions)
             self.dirs = {0: 'r', 1: 'l', 2: 'd', 3: 'u', 4: 'rd', 5: 'ru', 6: 'ld', 7: 'lu', 8: 's'}
             self.action_space = gym.spaces.Discrete(9)
-        else:
-            self.neighbors = [(0, 1), (0, -1), (1, 0), (-1, 0), (1, 1), (-1, 1), (1, -1), (-1, -1)]
+        elif n_actions == 8:
+            self.neighbors = [(0, 1), (0, -1), (1, 0), (-1, 0), (1, 1), (-1, 1), (1, -1), (-1, -1)]  # effect of each movement
             self.actions = [0, 1, 2, 3, 4, 5, 6, 7]
             self.n_actions = len(self.actions)
             self.dirs = {0: 'r', 1: 'l', 2: 'd', 3: 'u', 4: 'rd', 5: 'ru', 6: 'ld', 7: 'lu'}
             self.action_space = gym.spaces.Discrete(8)
+        elif n_actions == 4:
+            self.neighbors = [(0, 1), (0, -1), (1, 0), (-1, 0)]  # effect of each movement
+            self.actions = [0, 1, 2, 3]
+            self.n_actions = len(self.actions)
+            self.dirs = {0: 'r', 1: 'l', 2: 'd', 3: 'u'}
+            self.action_space = gym.spaces.Discrete(4)
+        else:
+            raise EnvironmentError("Unknown number of actions {0}.".format(n_actions))
         self.transition_prob = transition_prob
         self.terminated = True
         self.observation_space = gym.spaces.Box(low=np.array([0, 0]),
@@ -223,8 +126,8 @@ class WallGridworld(gym.Env):
                 return [((state[0], state[1]), 1)]  # state invalid
         else:
             mov_probs = np.zeros([self.n_actions])
-            mov_probs[action] = self.trans_prob
-            mov_probs += (1 - self.trans_prob) / self.n_actions
+            mov_probs[action] = self.transition_prob
+            mov_probs += (1 - self.transition_prob) / self.n_actions
             for a in range(self.n_actions):
                 inc = self.neighbors[a]
                 nei_s = (state[0] + inc[0], state[1] + inc[1])
@@ -232,9 +135,13 @@ class WallGridworld(gym.Env):
                         nei_s[1] < 0 or nei_s[1] >= self.w or \
                         self.reward_mat[nei_s[0]][nei_s[1]] in \
                         [-np.inf, float('inf'), np.nan, float('nan')]:
-                    mov_probs[-1] += mov_probs[a]
+                    # mov_probs[-1] += mov_probs[a]
                     mov_probs[a] = 0
+            # sample_action = random.choices([i for i in range(self.n_actions)], weights=mov_probs, k=1)[0]
+            # inc = self.neighbors[sample_action]
+            # return [((state[0] + inc[0], state[1] + inc[1]), 1)]
             res = []
+            mov_probs = mov_probs * 1/np.sum(mov_probs)
             for a in range(self.n_actions):
                 if mov_probs[a] != 0:
                     inc = self.neighbors[a]
@@ -261,26 +168,40 @@ class WallGridworld(gym.Env):
         """
         return (idx % self.h, idx // self.h)
 
+    def reset_with_values(self, info_dict):
+        self.curr_state = info_dict['states']
+        assert self.curr_state not in self.terminals
+        self.terminated = False
+        self.steps = 0
+        return self.state
+
     def reset(self, **kwargs):
         """
         Reset the environment.
         """
-        if self.start_states != None:
-            random_state = random.choice(self.start_states)
-            self.curr_state = random_state
+        if 'states' in kwargs.keys():
+            self.curr_state = kwargs['states']
+            assert self.curr_state not in self.terminals
+            self.terminated = False
+            self.steps = 0
+            return self.state
         else:
-            random_state = np.random.randint(self.h * self.w)
-            self.curr_state = self.idx2pos(random_state)
-        while self.curr_state in self.terminals or self.curr_state in self.unsafe_states:
             if self.start_states != None:
                 random_state = random.choice(self.start_states)
                 self.curr_state = random_state
             else:
                 random_state = np.random.randint(self.h * self.w)
                 self.curr_state = self.idx2pos(random_state)
-        self.terminated = False
-        self.steps = 0
-        return self.state
+            while self.curr_state in self.terminals or self.curr_state in self.unsafe_states:
+                if self.start_states != None:
+                    random_state = random.choice(self.start_states)
+                    self.curr_state = random_state
+                else:
+                    random_state = np.random.randint(self.h * self.w)
+                    self.curr_state = self.idx2pos(random_state)
+            self.terminated = False
+            self.steps = 0
+            return self.state
 
     def step(self, action):
         """
@@ -289,25 +210,22 @@ class WallGridworld(gym.Env):
         action = int(action)
         if self.terminal(self.state):
             self.terminated = True
-            # return {
-            #     "next_state": list(self.state),
-            #     "reward": self.reward_mat[self.state[0], self.state[1]],
-            #     "done": True,
-            #     "info": {}
-            # }
             self.steps += 1
+            admissible_actions = self.get_actions(self.curr_state)
             return (list(self.state),
-                    self.reward_mat[self.state[0], self.state[1]],
+                    0,
                     True,
                     {'x_position': self.state[0],
-                     'y_position': self.state[1]},
+                     'y_position': self.state[1],
+                     'admissible_actions': admissible_actions,
+                     },
                     )
         self.terminated = False
         st_prob = self.get_next_states_and_probs(self.state, action)
         sampled_idx = np.random.choice(np.arange(0, len(st_prob)), p=[prob for st, prob in st_prob])
         last_state = self.state
         next_state = st_prob[sampled_idx][0]
-        reward = self.reward_mat[last_state[0]][last_state[1]]
+        reward = self.reward_mat[next_state[0]][next_state[1]]
         self.curr_state = next_state
         # return {
         #     "next_state": list(self.state),
@@ -316,11 +234,14 @@ class WallGridworld(gym.Env):
         #     "info": {}
         # }
         self.steps += 1
+        admissible_actions = self.get_actions(self.curr_state)
         return (list(self.state),
                 reward,
                 False,
-                {'x_position': self.state[0],
-                 'y_position': self.state[1]},
+                {'y_position': self.state[0],
+                 'x_position': self.state[1],
+                 'admissible_actions': admissible_actions,
+                 },
                 )
 
     def seed(self, s=None):
@@ -354,26 +275,3 @@ class WallGridworld(gym.Env):
             img = img.reshape(self.plot.fig.canvas.get_width_height()[::-1] + (3,))
             return img
 
-
-########
-# Expert data loading
-
-# expert_data = torch.load("data.pt")
-# expert_obs = []
-# expert_acs = []
-# for S, A in expert_data:
-#     for s in S:
-#         expert_obs += [s]
-#     for a in A:
-#         expert_acs += [a]
-# expert_obs = np.array(expert_obs)
-# expert_acs = np.array(expert_acs)
-#
-# if time_limit is not None:
-#     time_limit = 50
-# r = np.zeros((7, 7)); r[6, 0] = 1.
-# t = [(6, 0)]
-# u = [(ui, uj) for ui in [3] for uj in [0,1,2,3]]
-# s = [(ui, uj) for ui in [0,1,2] for uj in [0,1]]
-# ret = GridworldEnvironment(r=r, t=t, stay_action=False, unsafe_states=u,
-#                 start_states=s)

@@ -29,8 +29,7 @@ def make_env(env_id, env_configs, rank, log_dir, group, multi_env=False, seed=0)
                 {'train_reset_config_path': env_configs['train_reset_config_path'] + '/{0}'.format(rank)}),
         if 'external_reward' in env_configs:
             del env_configs_copy['external_reward']
-        env = gym.make(id=env_id,
-                       **env_configs_copy)
+        env = gym.make(id=env_id, **env_configs_copy)
         env.seed(seed + rank)
         del env_configs_copy
         if is_commonroad(env_id) and 'external_reward' in env_configs:
@@ -55,14 +54,23 @@ def make_env(env_id, env_configs, rank, log_dir, group, multi_env=False, seed=0)
 
 def make_train_env(env_id, config_path, save_dir, group='PPO', base_seed=0, num_threads=1,
                    use_cost=False, normalize_obs=True, normalize_reward=True, normalize_cost=True, multi_env=False,
-                   log_file=None, **kwargs):
+                   part_data=False, **kwargs):
     if config_path is not None:
         with open(config_path, "r") as config_file:
             env_configs = yaml.safe_load(config_file)
-            if is_commonroad(env_id) and multi_env:
-                env_configs['train_reset_config_path'] += '_split'
+            if is_commonroad(env_id):
+                env_configs['max_scene_per_env'] = kwargs['max_scene_per_env']
+                if multi_env:
+                    env_configs['train_reset_config_path'] += '_split'
+                if part_data:  # for debugging with only a partial dataset
+                    env_configs['train_reset_config_path'] += '_debug'
+                    env_configs['test_reset_config_path'] += '_debug'
+                    env_configs['meta_scenario_path'] += '_debug'
     else:
-        env_configs = {}
+        if 'Noise' in env_id:
+            env_configs = {'noise_mean': kwargs['noise_mean'], 'noise_std': kwargs['noise_std']}
+        else:
+            env_configs = {}
     env = [make_env(env_id=env_id,
                     env_configs=env_configs,
                     rank=i,
@@ -71,30 +79,16 @@ def make_train_env(env_id, config_path, save_dir, group='PPO', base_seed=0, num_
                     multi_env=multi_env,
                     seed=base_seed)
            for i in range(num_threads)]
-    # if 'HC' in env_id:
-    env = vec_env.SubprocVecEnv(env)
-    # elif 'commonroad' in env_id:
-    # env = vec_env.DummyVecEnv(env)
-    # else:
-    #     raise ValueError("Unknown env id {0}".format(env_id))
 
-    if use_cost:
-        if group == 'PPO-Lag':
+    env = vec_env.SubprocVecEnv(env)  # use multi-process running
+
+    if use_cost:  # add external cost wrapper for reading cost info
+        if group == 'PPO-Lag' or group == 'PI-Lag':
             env = InternalVecCostWrapper(env, kwargs['cost_info_str'])  # internal cost
         else:
             env = vec_env.VecCostWrapper(env, kwargs['cost_info_str'])  # external cost
-    # if normalize_reward and normalize_cost:
-    #     assert (all(key in kwargs for key in ['cost_info_str', 'reward_gamma', 'cost_gamma']))
-    #     env = vec_env.VecNormalizeWithCost(
-    #         env, training=True,
-    #         norm_obs=normalize_obs,
-    #         norm_reward=normalize_reward,
-    #         norm_cost=normalize_cost,
-    #         cost_info_str=kwargs['cost_info_str'],
-    #         reward_gamma=kwargs['reward_gamma'],
-    #         cost_gamma=kwargs['cost_gamma'])
-    # else:
-    if group == 'PPO' or group == 'GAIL':
+
+    if group == 'PPO' or group == 'GAIL':  # without cost
         assert (all(key in kwargs for key in ['reward_gamma']))
         env = vec_env.VecNormalize(
             env,
@@ -102,7 +96,7 @@ def make_train_env(env_id, config_path, save_dir, group='PPO', base_seed=0, num_
             norm_obs=normalize_obs,
             norm_reward=normalize_reward,
             gamma=kwargs['reward_gamma'])
-    else:
+    else:  # Normalize cost returns
         assert (all(key in kwargs for key in ['cost_info_str', 'reward_gamma', 'cost_gamma']))
         env = vec_env.VecNormalizeWithCost(
             env, training=True,
@@ -112,31 +106,31 @@ def make_train_env(env_id, config_path, save_dir, group='PPO', base_seed=0, num_
             cost_info_str=kwargs['cost_info_str'],
             reward_gamma=kwargs['reward_gamma'],
             cost_gamma=kwargs['cost_gamma'])
-    # else:
-    #     if use_cost:
-    #         env = vec_env.VecNormalizeWithCost(
-    #             env, training=True, norm_obs=normalize_obs, norm_reward=False, norm_cost=False)
-    #     else:
-    #         env = vec_env.VecNormalize(
-    #             env, training=True, norm_obs=normalize_obs, norm_reward=False, norm_cost=False,
-    #             gamma=kwargs['reward_gamma'])
     return env, env_configs
 
 
 def make_eval_env(env_id, config_path, save_dir, group='PPO', num_threads=1,
                   mode='test', use_cost=False, normalize_obs=True, cost_info_str='cost',
-                  part_data=False, multi_env=False, log_file=None):
+                  part_data=False, multi_env=False, **kwargs):
     if config_path is not None:
         with open(config_path, "r") as config_file:
             env_configs = yaml.safe_load(config_file)
-            if is_commonroad(env_id) and multi_env:
-                env_configs['train_reset_config_path'] += '_split'
+            if is_commonroad(env_id):
+                env_configs['max_scene_per_env'] = kwargs['max_scene_per_env']
+                if multi_env:
+                    env_configs['train_reset_config_path'] += '_split'
+                if part_data:
+                    env_configs['train_reset_config_path'] += '_debug'
+                    env_configs['test_reset_config_path'] += '_debug'
+                    env_configs['meta_scenario_path'] += '_debug'
         if is_commonroad(env_id) and mode == 'test':
             env_configs["test_env"] = True
     else:
-        env_configs = {}
-    # env = [lambda: gym.make(env_id, **env_configs)]
-    # env = [make_env(env_id, env_configs, 0, os.path.join(save_dir, mode))]
+        if 'Noise' in env_id:
+            env_configs = {'noise_mean': kwargs['noise_mean'], 'noise_std': kwargs['noise_std']}
+        else:
+            env_configs = {}
+
     env = [make_env(env_id=env_id,
                     env_configs=env_configs,
                     rank=i,
@@ -144,33 +138,25 @@ def make_eval_env(env_id, config_path, save_dir, group='PPO', num_threads=1,
                     log_dir=os.path.join(save_dir, mode),
                     multi_env=multi_env)
            for i in range(num_threads)]
-    # if 'HC' in env_id:
-    # env = vec_env.SubprocVecEnv(env)
-    # elif 'commonroad' in env_id:
-    env = vec_env.DummyVecEnv(env)
-    # else:
-    #     raise ValueError("Unknown env id {0}".format(env_id))
+
+    env = vec_env.DummyVecEnv(env)  # use single-process running
+
     if use_cost:
-        if group == 'PPO-Lag':
+        if group == 'PPO-Lag' or group == 'PI-Lag':
             env = InternalVecCostWrapper(env, cost_info_str)  # internal cost, use environment knowledge
         else:
             env = vec_env.VecCostWrapper(env, cost_info_str)  # external cost, must be learned
-    # print("Wrapping eval env in a VecNormalize.", file=log_file, flush=True)
     if group == 'PPO' or group == 'GAIL':
         env = vec_env.VecNormalize(env, training=False, norm_obs=normalize_obs, norm_reward=False)
     else:
         env = vec_env.VecNormalizeWithCost(env, training=False, norm_obs=normalize_obs,
                                            norm_reward=False, norm_cost=False)
-
-    # if is_image_space(env.observation_space) and not isinstance(env, vec_env.VecTransposeImage):
-    #     print("Wrapping eval env in a VecTransposeImage.")
-    #     env = vec_env.VecTransposeImage(env)
-
     return env, env_configs
 
 
 class InternalVecCostWrapper(VecEnvWrapper):
-    def __init__(self, venv, cost_info_str = 'cost'):
+    def \
+            __init__(self, venv, cost_info_str='cost'):
         super().__init__(venv)
         self.cost_info_str = cost_info_str
 
@@ -238,6 +224,14 @@ class InternalVecCostWrapper(VecEnvWrapper):
         Reset all environments
         """
         obs = self.venv.reset()
+        self.previous_obs = obs
+        return obs
+
+    def reset_with_values(self, info_dicts):
+        """
+        Reset all environments
+        """
+        obs = self.venv.reset_with_values(info_dicts)
         self.previous_obs = obs
         return obs
 

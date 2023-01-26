@@ -32,6 +32,8 @@ class CNSMonitor(stable_baselines3.common.monitor.Monitor):
             filename += 'r{0}_{1}'.format(rank, "monitor.csv")
 
         self.t_start = time.time()
+        self.write_marker = False
+        self.write_logger = True
         if filename is None:
             self.file_handler = None
             self.logger = None
@@ -77,6 +79,9 @@ class CNSMonitor(stable_baselines3.common.monitor.Monitor):
             self.info_saving_file = None
             self.info_saving_items = []
 
+    def get_logger(self):
+        return self.logger
+
     def set_info_saving_file(self, info_saving_file, info_saving_items):
         if self.info_saving_file is not None:
             self.info_saving_file.close()
@@ -84,28 +89,62 @@ class CNSMonitor(stable_baselines3.common.monitor.Monitor):
         self.info_saving_items = info_saving_items
 
     def reset(self, **kwargs) -> np.ndarray:
-        if not self.allow_early_resets and not self.needs_reset:
-            raise RuntimeError(
-                "Tried to reset an environment before done. If you want to allow early resets, "
-                "wrap your env with Monitor(env, path, allow_early_resets=True)"
-            )
-        self.rewards = []
-        self.rewards_not_constraint = []  # the rewards before breaking the constraint
-        if is_commonroad(self.env.spec.id):
-            self.ego_velocity_game = []
-            self.lanebase_relative_position_game = []
-        self.needs_reset = False
+        self.write_logger = True
+        self.init_record_info()
+        self.init_event_dict()
         for key in self.reset_keywords:
             value = kwargs.get(key)
             if value is None:
                 raise ValueError("Expected you to pass kwarg {} into reset".format(key))
             self.current_reset_info[key] = value
-
-        self.track = {key: [] for key in self.track_keywords}
-        self.t_start = time.time()
         return self.env.reset(**kwargs)
 
+    def reset_with_info(self, info) -> np.ndarray:
+        self.write_logger = info['write_logger']
+        self.init_record_info()
+        self.init_event_dict()
+        return self.env.reset_with_info(info)
+
+    def init_record_info(self):
+        if not self.allow_early_resets and not self.needs_reset:
+            raise RuntimeError(
+                "Tried to reset an environment before done. If you want to allow early resets, "
+                "wrap your env with Monitor(env, path, allow_early_resets=True)"
+            )
+        self.needs_reset = False
+        self.rewards = []
+        self.rewards_not_constraint = []  # the rewards before breaking the constraint
+        if is_commonroad(self.env.spec.id):
+            self.ego_velocity_game = []
+            self.lanebase_relative_position_game = []
+        self.track = {key: [] for key in self.track_keywords}
+        self.t_start = time.time()
+
+    def init_event_dict(self):
+        if is_mujoco(self.env.spec.id):
+            self.event_dict = {
+                'is_constraint_break': 0
+            }
+        elif is_commonroad(self.env.spec.id):
+            self.event_dict = {
+                'is_collision': 0,
+                'is_off_road': 0,
+                'is_goal_reached': 0,
+                'is_time_out': 0,
+                'is_over_speed': 0,
+                'is_too_closed': 0
+            }
+
     def step(self, action: np.ndarray) -> Tuple[np.ndarray, float, bool, Dict[Any, Any]]:
+
+        if self.write_marker and self.logger:
+            marker_dict = {}
+            for filename in self.logger.fieldnames:
+                marker_dict.update({filename: '='})
+            self.logger.writerow(marker_dict)
+            self.file_handler.flush()
+            self.write_marker = False
+
         if self.needs_reset:
             raise RuntimeError("Tried to step environment that needs reset")
         observation, reward, done, info = self.env.step(action)
@@ -209,22 +248,10 @@ class CNSMonitor(stable_baselines3.common.monitor.Monitor):
             self.episode_lengths.append(ep_len)
             self.episode_times.append(time.time() - self.t_start)
             ep_info.update(self.current_reset_info)
-            if self.logger:
+            if self.logger and self.write_logger:
                 self.logger.writerow(ep_info)
                 self.file_handler.flush()
             info["episode"] = ep_info
-            if is_mujoco(self.env.spec.id):
-                self.event_dict = {
-                    'is_constraint_break': 0
-                }
-            elif is_commonroad(self.env.spec.id):
-                self.event_dict = {
-                    'is_collision': 0,
-                    'is_off_road': 0,
-                    'is_goal_reached': 0,
-                    'is_time_out': 0,
-                    'is_over_speed': 0,
-                    'is_too_closed': 0
-                }
+            self.init_event_dict()
         self.total_steps += 1
         return observation, reward, done, info

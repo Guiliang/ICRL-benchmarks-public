@@ -12,7 +12,7 @@
 # from tqdm import tqdm
 #
 # from utils.model_utils import dirichlet_kl_divergence_loss
-
+import copy
 # class ConstraintNet(nn.Module):
 #     def __init__(
 #             self,
@@ -492,6 +492,8 @@ from stable_baselines3.common.utils import update_learning_rate
 from torch import nn
 from tqdm import tqdm
 
+from utils.data_utils import idx2vector
+
 
 class ConstraintNet(nn.Module):
     def __init__(
@@ -521,6 +523,8 @@ class ConstraintNet(nn.Module):
             target_kl_new_old: float = -1,
             train_gail_lambda: Optional[bool] = False,
             eps: float = 1e-5,
+            recon_obs: bool = False,
+            env_configs: dict = None,
             device: str = "cpu",
             log_file=None,
     ):
@@ -531,10 +535,8 @@ class ConstraintNet(nn.Module):
         self.obs_select_dim = obs_select_dim
         self.acs_select_dim = acs_select_dim
         self._define_input_dims()
-
         self.expert_obs = expert_obs
         self.expert_acs = expert_acs
-
         self.hidden_sizes = hidden_sizes
         self.batch_size = batch_size
         self.is_discrete = is_discrete
@@ -544,7 +546,8 @@ class ConstraintNet(nn.Module):
         self.clip_obs = clip_obs
         self.device = device
         self.eps = eps
-
+        self.recon_obs = recon_obs
+        self.env_configs = env_configs
         self.train_gail_lambda = train_gail_lambda
 
         if optimizer_kwargs is None:
@@ -621,7 +624,7 @@ class ConstraintNet(nn.Module):
         return self.network(x)
 
     def cost_function(self, obs: np.ndarray, acs: np.ndarray, force_mode: str = None) -> np.ndarray:
-        assert obs.shape[-1] == self.obs_dim, ""
+        assert self.recon_obs or obs.shape[-1] == self.obs_dim, ""
         if not self.is_discrete:
             assert acs.shape[-1] == self.acs_dim, ""
 
@@ -635,6 +638,117 @@ class ConstraintNet(nn.Module):
         with th.no_grad():
             out = self.__call__(th.tensor(x, dtype=th.float32).to(self.device))
         return out
+
+    def train_traj_nn(
+            self,
+            iterations: np.ndarray,
+            nominal_obs: np.ndarray,
+            nominal_acs: np.ndarray,
+            episode_lengths: np.ndarray,
+            obs_mean: Optional[np.ndarray] = None,
+            obs_var: Optional[np.ndarray] = None,
+            env_configs: Dict = None,
+            current_progress_remaining: float = 1,
+    ) -> Dict[str, Any]:
+        # Update learning rate
+        self._update_learning_rate(current_progress_remaining)
+
+        # Update normalization stats
+        self.current_obs_mean = obs_mean
+        self.current_obs_var = obs_var
+        # Prepare data
+        nominal_data_games = [self.prepare_data(nominal_obs[i], nominal_acs[i])
+                              for i in range(len(nominal_obs))]
+        expert_data_games = [self.prepare_data(self.expert_obs[i], self.expert_acs[i])
+                             for i in range(len(self.expert_obs))]
+        early_stop_itr = iterations
+        # loss = th.tensor(np.inf)
+        for itr in tqdm(range(iterations)):
+            for gid in range(min(len(nominal_data_games), len(expert_data_games))):
+                nominal_data = nominal_data_games[gid]
+                expert_data = expert_data_games[gid]
+
+                # Save current network predictions if using importance sampling
+                if self.importance_sampling:
+                    with th.no_grad():
+                        start_preds = self.forward(nominal_data).detach()
+
+                # Compute IS weights
+                if self.importance_sampling:
+                    with th.no_grad():
+                        current_preds = self.forward(nominal_data).detach()
+                    is_weights, kl_old_new, kl_new_old = self.compute_is_weights(start_preds.clone(),
+                                                                                 current_preds.clone(),
+                                                                                 episode_lengths)
+                    # Break if kl is very large
+                    if ((self.target_kl_old_new != -1 and kl_old_new > self.target_kl_old_new) or
+                            (self.target_kl_new_old != -1 and kl_new_old > self.target_kl_new_old)):
+                        early_stop_itr = itr
+                        break
+                else:
+                    is_weights = th.ones(nominal_data.shape[0]).to(self.device)
+
+                nominal_preds_all = []
+                expert_preds_all = []
+                # Do a complete pass on the game data
+                for nom_batch_indices, exp_batch_indices in self.get(nominal_data.shape[0], expert_data.shape[0]):
+                    # Get batch data
+                    nominal_batch = nominal_data[nom_batch_indices]
+                    expert_batch = expert_data[exp_batch_indices]
+                    is_batch = is_weights[nom_batch_indices][..., None]
+
+                    # Make predictions
+                    nominal_preds = self.__call__(nominal_batch)
+                    nominal_preds_all.append(nominal_preds)
+                    expert_preds = self.__call__(expert_batch)
+                    expert_preds_all.append(expert_preds)
+
+                # Calculate loss
+                expert_preds_all = th.concat(expert_preds_all)
+                nominal_preds_all = th.concat(nominal_preds_all)
+                if self.train_gail_lambda:
+                    nominal_preds_prod = nominal_preds_all.prod(dim=0)
+                    nominal_loss = self.criterion(nominal_preds_prod,
+                                                  th.zeros(*nominal_preds_prod.size()).to(self.device))
+                    expert_preds_prod = expert_preds_all.prod(dim=0)
+                    expert_loss = self.criterion(expert_preds_prod, th.ones(*expert_preds_prod.size()).to(self.device))
+                    regularizer_loss = th.tensor(0)
+                    loss = nominal_loss + expert_loss
+                    # expert_loss = th.sum(th.log(expert_preds_all + self.eps))
+                    # nominal_loss = th.sum(th.log(nominal_preds_all + self.eps))
+                    # regularizer_loss = th.tensor(0)
+                    # loss = (-expert_loss + nominal_loss) + regularizer_loss
+                else:
+                    expert_loss = th.sum(th.log(expert_preds_all + self.eps))
+                    nominal_loss = th.sum(is_batch * th.log(nominal_preds_all + self.eps))
+                    regularizer_loss = self.regularizer_coeff * (th.mean(1 - expert_preds_all)
+                                                                 + th.mean(1 - nominal_preds_all))
+                    loss = (-expert_loss + nominal_loss) + regularizer_loss
+                self.optimizer.zero_grad()
+                loss.backward()
+                self.optimizer.step()
+
+        bw_metrics = {"backward/cn_loss": loss.item(),
+                      "backward/expert_loss": expert_loss.item(),
+                      "backward/unweighted_nominal_loss": th.mean(th.log(nominal_preds + self.eps)).item(),
+                      "backward/nominal_loss": nominal_loss.item(),
+                      "backward/regularizer_loss": regularizer_loss.item(),
+                      "backward/is_mean": th.mean(is_weights).detach().item(),
+                      "backward/is_max": th.max(is_weights).detach().item(),
+                      "backward/is_min": th.min(is_weights).detach().item(),
+                      "backward/nominal_preds_max": th.max(nominal_preds).item(),
+                      "backward/nominal_preds_min": th.min(nominal_preds).item(),
+                      "backward/nominal_preds_mean": th.mean(nominal_preds).item(),
+                      "backward/expert_preds_max": th.max(expert_preds).item(),
+                      "backward/expert_preds_min": th.min(expert_preds).item(),
+                      "backward/expert_preds_mean": th.mean(expert_preds).item(), }
+        if self.importance_sampling:
+            stop_metrics = {"backward/kl_old_new": kl_old_new.item(),
+                            "backward/kl_new_old": kl_new_old.item(),
+                            "backward/early_stop_itr": early_stop_itr}
+            bw_metrics.update(stop_metrics)
+
+        return bw_metrics
 
     def train_nn(
             self,
@@ -762,11 +876,16 @@ class ConstraintNet(nn.Module):
             acs: np.ndarray,
     ) -> th.tensor:
 
+        if self.recon_obs:
+            obs = idx2vector(obs, height=self.env_configs['map_height'], width=self.env_configs['map_width'])
+        else:
+            obs = copy.copy(obs)
+
         obs = self.normalize_obs(obs, self.current_obs_mean, self.current_obs_var, self.clip_obs)
         acs = self.reshape_actions(acs)
         acs = self.clip_actions(acs, self.action_low, self.action_high)
-
         concat = self.select_appropriate_dims(np.concatenate([obs, acs], axis=-1))
+        del obs, acs
 
         return th.tensor(concat, dtype=th.float32).to(self.device)
 
@@ -829,6 +948,9 @@ class ConstraintNet(nn.Module):
     def _update_learning_rate(self, current_progress_remaining) -> None:
         self.current_progress_remaining = current_progress_remaining
         update_learning_rate(self.optimizer, self.lr_schedule(current_progress_remaining))
+        print("Learning rate is {0}.".format(self.lr_schedule(current_progress_remaining)),
+              file=self.log_file,
+              flush=True)
 
     def save(self, save_path):
         state_dict = dict(

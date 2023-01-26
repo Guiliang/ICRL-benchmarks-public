@@ -148,7 +148,6 @@ commonroad_environment/environment.yml
 
 
 # constraint inference
-save_model/*
 evaluate_model/*
 data/expert_data/*
 data/highD/raw/*

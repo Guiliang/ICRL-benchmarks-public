@@ -1,3 +1,4 @@
+import itertools
 import os
 
 import numpy as np
@@ -9,9 +10,67 @@ from utils.data_utils import del_and_make
 from utils.plot_utils import plot_curve
 
 
-def plot_constraints(cost_function, feature_range, select_dim, obs_dim, acs_dim,
-                     save_name, device='cpu', feature_data=None, feature_cost=None, feature_name=None,
-                     empirical_input_means=None, num_points=1000, axis_size=24):
+def beta_parameters_visualization(obs_str, constraint_net, alpha_all, beta_all, save_path):
+    obs = np.asarray([[int(obs_str.split('-')[0]), int(obs_str.split('-')[1])]])
+    tmp_data = constraint_net.prepare_data(obs=obs, acs=np.asarray([0]))
+    alpha_beta = constraint_net.network(tmp_data)
+    alpha = alpha_beta[:, 0].item()
+    beta = alpha_beta[:, 1].item()
+    print("alpha: {0}, beta: {1}".format(alpha, beta))
+    alpha_all[obs_str].append(alpha)
+    beta_all[obs_str].append(beta)
+    plt.figure()
+    plt.plot(range(len(alpha_all[obs_str])), alpha_all[obs_str])
+    plt.savefig(save_path + '/alpha_{0}.png'.format(obs_str))
+    plt.figure()
+    plt.plot(range(len(beta_all[obs_str])), beta_all[obs_str])
+    plt.savefig(save_path + '/beta_{0}.png'.format(obs_str))
+
+
+def traj_visualization_2d(config, observations, save_path, model_name='', title='', axis_size=24):
+    traj_num = len(observations)
+    import matplotlib as mpl
+    mpl.rcParams['xtick.labelsize'] = axis_size
+    mpl.rcParams['ytick.labelsize'] = axis_size
+    plt.figure(figsize=(5, 5))
+    for i in range(traj_num)[0: 5]:
+        x = observations[i][:, config['env']["record_info_input_dims"][0]]
+        y = observations[i][:, config['env']["record_info_input_dims"][1]]
+        plt.plot(x, y, label='{0}th Traj'.format(i))
+        plt.scatter(x, y)
+    xticks = np.arange(config['env']["visualize_info_ranges"][0][0],
+                       config['env']["visualize_info_ranges"][0][1] + 1, 1)
+    plt.xticks(xticks)
+    yticks = np.arange(config['env']["visualize_info_ranges"][1][0],
+                       config['env']["visualize_info_ranges"][1][1] + 1, 1)
+    plt.yticks(yticks)
+    # plt.yticks(config['env']["visualize_info_ranges"][1])
+    # plt.xlabel(config['env']["record_info_names"][0], fontsize=axis_size)
+    # plt.ylabel(config['env']["record_info_names"][1], fontsize=axis_size)
+    plt.legend(fontsize=15, loc='lower right')
+    plt.grid(linestyle='--')
+    plt.title('{0}'.format(title), fontsize=axis_size)
+    plt.savefig(os.path.join(save_path, "2d_traj_visual_{0}_{1}.png".format(model_name, title)))
+
+
+def traj_visualization_1d(config, observations, save_path):
+    for record_info_idx in range(len(config['env']["record_info_names"])):
+        plt.figure()
+        record_info_name = config['env']["record_info_names"][record_info_idx]
+        record_obs_dim = config['env']["record_info_input_dims"][record_info_idx]
+        if config['running']['store_by_game']:
+            plt.hist(np.concatenate(observations, axis=0)[:, record_obs_dim],
+                     bins=40, )
+        else:
+            plt.hist(observations[:, record_info_idx],
+                     bins=40, )
+        plt.legend()
+        plt.savefig(os.path.join(save_path, "{0}_traj_visual.png".format(record_info_name)))
+
+
+def constraint_visualization_1d(cost_function, feature_range, select_dim, obs_dim, acs_dim,
+                                save_name, device='cpu', feature_data=None, feature_cost=None, feature_name=None,
+                                empirical_input_means=None, num_points=1000, axis_size=24):
     import matplotlib as mpl
     mpl.rcParams['xtick.labelsize'] = axis_size
     mpl.rcParams['ytick.labelsize'] = axis_size
@@ -50,6 +109,55 @@ def plot_constraints(cost_function, feature_range, select_dim, obs_dim, acs_dim,
     ax[0].grid(which='minor', linestyle=':', linewidth='0.5', color='black')
     fig.savefig(save_name)
     plt.close(fig=fig)
+
+
+def constraint_visualization_2d(cost_function, feature_range, select_dims,
+                                obs_dim, acs_dim,
+                                title='', num_points_per_feature=100,
+                                axis_size=20, force_mode=None, save_path=None, empirical_input_means=None, model_name=''):
+    import matplotlib as mpl
+    mpl.rcParams['xtick.labelsize'] = axis_size
+    mpl.rcParams['ytick.labelsize'] = axis_size
+
+    selected_feature_1_generation = np.linspace(feature_range[0][0], feature_range[0][1], num_points_per_feature)
+    selected_feature_2_generation = np.linspace(feature_range[1][1], feature_range[1][0], num_points_per_feature)
+    selected_feature_all = np.asarray(
+        [d for d in itertools.product(selected_feature_1_generation, selected_feature_2_generation)])
+    tmp = selected_feature_all.reshape([num_points_per_feature, num_points_per_feature, 2]).transpose(1, 0, 2)
+    if empirical_input_means is None:
+        input_all = np.zeros((num_points_per_feature ** 2, obs_dim + acs_dim))
+    else:
+        assert len(empirical_input_means) == obs_dim + acs_dim
+        input_all = np.expand_dims(empirical_input_means, 0).repeat(num_points_per_feature ** 2, axis=0)
+    input_all[:, select_dims[0]] = selected_feature_all[:, 0]
+    input_all[:, select_dims[1]] = selected_feature_all[:, 1]
+
+    obs = input_all[:, :obs_dim]
+    acs = input_all[:, obs_dim:]
+
+    with torch.no_grad():
+        if force_mode is None:
+            preds = cost_function(obs=obs, acs=acs)
+        else:
+            preds = cost_function(obs=obs, acs=acs, force_mode=force_mode)
+    fig, ax = plt.subplots(1, 1, figsize=(5, 5))
+    im = ax.imshow(preds.reshape([num_points_per_feature, num_points_per_feature]).transpose(1, 0),
+                   cmap='binary',  # 'cool',
+                   interpolation="nearest",
+                   extent=[feature_range[0][0], feature_range[0][1],
+                           feature_range[1][0], feature_range[1][1]])
+    cbar = plt.colorbar(im)
+    cbar.set_label("Cost", fontsize=axis_size)
+    xticks = np.arange(feature_range[0][0],
+                       feature_range[0][1] + 1, 1)
+    plt.xticks(xticks)
+    yticks = np.arange(feature_range[1][0],
+                       feature_range[1][1] + 1, 1)
+    plt.yticks(yticks)
+    plt.grid(linestyle='--', color='r', alpha=1)
+    plt.title('{0}'.format(title), fontsize=axis_size)
+    # plt.show()
+    plt.savefig(os.path.join(save_path, "constraint_visualization_{0}_{1}.png".format(model_name,title)))
 
 
 class PlotCallback(callbacks.BaseCallback):
@@ -93,7 +201,8 @@ class PlotCallback(callbacks.BaseCallback):
         obs = obs.reshape(-1, obs.shape[-1])  # flatten the batch size and num_envs dimensions
         rewards = self.model.rollout_buffer.rewards.copy()
         for record_info_name in self.plot_feature_names_dims.keys():
-            plot_record_infos, plot_costs = zip(*sorted(zip(obs[:, self.plot_feature_names_dims[record_info_name]], rewards)))
+            plot_record_infos, plot_costs = zip(
+                *sorted(zip(obs[:, self.plot_feature_names_dims[record_info_name]], rewards)))
             path = os.path.join(self.plot_save_dir, f"{self.name_prefix}_{self.num_timesteps}_steps")
             if not os.path.exists(path):
                 os.mkdir(path)

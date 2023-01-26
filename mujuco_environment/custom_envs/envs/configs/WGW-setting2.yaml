@@ -1,0 +1,8 @@
+map_height: 7
+map_width: 7
+n_actions: 8
+transition_prob: 1
+reward_states: [[6, 6]]
+terminal_states: [[6, 6]]
+unsafe_states: [[2,2], [3,2], [4,2], [2,3], [3,3], [4,3], [2,4], [3,4], [4,4]]
+start_states: [[0,0]]

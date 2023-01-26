@@ -10,6 +10,7 @@ import torch
 import yaml
 import numpy as np
 from gym.utils.colorize import color2num
+# from numpy import dtype
 from tqdm import tqdm
 import stable_baselines3.common.callbacks as callbacks
 from stable_baselines3 import PPO
@@ -146,7 +147,7 @@ def compute_moving_average(result_all, average_num=100):
     return result_moving_all[:-average_num]
 
 
-def read_running_logs(monitor_path_all, read_keys, max_reward, min_reward, max_episodes, constraint_key='constraint'):
+def read_running_logs(monitor_path_all, read_keys, max_reward, min_reward, max_episodes, constraint_keys='constraint'):
     read_running_logs = {}
 
     # handle the keys
@@ -158,7 +159,7 @@ def read_running_logs(monitor_path_all, read_keys, max_reward, min_reward, max_e
     #     raise ValueError("Something wrong with the file {0}".format(monitor_path_all[0]))
     for key in read_keys:
         read_running_logs.update({key: []})
-        if key == 'reward_valid':
+        if key == 'reward_valid' or key == 'success_rate':
             continue
         key_idx = record_keys.index(key)
         key_indices.update({key: key_idx})
@@ -203,14 +204,31 @@ def read_running_logs(monitor_path_all, read_keys, max_reward, min_reward, max_e
                 continue
             for key in read_keys:
                 if key == 'reward_valid':
-                    tmp = int(results[key_indices[constraint_key]])
-                    if int(results[key_indices[constraint_key]]) == 0:  # if constraint is not broken at this episode
+                    valid_flag = True
+                    # continue_flag = False
+                    for constraint_key in constraint_keys:
+                        if results[key_indices[constraint_key]] == '=':
+                            valid_flag = False
+                        try:
+                            if int(results[
+                                       key_indices[constraint_key]]) != 0:  # if constraint is not broken at this episode
+                                valid_flag = False
+                        except:
+                            print(monitor_path_all)
+                    if valid_flag:
                         valid_episodes.append(episode)
                         # valid_rewards.append(float(results[key_indices['reward']]))
                         read_running_logs[key].append(float(results[key_indices['reward']]))
                     else:
+                        read_running_logs[key].append(float(min_reward))
+                elif key == 'success_rate':
+                    if float(results[0]) == 50:
+                        read_running_logs[key].append(float(1))
+                    else:
                         read_running_logs[key].append(float(0))
                 else:
+                    if results[key_indices[key]] == '=':
+                        continue
                     read_running_logs[key].append(float(results[key_indices[key]]))
             # all_episodes.append(episode)
             episode += 1
@@ -301,9 +319,9 @@ def load_expert_data_tmp(expert_acs):
 def load_expert_data(expert_path,
                      num_rollouts=None,
                      use_pickle5=False,
-                     store_by_game=False,
                      add_next_step=True,
                      log_file=None):
+    loaded_as_games = True
     print('Loading expert data from {0}.'.format(expert_path), file=log_file, flush=True)
     file_names = sorted(os.listdir(expert_path))
     # file_names = [i for i in range(29)]
@@ -337,7 +355,7 @@ def load_expert_data(expert_path,
         else:
             total_time_step = data_acs.shape[0]
 
-        if store_by_game:
+        if loaded_as_games:
             expert_obs_game = []
             expert_acs_game = []
             expert_rs_game = []
@@ -365,7 +383,7 @@ def load_expert_data(expert_path,
                 data_obs_t_store = data_obs_t
                 data_acs_t_store = data_ac_t
                 data_r_t_store = data_r_t
-            if store_by_game:
+            if loaded_as_games:
                 expert_obs_game.append(data_obs_t_store)
                 expert_acs_game.append(data_acs_t_store)
                 expert_rs_game.append(data_r_t_store)
@@ -374,7 +392,7 @@ def load_expert_data(expert_path,
                 expert_acs.append(data_acs_t_store)
                 expert_rs.append(data_r_t_store)
 
-        if store_by_game:
+        if loaded_as_games:
             expert_obs.append(np.asarray(expert_obs_game))
             expert_acs.append(np.asarray(expert_acs_game))
             expert_rs.append(np.asarray(expert_rs_game))
@@ -386,7 +404,7 @@ def load_expert_data(expert_path,
     expert_mean_length = num_samples / len(file_names)
     print('Expert_mean_reward: {0} and Expert_mean_length: {1}.'.format(expert_avg_sum_reward, expert_mean_length),
           file=log_file, flush=True)
-    if store_by_game:
+    if loaded_as_games:
         return (expert_obs, expert_acs, expert_rs), expert_avg_sum_reward
     else:
         expert_obs = np.asarray(expert_obs)
@@ -444,6 +462,19 @@ def mean_std_plot_valid_rewards(all_valid_rewards, all_valid_episodes):
     return mean_valid_rewards, std_valid_rewards, valid_episodes
 
 
+def mean_std_test_results(all_results, method_name, testing_times=10):
+    key = 'reward_valid'
+    # for key in all_results[0]:
+    key_results_all = []
+    for results in all_results:
+        tmp = results[key][-testing_times:]
+        key_results_all += tmp
+    # key_results_all += [-40]
+    print(key_results_all)
+    print(method_name, key, np.mean(key_results_all), np.std(key_results_all) / 2)
+    print('\n')
+
+
 def mean_std_plot_results(all_results):
     mean_results = {}
     std_results = {}
@@ -463,22 +494,22 @@ def mean_std_plot_results(all_results):
         plot_value_all = []
         for plot_values in all_plot_values:
             plot_value_all.append(plot_values[:min_len])
-        # for i in range(min_len, max_len):
-        #     plot_value_t = []
-        #     for plot_values in all_plot_values:
-        #         if len(plot_values) > i:
-        #             plot_value_t.append(plot_values[i])
-        #
-        #     if 0 < len(plot_value_t) < len(all_plot_values):
-        #         for j in range(len(all_plot_values) - len(plot_value_t)):
-        #             plot_value_t.append(plot_value_t[j % len(plot_value_t)])  # filling in values
-        #     for j in range(len(plot_value_t)):
-        #         plot_value_all[j].append(plot_value_t[j])
+        for i in range(min_len, max_len):
+            plot_value_t = []
+            for plot_values in all_plot_values:
+                if len(plot_values) > i:
+                    plot_value_t.append(plot_values[i])
+
+            if 0 < len(plot_value_t) < len(all_plot_values):
+                for j in range(len(all_plot_values) - len(plot_value_t)):
+                    plot_value_t.append(plot_value_t[j % len(plot_value_t)])  # filling in values
+            for j in range(len(plot_value_t)):
+                plot_value_all[j].append(plot_value_t[j])
         mean_plot_values = np.mean(np.asarray(plot_value_all), axis=0)
         std_plot_values = np.std(np.asarray(plot_value_all), axis=0)
         mean_results.update({key: mean_plot_values})
         std_results.update({key: std_plot_values})
-        episodes.update({key: [i for i in range(min_len)]})
+        episodes.update({key: [i for i in range(max_len)]})
 
     return mean_results, std_results, episodes
 
@@ -492,3 +523,19 @@ def print_resource(mem_prev, time_prev, process_name, log_file):
         float(mem_current) / 1000000,
         time_current - time_prev), file=log_file, flush=True)
     return mem_current, time_current
+
+
+def softmax(x):
+    return np.exp(x) / np.exp(x).sum()
+
+
+def idx2vector(indices, height, width):
+    vector_all = []
+    for idx in indices:
+        map = np.zeros(shape=[height, width])
+        x, y = int(round(idx[0], 0)), int(round(idx[1], 0))
+        # if x - idx[0] != 0:
+        #     print('debug')
+        map[x, y] = 1  # + idx[0] - x + idx[1] - y
+        vector_all.append(map.flatten())
+    return np.asarray(vector_all)

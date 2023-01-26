@@ -3,6 +3,8 @@ from typing import Any, Dict, List, Optional, Tuple
 
 import numpy as np
 import gym
+from gym.wrappers import TimeLimit
+
 # from gym.envs.mujoco import mujoco_env
 
 import stable_baselines3.common.vec_env as vec_env
@@ -81,82 +83,23 @@ def multi_threads_sample_from_agent(agent, env, rollouts, num_threads, store_by_
     return all_orig_obs, all_obs, all_acs, all_rs, sum_rewards, all_lengths
 
 
-def sample_from_agent(agent, env, rollouts, store_by_game=False):
-    if isinstance(env, vec_env.VecEnv):
-        assert env.num_envs == 1, "You must pass only one environment when using this function"
-
-    all_orig_obs, all_obs, all_acs, all_rs = [], [], [], []
-    sum_rewards, lengths = [], []
-    for i in range(rollouts):
-        # Avoid double reset, as VecEnv are reset automatically
-        if i == 0:
-            obs = env.reset()
-        # benchmark_id = env.venv.envs[0].benchmark_id
-        # print('senario id', benchmark_id)
-
-        done, state = False, None
-        episode_sum_reward = 0.0
-        episode_length = 0
-        if store_by_game:
-            origin_obs_game = []
-            obs_game = []
-            acs_game = []
-            rs_game = []
-        while not done:
-            action, state = agent.predict(obs, state=state, deterministic=False)
-
-            if store_by_game:
-                origin_obs_game.append(env.get_original_obs())
-                obs_game.append(obs)
-                acs_game.append(action)
-            else:
-                all_orig_obs.append(env.get_original_obs())
-                all_obs.append(obs)
-                all_acs.append(action)
-            obs, reward, done, _info = env.step(action)
-            if store_by_game:
-                rs_game.append(reward)
-            else:
-                all_rs.append(reward)
-
-            episode_sum_reward += reward
-            episode_length += 1
-        if store_by_game:
-            origin_obs_game = np.squeeze(np.array(origin_obs_game), axis=1)
-            obs_game = np.squeeze(np.array(obs_game), axis=1)
-            acs_game = np.squeeze(np.array(acs_game), axis=1)
-            rs_game = np.squeeze(np.asarray(rs_game))
-            all_orig_obs.append(origin_obs_game)
-            all_obs.append(obs_game)
-            all_acs.append(acs_game)
-            all_rs.append(rs_game)
-
-        sum_rewards.append(episode_sum_reward)
-        lengths.append(episode_length)
-
-    if store_by_game:
-        return all_orig_obs, all_obs, all_acs, all_rs, sum_rewards, lengths
-    else:
-        all_orig_obs = np.squeeze(np.array(all_orig_obs), axis=1)
-        all_obs = np.squeeze(np.array(all_obs), axis=1)
-        all_acs = np.squeeze(np.array(all_acs), axis=1)
-        all_rs = np.array(all_rs)
-        sum_rewards = np.squeeze(np.array(sum_rewards), axis=1)
-        lengths = np.array(lengths)
-        return all_orig_obs, all_obs, all_acs, all_rs, sum_rewards, lengths
-
-
 class MujocoExternalSignalWrapper(gym.Wrapper):
     def __init__(self, env: gym.Wrapper, group: str, **wrapper_config):
         super(MujocoExternalSignalWrapper, self).__init__(env=env)
         self.wrapper_config = wrapper_config
         self.group = group
 
+    def reset_with_info(self, info):
+        if isinstance(self.env, TimeLimit):
+            self.env._elapsed_steps = 0
+        return self.env.reset_with_info(info)
+
     def step(self, action: np.ndarray) -> Tuple[np.ndarray, float, bool, Dict[Any, Any]]:
         obs, reward, done, info = self.env.step(action)
         ture_cost_function = get_true_cost_function(env_id=self.spec.id,
                                                     env_configs=self.wrapper_config)
         lag_cost_ture = int(ture_cost_function(obs, action) == True)
+        # print(obs[-2], obs[-1], lag_cost_ture)
         # print(obs[0])
         # print(obs)
         # if lag_cost_ture == 1:
@@ -278,7 +221,7 @@ def get_all_env_ids(num_threads, env):
 
 
 def is_mujoco(env_id):
-    mujoco_env_id = ['HC', 'AntWall', 'Pendulum', 'Walker', 'LGW', 'WGW', 'Swimmer']
+    mujoco_env_id = ['HC', 'AntWall', 'Pendulum', 'Walker', 'LGW', 'WGW', 'Swimmer', 'Circle']
     # if 'HC' in env_id or 'LGW' in env_id or 'AntWall' in env_id or 'Pendulum' in env_id or 'Walker' in env_id:
     for item in mujoco_env_id:
         if item in env_id:
@@ -352,9 +295,13 @@ def get_obs_feature_names(env, env_id):
              'distance_togoal_via_referencepath_0', 'distance_togoal_via_referencepath_1',
              'distance_togoal_via_referencepath_2']
 
-    if is_mujoco(env_id):
-        feature_names.append('(pls visit mujoco xml settings at: {0})'.format(
-            'https://www.gymlibrary.ml/environments/mujoco/'))
+    elif is_mujoco(env_id):
+        if env_id == 'Circle-v0' or env_id == 'CircleNeg-v0':
+            # feature_names = ["x_t", "y_t", "x_t-1", "y_t-1", "x_t-2", "y_t-2", "x_t-3", "y_t-3", "x_t-4", "y_t-4"]
+            feature_names = ["x_t-4", "y_t-4", "x_t-3", "y_t-3", "x_t-2", "y_t-2", "x_t-1", "y_t-1", "x_t", "y_t"]
+        else:
+            feature_names = ['(pls visit mujoco xml settings at: {0})'.format(
+                'https://www.gymlibrary.ml/environments/mujoco/')]
     return feature_names
 
 
@@ -375,8 +322,8 @@ def check_if_duplicate_seed(seed, config, current_time_date, save_model_mother_d
                 if save_model_mother_dir.split('-seed_')[0].replace(current_time_date, '') in task_mother_dir:
                     file_seed = int(save_file_name.split('-seed_')[1])
                     file_date = \
-                    task_mother_dir.replace(save_model_mother_dir.split('-seed_')[0].replace(current_time_date, ''),
-                                            '').split('-seed_')[0]
+                        task_mother_dir.replace(save_model_mother_dir.split('-seed_')[0].replace(current_time_date, ''),
+                                                '').split('-seed_')[0]
                     assert file_seed in all_candidate_seeds
                     try:
                         pass_save_date = dt.strptime(file_date, "%b-%d-%Y-%H:%M")

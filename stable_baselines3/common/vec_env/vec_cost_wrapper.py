@@ -78,6 +78,14 @@ class VecCostWrapper(VecEnvWrapper):
         self.previous_obs = obs
         return obs
 
+    def reset_with_values(self, info_dicts):
+        """
+        Reset all environments
+        """
+        obs = self.venv.reset_with_values(info_dicts)
+        self.previous_obs = obs
+        return obs
+
     @staticmethod
     def load(load_path: str, venv: VecEnv):
         """
