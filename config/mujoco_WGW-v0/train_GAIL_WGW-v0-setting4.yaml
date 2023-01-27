@@ -1,0 +1,61 @@
+task: 'GAIL-WallGrid'
+group: 'GAIL'
+device: 'cuda'
+verbose: 2
+env:
+  config_path: '../mujuco_environment/custom_envs/envs/configs/WGW-setting4.yaml'
+  train_env_id : 'WGW-v0'
+  eval_env_id: 'WGW-v0'
+  save_dir: '../save_model'
+  cost_info_str: 'cost'
+  use_cost: False
+  reward_gamma: 0.99
+  dont_normalize_obs: True
+  dont_normalize_reward: True
+  record_info_names: ['x_position', 'y_position']
+  record_info_input_dims: [ 1, 0 ]  # height, width
+  visualize_info_ranges: [ [ 0, 6 ], [ 0, 6 ]  ]
+
+running:
+  n_iters: 20
+  save_every: 1
+  eval_every: 1
+  expert_rollouts: 20
+  sample_rollouts: 20
+  expert_path: '../data/expert_data/WallGridWorld-setting4/'
+  use_buffer: True
+  store_by_game: True
+  store_sample_rollouts: 1000
+
+iteration:
+  warmup_timesteps: 0
+  stopping_threshold: 0.001
+  max_iter: 20
+  forward_timesteps: 1000
+  penalty_initial_value: 0.1
+  penalty_learning_rate: 0.1
+  gamma: 0.7
+  reset_policy: False
+  reset_every: null
+  nu_max_clamp: 1
+  nu_min_clamp: null
+  discriminator: null
+
+DISC:
+  disc_batch_size: null
+  disc_eps: 1e-05
+  disc_layers: [40, 40]
+  disc_learning_rate: 0.005
+  disc_normalize: false
+  disc_obs_select_dim: null
+  disc_acs_select_dim: null  # null means all
+  disc_plot_every: 1
+  clip_obs: 20
+  num_spurious_features: null
+  freeze_gail_weights: false
+  use_cost_net: false
+  learn_cost: true
+  gail_path: null
+  backward_iters: 20
+  use_cost_shaping_callback: false
+  recon_obs: True

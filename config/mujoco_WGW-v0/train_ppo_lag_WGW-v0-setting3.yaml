@@ -1,0 +1,36 @@
+task: 'PI-Lag-WallGrid'
+group: 'PI-Lag'
+device: 'cuda'
+verbose: 2
+env:
+  config_path: '../mujuco_environment/custom_envs/envs/configs/WGW-setting3.yaml'
+  train_env_id : 'WGW-v0'
+  eval_env_id: 'WGW-v0'
+  save_dir: '../save_model'
+  cost_info_str: 'cost'
+  use_cost: True
+  reward_gamma: 0.99
+  cost_gamma: 0.99  # no cost
+  dont_normalize_obs: True
+  dont_normalize_reward: True
+  dont_normalize_cost: True  # cost
+  record_info_names: ['x_position', 'y_position']
+  record_info_input_dims: [ 1, 0 ]  # height, width
+  visualize_info_ranges: [ [ 0, 6 ], [ 0, 6 ]  ]  #  [ [ 0, 7 ], [ 0, 7 ]  ]
+
+running:
+  n_iters: 20
+  n_eval_episodes: 10
+  save_every: 1
+
+iteration:
+  warmup_timesteps: 0
+  stopping_threshold: 0.001
+  max_iter: 20
+  penalty_initial_value: 0.1
+  penalty_learning_rate: 0.1
+  gamma: 0.7
+  reset_policy: False
+  reset_every: null
+  nu_max_clamp: 1
+  nu_min_clamp: null
