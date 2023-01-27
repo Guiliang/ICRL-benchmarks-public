@@ -21,7 +21,7 @@ running:
   save_every: 500000
   eval_every: 200000
   expert_rollouts: 10
-  expert_path: '../data/expert_data/BlockedHalf-cheetah_random-0.2/'
+  expert_path: '../data/expert_data/BlockedHalf-cheetah_sub-0.2/'
 
 PPO:
   policy_name: 'MlpPolicy'
