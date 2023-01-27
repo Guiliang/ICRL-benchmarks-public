@@ -1,8 +1,8 @@
 # ICRL-benchmarks-public
 This is the code for the paper "[Benchmarking Constraint Inference in Inverse Reinforcement Learning](https://openreview.net/forum?id=vINj_Hv9szL)" published in ICLR 2023. Note that:
-1. The environments in our benchmark rely on [Mujoco](https://mujoco.org/) and [CommonRoad](https://commonroad.in.tum.de/commonroad-rl). These environments are publicly available. 
+1. Our benchmark rely on [Mujoco](https://mujoco.org/) and [CommonRoad](https://commonroad.in.tum.de/commonroad-rl). These environments are publicly available. 
 2. The implementation of the baselines are based on the code from [iclr](https://github.com/shehryar-malik/icrl).
-[//]: # ( although we fix some typos in their settings.)
+
 
 
 ## Setup Python Virtual Environment
@@ -107,7 +107,7 @@ python train_icrl.py ../config/mujuco_BlockedHalfCheetah/train_ICRL_HCWithPos-v0
 python train_icrl.py ../config/mujuco_BlockedHalfCheetah/train_VICRL_HCWithPos-v0.yaml -n 5 -s 123
 ```
 
-### Step 5: Run the ICLR algorithms under sub-optima demonstration
+### Step 5: Run the ICLR algorithms under sub-optimal demonstration
 Note that:
 1. This is to reproduce the results in the Section 4.3 of our paper. 
 2. The following code uses the random seed '123'. For reproduction, a total of 5 random seeds ('123', '321', '456', '654', '666') are required.
@@ -115,14 +115,54 @@ Note that:
 # step in the dir containing the "main" files.
 cd ./interface/
 
-# run GACL with 20% sub-optimal trajectories
-python train_gail.py ../config/mujuco_HCWithPos-v0/train_GAIL_HCWithPos-v0_with-action_sub-2e-1.yaml -n 5 -s 123
+# run GACL with 20%/50%/80% sub-optimal trajectories
+python train_gail.py ../config/mujuco_HCWithPos-v0/train_GAIL_HCWithPos-v0_sub-2e-1.yaml -n 5 -s 123
+python train_gail.py ../config/mujuco_HCWithPos-v0/train_GAIL_HCWithPos-v0_sub-5e-1.yaml -n 5 -s 123
+python train_gail.py ../config/mujuco_HCWithPos-v0/train_GAIL_HCWithPos-v0_sub-8e-1.yaml -n 5 -s 123
 
-# run GACL with 50% sub-optimal trajectories
-python train_gail.py ../config/mujuco_HCWithPos-v0/train_GAIL_HCWithPos-v0_with-action_sub-5e-1.yaml -n 5 -s 123
+# run Binary with 20%/50%/80% sub-optimal trajectories
+python train_icrl.py ../config/mujuco_HCWithPos-v0/train_Binary_HCWithPos-v0_sub-2e-1.yaml -n 5 -s 123
+python train_icrl.py ../config/mujuco_HCWithPos-v0/train_Binary_HCWithPos-v0_sub-5e-1.yaml -n 5 -s 123
+python train_icrl.py ../config/mujuco_HCWithPos-v0/train_Binary_HCWithPos-v0_sub-8e-1.yaml -n 5 -s 123
 
-# run GACL with 80% sub-optimal trajectories
-python train_gail.py ../config/mujuco_HCWithPos-v0/train_GAIL_HCWithPos-v0_with-action_sub-8e-1.yaml -n 5 -s 123
+# run MECL with 20%/50%/80% sub-optimal trajectories
+python train_icrl.py ../config/mujuco_HCWithPos-v0/train_ICRL_HCWithPos-v0_sub-2e-1.yaml -n 5 -s 123
+python train_icrl.py ../config/mujuco_HCWithPos-v0/train_ICRL_HCWithPos-v0_sub-5e-1.yaml -n 5 -s 123
+python train_icrl.py ../config/mujuco_HCWithPos-v0/train_ICRL_HCWithPos-v0_sub-8e-1.yaml -n 5 -s 123
+
+# run VCIRL with 20%/50%/80% sub-optimal trajectories
+python train_icrl.py ../config/mujuco_HCWithPos-v0/train_VICRL_HCWithPos-v0_sub-2e-1.yaml -n 5 -s 123
+python train_icrl.py ../config/mujuco_HCWithPos-v0/train_VICRL_HCWithPos-v0_sub-5e-1.yaml -n 5 -s 123
+python train_icrl.py ../config/mujuco_HCWithPos-v0/train_VICRL_HCWithPos-v0_sub-8e-1.yaml -n 5 -s 123
+```
+
+### Step 5: Run the ICLR algorithms under stochastic demonstration
+Note that:
+1. This is to reproduce the results in the Section 4.3 of our paper. 
+2. The following code uses the random seed '123'. For reproduction, a total of 5 random seeds ('123', '321', '456', '654', '666') are required.
+```
+# step in the dir containing the "main" files.
+cd ./interface/
+
+# run GACL with noise scale N(0,0.001), N(0,0.01), N(0,0.1)
+python train_icrl.py ../config/mujuco_HCWithPos-v0/train_GAIL_HCWithPos-v0_noise-1e-3.yaml -n 5 -s 123
+python train_icrl.py ../config/mujuco_HCWithPos-v0/train_GAIL_HCWithPos-v0_noise-1e-2.yaml -n 5 -s 123
+python train_icrl.py ../config/mujuco_HCWithPos-v0/train_GAIL_HCWithPos-v0_noise-1e-1.yaml -n 5 -s 123
+
+# run Binary with noise scale N(0,0.001), N(0,0.01), N(0,0.1)
+python train_icrl.py ../config/mujuco_HCWithPos-v0/train_Binary_HCWithPos-v0_noise-1e-3.yaml -n 5 -s 123
+python train_icrl.py ../config/mujuco_HCWithPos-v0/train_Binary_HCWithPos-v0_noise-1e-2.yaml -n 5 -s 123
+python train_icrl.py ../config/mujuco_HCWithPos-v0/train_Binary_HCWithPos-v0_noise-1e-1.yaml -n 5 -s 123
+
+# run ICRL with noise scale N(0,0.001), N(0,0.01), N(0,0.1)
+python train_icrl.py ../config/mujuco_HCWithPos-v0/train_ICRL_HCWithPos-v0_noise-1e-3.yaml -n 5 -s 123
+python train_icrl.py ../config/mujuco_HCWithPos-v0/train_ICRL_HCWithPos-v0_noise-1e-2.yaml -n 5 -s 123
+python train_icrl.py ../config/mujuco_HCWithPos-v0/train_ICRL_HCWithPos-v0_noise-1e-1.yaml -n 5 -s 123
+
+# run VICRL with noise scale N(0,0.001), N(0,0.01), N(0,0.1)
+python train_icrl.py ../config/mujuco_HCWithPos-v0/train_VICRL_HCWithPos-v0_noise-1e-3.yaml -n 5 -s 123
+python train_icrl.py ../config/mujuco_HCWithPos-v0/train_VICRL_HCWithPos-v0_noise-1e-2.yaml -n 5 -s 123
+python train_icrl.py ../config/mujuco_HCWithPos-v0/train_VICRL_HCWithPos-v0_noise-1e-1.yaml -n 5 -s 123
 ```
 
 ## Run Realistic Benchmark
