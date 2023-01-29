@@ -1,3 +1,4 @@
+
 ## Run Realistic Benchmark
 <p>
 <img title="HighD" alt="Alt text" src="./images&others/highdenv.png" width="800">
@@ -84,18 +85,46 @@ python -m commonroad_rl.utils_run.split_dataset -i ../../data/highD/pickles/prob
 python -m commonroad_rl.tools.pickle_scenario.copy_files -i ../../data/highD/pickles/problem_train -o ../../data/highD/pickles/problem_train_split -f *.pickle -n 5
 ```
 
-###  Step 3: Run the algorithms
-[//]: # (![GitHub Logo]&#40;./images&others/highdenv.png&#41;)
+### Important Notice
+Throughout this section, we will use the ```HighD Velocity Constraint``` environment as an example, 
+for using other environments (```HighD Distance Constraint``` please refer to their configs in this [dir](./config/))
 
-1. The HighD Velocity Constraint 
+###  Step 2 (optionally): Train expert agents.
+Note that the expert agent is to generate demonstration data (see the step 3 below).
+
 ```
+# step in the dir containing the "main" files.
 cd ./interface/
 
-# run PPO
-python train_ppo.py ../config/highD_velocity_constraint/train_ppo_highD_velocity_constraint.yaml -n 5 -s 123
-
-# run PPO-Lag
+# run PPO-Lag knowing the constraint for speed constraint
 python train_ppo.py ../config/highD_velocity_constraint/train_ppo_lag_highD_velocity_constraint.yaml -n 5 -s 123
+
+```
+
+###  Step 3 (optionally): Train expert agents.
+Note that:
+1. you don't need to generate expert demonstrations since they are provided, 
+but if you want to test other types of expert demonstrations, here is the code to start from:
+2. Since the generation relies on expert agent, we provide an example to you (named ```train_ppo_lag_highD_no_slo_distance_penalty_bs--1_fs-5k_nee-10_lr-5e-4_dm-20-multi_env-Sep-25-2022-07:13-seed_123```).
+```
+# step in the dir containing the "main" files.
+cd ./interface/
+
+# run data generation
+python generate_data_for_constraint_inference.py -n 5 -mn train_ppo_lag_highD_no_slo_distance_penalty_bs--1_fs-5k_nee-10_lr-5e-4_dm-20-multi_env-Sep-25-2022-07:13-seed_123 -tn PPO-Lag-highD-distance -ct no-too_closed-off_road
+
+```
+
+### Step 4: Run the ICLR algorithms under regular settings
+
+We use the ```HighD Velocity Constraint``` environment as an example (also see the notice above).
+Note that:
+1. This is to reproduce the results in the Section 5.1 of our paper. 
+2. The following code uses the random seed '123'. For reproduction, a total of 3 random seeds ('123', '321', '666') are required.
+
+```
+# step in the dir containing the "main" files.
+cd ./interface/
 
 # run GACL
 python train_gail.py ../config/highD_velocity_constraint/train_GAIL_highd_velocity_constraint.yaml -n 5 -s 123
@@ -110,60 +139,26 @@ python train_cirl.py ../config/highD_velocity_constraint/train_ICRL_highD_veloci
 python train_cirl.py ../config/highD_velocity_constraint/train_VICRL_highD_velocity_constraint.yaml -n 5 -s 123
 ```
 
-2. The HighD Velocity Constraint simplified 
+### Step 4: Run the ICLR algorithms to recover multiple constraints
+We use the ```HighD Velocity Constraint``` environment as an example (also see the notice above).
+Note that:
+1. This is to reproduce the results in the Section 5.2 of our paper. 
+2. The following code uses the random seed '123'. For reproduction, a total of 3 random seeds ('123', '321', '666') are required.
+
 ```
+# step in the dir containing the "main" files.
 cd ./interface/
 
 # run GACL
-python train_gail.py ../config/highD_velocity_constraint/train_GAIL_highd_velocity_constraint_simplified.yaml -n 5 -s 123
+python train_gail.py ../config/highD_velocity_distance_constraint/train_GAIL_velocity_distance_constraint.yaml -n 5 -s 123
 
 # run BC2L
-python train_cirl.py ../config/highD_velocity_constraint/train_Binary_highD_velocity_constraint_simplified.yaml -n 5 -s 123
+python train_cirl.py ../config/highD_velocity_distance_constraint/train_Binary_highD_velocity_distance_constraint.yaml -n 5 -s 123
 
 # run MECL
-python train_cirl.py ../config/highD_velocity_constraint/train_ICRL_highD_velocity_constraint_simplified.yaml -n 5 -s 123
+python train_cirl.py ../config/highD_velocity_distance_constraint/train_ICRL_highD_velocity_distance_constraint.yaml -n 5 -s 123
 
 # run VICRL
-python train_cirl.py ../config/highD_velocity_constraint/train_VICRL_highD_velocity_constraint_simplified.yaml -n 5 -s 123
-```
-
-3. The HighD Distance Constraint 
-```
-cd ./interface/
-
-# run PPO
-python train_ppo.py ../config/highD_distance_constraint/train_ppo_highD_distance_constraint.yaml -n 5 -s 123
-
-# run PPO-Lag
-python train_ppo.py ../config/highD_distance_constraint/train_ppo_lag_highD_distance_constraint.yaml -n 5 -s 123
-
-# run GACL
-python train_gail.py ../config/highD_distance_constraint/train_GAIL_highD_distance_constraint.yaml -n 5 -s 123
-
-# run BC2L
-python train_cirl.py ../config/highD_distance_constraint/train_Binary_highD_distance_constraint.yaml -n 5 -s 123
-
-# run MECL
-python train_cirl.py ../config/highD_distance_constraint/train_ICRL_highD_distance_constraint.yaml -n 5 -s 123
-
-# run VICRL
-python train_cirl.py ../config/highD_distance_constraint/train_VICRL_highD_distance_constraint.yaml -n 5 -s 123
-```
-
-4. The HighD Distance Constraint simplified 
-````
-cd ./interface/
-
-# run GACL
-python train_gail.py ../config/highD_distance_constraint/train_GAIL_highD_distance_constraint_simplified.yaml -n 5 -s 123
-
-# run BC2L
-python train_cirl.py ../config/highD_distance_constraint/train_Binary_highD_distance_constraint_simplified.yaml -n 5 -s 123
-
-# run MECL
-python train_cirl.py ../config/highD_distance_constraint/train_ICRL_highD_distance_constraint_simplified.yaml -n 5 -s 123
-
-# run VICRL
-python train_cirl.py ../config/highD_distance_constraint/train_VICRL_highD_distance_constraint_simplified.yaml -n 5 -s 123
+python train_cirl.py ../config/highD_velocity_distance_constraint/train_VICRL_highD_velocity_distance_constraint.yaml -n 5 -s 123
 ```
 

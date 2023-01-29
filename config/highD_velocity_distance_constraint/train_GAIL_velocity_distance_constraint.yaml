@@ -1,31 +1,32 @@
-task: 'GAIL-highD-velocity'
+task: 'GAIL-highD-velocity-distance'
 group: 'GAIL'
 device: 'cuda'
 verbose: 2
 env:
-  config_path: "../config/highD_velocity_constraint/highD_environment_configurations_no_velocity_penalty-40.yaml"
+  config_path: "../config/highD_velocity_distance_constraint/highD_environment_configurations_no_velocity-40_distance-20_penalty.yaml"
   train_env_id : 'commonroad-v1'
   eval_env_id: 'commonroad-v1'
   save_dir: '../save_model'
   cost_info_str: 'cost'
-  use_cost: False
+  use_cost: True
   reward_gamma: 0.99
-  cost_gamma: 0.99  # no cost
+  cost_gamma: 0.99
   dont_normalize_obs: False
   dont_normalize_reward: False
-  record_info_names: ["ego_velocity_x", "ego_velocity_y"]
-  record_info_input_dims: [ 6, 7 ] # the dim of record info in inputs=(obs, action)
-  visualize_info_ranges: [ [ 20, 50 ], [ -10, 10 ] ]
+  dont_normalize_cost: False  # no cost
+  record_info_names: ["ego_velocity_x", "ego_velocity_y", "same_lane_leading_obstacle_distance"]
+  record_info_input_dims: [ 6, 7, 22] # the dim of record info in inputs=(obs, action)
+  visualize_info_ranges: [ [ 20, 50 ], [ -10, 10 ], [ 0, 100 ] ]
 
 running:
   save_every: 500000
   eval_every: 200000
   expert_rollouts: 100
-  expert_path: '../data/expert_data/HighDVelocityConstraint/'
+  expert_path: '../data/expert_data/HighDVelocityDistanceConstraint'
 
 PPO:
   policy_name: 'MlpPolicy'
-  learning_rate: 0.0001
+  learning_rate: 0.0003
   n_steps: 2048
   n_epochs: 10
   reward_gamma: 0.99
