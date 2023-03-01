@@ -1,4 +1,4 @@
-### Run Discrete Benchmark
+## Run Discrete Benchmark
 
 ###  Step 1: Setup MuJoCo (skip it if you have gone through the virtual environment tutorial)
 To run the virtual environment, you need to set up MuJoCo.

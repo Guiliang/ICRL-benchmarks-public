@@ -18,9 +18,16 @@ conda activate cn-py37
 
 ## Download the Expert Data
 Note that we have generated the expert data for the ease of usage, but users can generate their own dataset by adding extra settings (we will show how to generate the expert data later).
+
+[//]: # (#### Step 1:)
 ```
 cd ./data
-wget https://cs.uwaterloo.ca/~ppoupart/datasets/expert_data.zip
+```
+[//]: # (### Step 2:)
+Please download the `expert_data.zip` from this onedrive sharing [link (click me)](https://cuhko365-my.sharepoint.com/:u:/g/personal/liuguiliang_cuhk_edu_cn/Eb6F2_AYYO9LrIq7E54QtkwBpNZJd_FEIBWzY7B4_CrWMQ).
+
+[//]: # (### Step 3:)
+```
 unzip expert_data.zip
 rm expert_data.zip
 cd ../
@@ -32,3 +39,14 @@ Now we are ready to run ICRL baselines on our benchmark. For more details, pleas
 ### Part II. [***ICRL in Realistic Environment***](./realisitic_env_tutorial.md).
 ### Part III. [***ICRL in Discrete Environment***](./discrete_env_tutorial.md).
 
+If you find this benchmark helpful, please use the citation:
+```
+@inproceedings{
+liu2023benchmarking,
+title={Benchmarking Constraint Inference in Inverse Reinforcement Learning},
+author={Guiliang Liu and Yudong Luo and Ashish Gaurav and Kasra Rezaee and Pascal Poupart},
+booktitle={The Eleventh International Conference on Learning Representations },
+year={2023},
+url={https://openreview.net/forum?id=vINj_Hv9szL}
+}
+```
