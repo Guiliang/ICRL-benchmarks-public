@@ -16,6 +16,12 @@ To run the virtual environment, you need to set up MuJoCo.
 ```
 pip install -U 'mujoco-py<2.2,>=2.1'
 pip install -e ./mujuco_environment
+
+# (optional) if mujoco dir need to changed
+export MUJOCO_PY_MUJOCO_PATH=YOUR_MUJOCO_DIR/.mujoco/mujoco210
+export PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=python
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:YOUR_MUJOCO_DIR/.mujoco/mujoco210/bin:/usr/lib/nvidia
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/lib/nvidia
 ```
 We **highly recommend** you to ensure the MuJoCo is indeed working by running testing examples in [mujoco-py](https://github.com/openai/mujoco-py). In most case, you need to run:
 ```

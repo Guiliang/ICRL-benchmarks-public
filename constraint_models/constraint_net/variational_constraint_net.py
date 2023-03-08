@@ -227,12 +227,18 @@ class VariationalConstraintNet(ConstraintNet):
                     is_weights = th.ones(nominal_data.shape[0]).to(self.device)
 
                 nominal_preds_all = []
+                nominal_alpha_all = []
+                nominal_beta_all = []
                 expert_preds_all = []
+                expert_alpha_all = []
+                expert_beta_all = []
+                is_batch_all = []
                 for nom_batch_indices, exp_batch_indices in self.get(nominal_data.shape[0], expert_data.shape[0]):
                     # Get batch data
                     nominal_batch = nominal_data[nom_batch_indices]
                     expert_batch = expert_data[exp_batch_indices]
                     is_batch = is_weights[nom_batch_indices][..., None]
+                    is_batch_all.append(is_batch)
 
                     # Make predictions
                     nominal_alpha_beta = self.network(nominal_batch)
@@ -240,36 +246,50 @@ class VariationalConstraintNet(ConstraintNet):
                     nominal_alpha = nominal_alpha_beta[:, 0]
                     nominal_beta = nominal_alpha_beta[:, 1]
                     nominal_preds = torch.distributions.Beta(nominal_alpha, nominal_beta).rsample()
+                    nominal_preds_all.append(nominal_preds)
+                    nominal_alpha_all.append(nominal_alpha)
+                    nominal_beta_all.append(nominal_beta)
 
                     expert_alpha_beta = self.network(expert_batch)
                     expert_alpha = expert_alpha_beta[:, 0]
                     expert_beta = expert_alpha_beta[:, 1]
                     expert_preds = torch.distributions.Beta(expert_alpha, expert_beta).rsample()
+                    expert_preds_all.append(expert_preds)
+                    expert_alpha_all.append(expert_alpha)
+                    expert_beta_all.append(expert_beta)
 
-                    # Calculate loss
-                    if self.train_gail_lambda:
-                        nominal_loss = self.criterion(nominal_preds, th.zeros(*nominal_preds.size()))
-                        expert_loss = self.criterion(expert_preds, th.ones(*expert_preds.size()))
-                        regularizer_loss = th.tensor(0)
-                        loss = nominal_loss + expert_loss
-                    else:
-                        expert_preds = torch.clip(expert_preds, min=self.eps, max=1)
-                        expert_loss = th.mean(th.log(expert_preds))
-                        # expert_loss = th.mean(th.log(expert_preds + self.eps))
-                        nominal_preds = torch.clip(nominal_preds, min=self.eps, max=1)
-                        nominal_loss = th.mean(is_batch * th.log(nominal_preds))
-                        # nominal_loss = th.mean(is_batch * th.log(nominal_preds + self.eps))
-                        nominal_batch_size = nominal_preds.shape[0]
-                        expert_batch_size = expert_preds.shape[0]
-                        regularizer_loss = self.kl_regularizer_loss(batch_size=nominal_batch_size,
-                                                                    alpha=nominal_alpha,
-                                                                    beta=nominal_beta,
-                                                                    ) + \
-                                           self.kl_regularizer_loss(batch_size=expert_batch_size,
-                                                                    alpha=expert_alpha,
-                                                                    beta=expert_beta,
-                                                                    )
-                        loss = (-expert_loss + nominal_loss) + self.regularizer_coeff * regularizer_loss
+                nominal_preds_all = th.concat(nominal_preds_all)
+                nominal_alpha_all = th.concat(nominal_alpha_all)
+                nominal_beta_all = th.concat(nominal_beta_all)
+                expert_preds_all = th.concat(expert_preds_all)
+                expert_alpha_all = th.concat(expert_alpha_all)
+                expert_beta_all = th.concat(expert_beta_all)
+                is_batch_all = th.concat(is_batch_all)
+
+                # Calculate loss
+                if self.train_gail_lambda:
+                    nominal_loss = self.criterion(nominal_preds_all, th.zeros(*nominal_preds_all.size()))
+                    expert_loss = self.criterion(expert_preds_all, th.ones(*expert_preds_all.size()))
+                    regularizer_loss = th.tensor(0)
+                    loss = nominal_loss + expert_loss
+                else:
+                    expert_preds = torch.clip(expert_preds_all, min=self.eps, max=1)
+                    expert_loss = th.mean(th.log(expert_preds))
+                    # expert_loss = th.mean(th.log(expert_preds + self.eps))
+                    nominal_preds = torch.clip(nominal_preds_all, min=self.eps, max=1)
+                    nominal_loss = th.mean(is_batch_all * th.log(nominal_preds))
+                    # nominal_loss = th.mean(is_batch * th.log(nominal_preds + self.eps))
+                    nominal_batch_size = nominal_preds.shape[0]
+                    expert_batch_size = expert_preds.shape[0]
+                    regularizer_loss = self.kl_regularizer_loss(batch_size=nominal_batch_size,
+                                                                alpha=nominal_alpha_all,
+                                                                beta=nominal_beta_all,
+                                                                ) + \
+                                       self.kl_regularizer_loss(batch_size=expert_batch_size,
+                                                                alpha=expert_alpha_all,
+                                                                beta=expert_beta_all,
+                                                                )
+                    loss = (-expert_loss + nominal_loss) + self.regularizer_coeff * regularizer_loss
                     # Update
                     self.optimizer.zero_grad()
                     loss.backward()
@@ -278,18 +298,18 @@ class VariationalConstraintNet(ConstraintNet):
 
             bw_metrics = {"backward/cn_loss": loss.item(),
                           "backward/expert_loss": expert_loss.item(),
-                          "backward/unweighted_nominal_loss": th.mean(th.log(nominal_preds + self.eps)).item(),
+                          "backward/unweighted_nominal_loss": th.mean(th.log(nominal_preds_all + self.eps)).item(),
                           "backward/nominal_loss": nominal_loss.item(),
                           "backward/regularizer_loss": regularizer_loss.item(),
                           "backward/is_mean": th.mean(is_weights).detach().item(),
                           "backward/is_max": th.max(is_weights).detach().item(),
                           "backward/is_min": th.min(is_weights).detach().item(),
-                          "backward/nominal_preds_max": th.max(nominal_preds).item(),
-                          "backward/nominal_preds_min": th.min(nominal_preds).item(),
-                          "backward/nominal_preds_mean": th.mean(nominal_preds).item(),
-                          "backward/expert_preds_max": th.max(expert_preds).item(),
-                          "backward/expert_preds_min": th.min(expert_preds).item(),
-                          "backward/expert_preds_mean": th.mean(expert_preds).item(), }
+                          "backward/nominal_preds_max": th.max(nominal_preds_all).item(),
+                          "backward/nominal_preds_min": th.min(nominal_preds_all).item(),
+                          "backward/nominal_preds_mean": th.mean(nominal_preds_all).item(),
+                          "backward/expert_preds_max": th.max(expert_preds_all).item(),
+                          "backward/expert_preds_min": th.min(expert_preds_all).item(),
+                          "backward/expert_preds_mean": th.mean(expert_preds_all).item(), }
             if self.importance_sampling:
                 stop_metrics = {"backward/kl_old_new": kl_old_new.item(),
                                 "backward/kl_new_old": kl_new_old.item(),

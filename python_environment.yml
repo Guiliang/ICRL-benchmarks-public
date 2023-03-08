@@ -1,7 +1,7 @@
 dependencies:
-  - scipy
-  - numpy
-  - pip
+  - scipy==1.7.3
+  - numpy==1.21.5
+  - pip==20.2.4
   - pip:
       # environment dependencies
       - aenum==3.1.5
@@ -10,6 +10,7 @@ dependencies:
       - Polygon3==3.0.9.1
       - pybind11==2.9.0
       - wandb==0.12.17
+      - patchelf==0.15.0.0
       # learning dependencies
       - gym==0.21.0
       # CommonRoad packages
