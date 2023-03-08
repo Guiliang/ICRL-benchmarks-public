@@ -156,6 +156,8 @@ data/highD/xmls/*
 data/highD/pickles/problem/*
 *.zip
 *.out
+.mujoco/*
+*.DS_Store
 
 
 
