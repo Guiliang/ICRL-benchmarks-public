@@ -18,6 +18,7 @@ from common.cns_env import make_train_env, make_eval_env
 from common.memory_buffer import IRLDataQueue
 from constraint_models.constraint_net.variational_constraint_net import VariationalConstraintNet
 from constraint_models.constraint_net.constraint_net import ConstraintNet
+from constraint_models.constraint_net.constraint_net_discrete import ConstraintDiscrete
 from stable_baselines3 import PPOLagrangian
 from stable_baselines3.common import logger
 
@@ -27,6 +28,7 @@ from utils.data_utils import read_args, load_config, ProgressBarManager, del_and
 from utils.model_utils import load_ppo_config, load_policy_iteration_config
 
 import warnings  # disable warnings
+
 warnings.filterwarnings("ignore")
 
 
@@ -63,7 +65,7 @@ def train(config):
             config['CN']['backward_iters'] = 2
         elif 'iteration' in config.keys():
             config['iteration']['max_iter'] = 2
-        config['CN']['cn_batch_size'] = 1000
+        # config['CN']['cn_batch_size'] = 1000
         debug_msg = 'debug-'
 
     # print the current config
@@ -224,52 +226,64 @@ def train(config):
     else:
         icrl_logger = logger.HumanOutputFormat(log_file)
 
-    # Initialize constraint net, true constraint net
-    cn_lr_schedule = lambda x: (config['CN']['anneal_clr_by_factor'] ** (config['running']['n_iters'] * (1 - x))) \
-                               * config['CN']['cn_learning_rate']
-
-    cn_obs_select_name = config['CN']['cn_obs_select_name']
-    print("Selecting obs features are : {0}".format(cn_obs_select_name if cn_obs_select_name is not None else 'all'),
-          file=log_file, flush=True)
-    cn_obs_select_dim = get_input_features_dim(feature_select_names=cn_obs_select_name,
-                                               all_feature_names=None)
-    cn_acs_select_name = config['CN']['cn_acs_select_name']
-    print("Selecting acs features are : {0}".format(cn_acs_select_name if cn_acs_select_name is not None else 'all'),
-          file=log_file, flush=True)
-    cn_acs_select_dim = get_input_features_dim(feature_select_names=cn_acs_select_name,
-                                               all_feature_names=None)
-
-    cn_parameters = {
-        'obs_dim': obs_dim,
-        'acs_dim': acs_dim,
-        'hidden_sizes': config['CN']['cn_layers'],
-        'batch_size': config['CN']['cn_batch_size'],
-        'lr_schedule': cn_lr_schedule,
-        'expert_obs': expert_obs,  # select obs at a time step t
-        'expert_acs': expert_acs,  # select acs at a time step t
-        'is_discrete': is_discrete,
-        'regularizer_coeff': config['CN']['cn_reg_coeff'],
-        'obs_select_dim': cn_obs_select_dim,
-        'acs_select_dim': cn_acs_select_dim,
-        'clip_obs': config['CN']['clip_obs'],
-        'initial_obs_mean': None if not config['CN']['cn_normalize'] else np.zeros(obs_dim),
-        'initial_obs_var': None if not config['CN']['cn_normalize'] else np.ones(obs_dim),
-        'action_low': action_low,
-        'action_high': action_high,
-        'target_kl_old_new': config['CN']['cn_target_kl_old_new'],
-        'target_kl_new_old': config['CN']['cn_target_kl_new_old'],
-        'train_gail_lambda': config['CN']['train_gail_lambda'],
-        'eps': config['CN']['cn_eps'],
-        'device': config['device'],
-        'task': config['task'],
-        'env_configs': env_configs,
-        'recon_obs': recon_obs,
-    }
+    if "Discrete" in config['task']:
+        cn_parameters = {
+            'expert_obs': expert_obs,  # select obs at a time step t
+            'expert_acs': expert_acs,  # select acs at a time step t
+            'device': config['device'],
+            'task': config['task'],
+            'env_configs': env_configs,
+        }
+    else:
+        # Initialize constraint net, true constraint net
+        cn_lr_schedule = lambda x: (config['CN']['anneal_clr_by_factor'] ** (config['running']['n_iters'] * (1 - x))) \
+                                   * config['CN']['cn_learning_rate']
+        cn_obs_select_name = config['CN']['cn_obs_select_name']
+        print(
+            "Selecting obs features are : {0}".format(cn_obs_select_name if cn_obs_select_name is not None else 'all'),
+            file=log_file, flush=True)
+        cn_obs_select_dim = get_input_features_dim(feature_select_names=cn_obs_select_name,
+                                                   all_feature_names=None)
+        cn_acs_select_name = config['CN']['cn_acs_select_name']
+        print(
+            "Selecting acs features are : {0}".format(cn_acs_select_name if cn_acs_select_name is not None else 'all'),
+            file=log_file, flush=True)
+        cn_acs_select_dim = get_input_features_dim(feature_select_names=cn_acs_select_name,
+                                                   all_feature_names=None)
+        cn_parameters = {
+            'obs_dim': obs_dim,
+            'acs_dim': acs_dim,
+            'hidden_sizes': config['CN']['cn_layers'],
+            'batch_size': config['CN']['cn_batch_size'],
+            'lr_schedule': cn_lr_schedule,
+            'expert_obs': expert_obs,  # select obs at a time step t
+            'expert_acs': expert_acs,  # select acs at a time step t
+            'is_discrete': is_discrete,
+            'regularizer_coeff': config['CN']['cn_reg_coeff'],
+            'obs_select_dim': cn_obs_select_dim,
+            'acs_select_dim': cn_acs_select_dim,
+            'clip_obs': config['CN']['clip_obs'],
+            'initial_obs_mean': None if not config['CN']['cn_normalize'] else np.zeros(obs_dim),
+            'initial_obs_var': None if not config['CN']['cn_normalize'] else np.ones(obs_dim),
+            'action_low': action_low,
+            'action_high': action_high,
+            'target_kl_old_new': config['CN']['cn_target_kl_old_new'],
+            'target_kl_new_old': config['CN']['cn_target_kl_new_old'],
+            'train_gail_lambda': config['CN']['train_gail_lambda'],
+            'eps': config['CN']['cn_eps'],
+            'device': config['device'],
+            'task': config['task'],
+            'env_configs': env_configs,
+            'recon_obs': recon_obs,
+        }
 
     if 'ICRL' == config['group'] or 'Binary' == config['group']:
-        cn_parameters.update({'no_importance_sampling': config['CN']['no_importance_sampling'], })
-        cn_parameters.update({'per_step_importance_sampling': config['CN']['per_step_importance_sampling'], })
-        constraint_net = ConstraintNet(**cn_parameters)
+        if "Discrete" in config['task']:
+            constraint_net = ConstraintDiscrete(**cn_parameters)
+        else:
+            cn_parameters.update({'no_importance_sampling': config['CN']['no_importance_sampling'], })
+            cn_parameters.update({'per_step_importance_sampling': config['CN']['per_step_importance_sampling'], })
+            constraint_net = ConstraintNet(**cn_parameters)
     elif 'VICRL' == config['group']:
         cn_parameters.update({'di_prior': config['CN']['di_prior'], })
         cn_parameters.update({'mode': config['CN']['mode'], })

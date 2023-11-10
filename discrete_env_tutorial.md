@@ -32,7 +32,7 @@ python train_policy.py ../config/mujoco_WGW-v0/train_ppo_lag_WGW-v0-setting3.yam
 python train_policy.py ../config/mujoco_WGW-v0/train_ppo_lag_WGW-v0-setting4.yaml -n 5 -s 123
 ```
 
-### Step 3: Run the ICLR algorithms
+### Step 3: Run the ICLR algorithms with NN approximated the constraint funtion.
 Note that:
 1. This is to reproduce the results in the Section 6.2 of our paper. 
 2. We have a total of 4 different settings.
@@ -64,4 +64,9 @@ python train_icrl.py ../config/mujoco_WGW-v0/train_VICRL_WGW-v0-setting1.yaml -n
 python train_icrl.py ../config/mujoco_WGW-v0/train_VICRL_WGW-v0-setting2.yaml -n 5
 python train_icrl.py ../config/mujoco_WGW-v0/train_VICRL_WGW-v0-setting3.yaml -n 5
 python train_icrl.py ../config/mujoco_WGW-v0/train_VICRL_WGW-v0-setting4.yaml -n 5
+```
+
+### Step 3.5: (optionally) Run the ICLR algorithms with the constraint set.
+```
+python train_icrl.py ../config/mujoco_WGW-discrete-v0/train_ICRL_discrete_WGW-v0-setting1.yaml
 ```
